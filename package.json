@@ -1,0 +1,12 @@
+{
+        "name": "@7up/neverland",
+        "version": "0.0.1",
+        "description": "DECO7381 - Build Project. Interactive display for engaging UQ Students with University student resources.",
+        "main": "index.js",
+        "author": "Aurélie Teyssier, Christophe Sarasin,Marcel Scherzer, Sajjad Brohi, Sebastian Robayo Delgado, Sindre Gulbrandsen",
+        "license": "MIT",
+        "private": true,
+        "workspaces": [
+                "packages/*"
+        ]
+}

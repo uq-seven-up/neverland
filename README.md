@@ -10,7 +10,7 @@
 - Install nodejs 14.7.0 https://nodejs.org/en/
 - Install yarn v1.22.4 https://classic.yarnpkg.com/en/docs/install/#windows-stable
 
-Note: You could also use the provided docker container as a build environment, in which case there is no need to install nodejs or docker. However, on Windows and MacOS compiling local source code mounted to a docker container is painfully slow.
+Note: You could also use the provided docker container as a build environment, in which case there is no need to install nodejs or yarn. However, on Windows and MacOS compiling local source code mounted to a docker container is painfully slow.
 
 --- 
 

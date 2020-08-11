@@ -1,1 +1,6 @@
 node_modules
+.directory
+/build/
+*.code-workspace
+yarn-error\.log
+dist/

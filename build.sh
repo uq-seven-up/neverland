@@ -1,6 +1,4 @@
 # /bin/bash
-set -euo pipefail
-
 yarn install
 yarn --cwd ./packages/common-types/ build
 yarn --cwd ./packages/common-utils/ build

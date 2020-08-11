@@ -1,0 +1,1 @@
+docker run --rm -it -v %cd%:/opt/workspace -p 3000:3000 -it gomoku/deco7381-development:v1.0.1 /bin/bash

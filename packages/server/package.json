@@ -1,0 +1,21 @@
+{
+  "name": "neverland-server",
+  "version": "0.0.1",
+  "description": "Provides middlerware for the neverland uq interactive public screen.",
+  "main": "index.js",
+  "author": "Aurélie Teyssier, Christophe Sarasin,Marcel Scherzer, Sajjad Brohi, Sebastian Robayo Delgado, Sindre Gulbrandsen",
+  "license": "MIT",
+  "dependencies": {
+    "@testing-library/dom": "^7.22.2",
+    "@types/express": "^4.17.7",
+    "nexus": "^0.26.1",
+    "ts-node-dev": "^1.0.0-pre.57",
+    "typescript": "^3.9.7",
+    "web-push": "^3.4.4"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "dev": "ts-node-dev --respawn --transpileOnly ./src/app.ts",
+    "prod": "tsc && node ./dist/app.js"
+  }
+}

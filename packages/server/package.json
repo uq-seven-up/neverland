@@ -17,8 +17,12 @@
     "web-push": "^3.4.4"
   },
   "scripts": {
-    "tsc": "tsc",
-    "dev": "ts-node-dev --respawn --transpileOnly ./src/app.ts",
-    "build": "tsc && node ./dist/app.js"
+    "dev": "concurrently \"tsc -w\" \"nodemon dist/app.js\"",
+    "build": "tsc",
+    "start": "tsc && node ./dist/app.js"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "nodemon": "^2.0.4"
   }
 }

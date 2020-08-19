@@ -12,7 +12,8 @@ router.get('/test:id',(req:Request,res:Response) => {
 
 router.get('/test',(req:Request,res:Response) => {
 	let result = {
-		uuid: CFKitUtil.createGUID()
+		uuid: CFKitUtil.createGUID(),
+		word: "hello"
 	}
 	res.send(result)
 });

@@ -6,25 +6,40 @@ interface ExperimentProp {
   name: string
 }
 
+interface RssArticle {
+    author: string
+    content: string
+    creator: string
+    guid: string
+    isoDate: Date
+    link: string
+    pubDate: Date
+    title: string
+}
+
 interface ExperimentState {
   status: "" | "error" | "success"
+  feed:RssArticle[]
 }
+
 
 class Experiment extends React.Component<ExperimentProp, ExperimentState> {  
     constructor(props: any) {
         super(props)
 
         this.state = {
-            status: ""        
-        }
+            status: "",
+            feed:[]        
+        }       
     }
 
     /* ########################################################*/
     /* React lif cycle event.*/
     public componentDidMount(): void {
         console.log('Component Did Mount')
-        let data = {foo:'this is something'}
-        this.callAPI('','POST','/screen/test',data);
+        //let data = {foo:'this is something'}
+        //this.callAPI('','POST','/screen/test',data);
+        this.callAPI('','GET','/screen/uqnews');
     }
     /* ########################################################*/
 
@@ -38,7 +53,7 @@ class Experiment extends React.Component<ExperimentProp, ExperimentState> {
             {
                 if(this.handleApiCallSuccess)
                 {
-                    this.handleApiCallSuccess(name,method,endpoint,response);
+                    this.handleApiCallSuccess(name,method,endpoint,response.data);
                 }
             } else if(response.status === 500)
             {
@@ -48,18 +63,14 @@ class Experiment extends React.Component<ExperimentProp, ExperimentState> {
             }
         },data);
     }
-    
-    private handleApiCallSuccess = (name:string,method:string,endpoint:string,response:any) =>
-    {
-        console.log(name,method,endpoint,response);
-    }
     /* ########################################################*/
   
   
     /* ########################################################*/
     /* Event Handlers. */
-    private handleApiSuccess = (name: string, method: string, endpoint: string, response: any) => {
-        
+    private handleApiCallSuccess = (name:string,method:string,endpoint:string,result:any) =>
+    {        
+        this.setState({feed:result.data.items})                
     }
     /* ########################################################*/
 
@@ -72,7 +83,12 @@ class Experiment extends React.Component<ExperimentProp, ExperimentState> {
 
         return (
         <div>
-            This is some sub-component.
+            <h3>UQ News Headlines</h3>
+            <ul>
+                {this.state.feed.map((item:RssArticle) => (
+                    <li key={item.guid}>{item.title}</li>
+                ))}
+            </ul>
         </div>
         )
     }
@@ -80,7 +96,7 @@ class Experiment extends React.Component<ExperimentProp, ExperimentState> {
     public render() {
         return (
         <div>
-            <h2>Hello World</h2>
+            <h2>News Feed Component</h2>
             {this.renderSubComponentFoo()}
         </div>               
         )

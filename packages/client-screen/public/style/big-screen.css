@@ -2,13 +2,52 @@
 /* big-screen.css */
 /* Styles definitions for content shown on the large public display. */
 
+/* Page Styles */
+body{
+    margin:20px;
+}
+
+header
+{
+    margin-bottom:20px;
+}
+
+header h1 {
+    font-size: 2em;
+}
+
 .widget-container
 {
     display:flex;
     justify-content: space-around;
-    align-items: center;    
+    align-items: flex-start;    
 }
 
+/* Widget Styles */
 .widget{
     border: 1px solid gray;
+    padding: 10px;
+}
+
+.widget h2
+{
+    font-size: 1.3em;
+    margin-bottom: 10px;
+}
+
+.widget h2
+{
+    font-size: 1.3em;
+    margin-bottom: 15px;
+}
+
+.widget ul
+{
+    list-style-type: square;
+    list-style-position: inside;
+}
+
+.widget ul li
+{
+    padding-bottom:10px;
 }

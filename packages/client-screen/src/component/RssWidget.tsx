@@ -74,14 +74,11 @@ class RssWidget extends React.Component<RssWidgetProp, RssWidgetState> {
     /* UI Rendering*/
     private renderArticles() {        
         return (
-        <div>
-            <h3>UQ News Headlines</h3>
             <ul>
                 {this.state.feed.map((item:RssArticle) => (
                     <li key={item.guid}>{item.title}</li>
                 ))}
-            </ul>
-        </div>
+            </ul>        
         )
     }
 

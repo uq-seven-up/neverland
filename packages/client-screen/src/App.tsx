@@ -6,8 +6,8 @@ import TestWidget from './component/TestWidget';
 function App() {
   return (          
         <WidgetContainer>
-          <TestWidget name="Foo"></TestWidget>
-          <TestWidget name="Bar"></TestWidget>
+          <TestWidget name="Proof of Concept Widget"/>
+          <RssWidget/>
         </WidgetContainer>
   );
 }

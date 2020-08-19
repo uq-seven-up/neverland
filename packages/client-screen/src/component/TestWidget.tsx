@@ -40,7 +40,7 @@ class TestWidget extends React.Component<TestWidgetProp, TestWidgetState> {
 
     public render() {
         return (
-        <div>
+        <div className="widget">
             <h2>{this.props.name}</h2>
             {this.renderSubComponentFoo()}
         </div>               

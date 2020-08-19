@@ -40,7 +40,7 @@ exports.API = void 0;
 var axios_1 = require("axios");
 ;
 var API = (function () {
-    function API() {
+    function API(baseUrl) {
         var _this = this;
         this.call = function (method, endpoint, callback, params) { return __awaiter(_this, void 0, void 0, function () {
             var sessionid, config, response;
@@ -71,7 +71,7 @@ var API = (function () {
             return API.instance;
         }
         axios_1.default.defaults.withCredentials = false;
-        axios_1.default.defaults.baseURL = CFKIT_API.BASE_URL;
+        axios_1.default.defaults.baseURL = baseUrl;
         axios_1.default.defaults.validateStatus = function (status) {
             return status < 500;
         };

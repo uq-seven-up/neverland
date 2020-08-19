@@ -1,21 +1,12 @@
 import * as express from 'express';
 import { Request, Response } from "express";
 import RSSParser = require('rss-parser');
-import {CFKitUtil} from "@7up/common-utils"
 
 const router = express.Router();
 
 router.get('/test:id',(req:Request,res:Response) => {
 	const {id} = req.params;
 	res.send({id})
-});
-
-router.get('/test',(req:Request,res:Response) => {
-	let result = {
-		uuid: CFKitUtil.createGUID(),
-		word: "hello"
-	}
-	res.send(result)
 });
 
 router.post('/test',(req:Request,res:Response) => {	

@@ -41,7 +41,9 @@ class RssWidget extends React.Component<RssWidgetProp, RssWidgetState> {
     /* ########################################################*/
     /* Framework methods. */
     private callAPI = (name:string,method:'GET'|'POST'|'PUT'|'DELETE',endpoint:string,data?:any,hideBusy?:boolean) => {                      
-        new API().call(method,endpoint,(response:AxiosResponse<any>) => 
+        let baseUrl = process.env.REACT_APP_NEVERMIND_API_BASE as any as string; 
+        console.log('slute',process.env,baseUrl);
+        new API(baseUrl).call(method,endpoint,(response:AxiosResponse<any>) => 
         {
             if(response.status === 200)
             {

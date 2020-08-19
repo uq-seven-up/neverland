@@ -1,6 +1,11 @@
+# Ignore Mac-OS folder view configuration files
+.DS_Store
+Desktop.ini
+# Ignore node build artifact.
 node_modules
-.directory
-/build/
-*.code-workspace
+dist
+build
 yarn-error\.log
-/dist/
+# Ignore visual studio code specific files.
+.directory
+*.code-workspace

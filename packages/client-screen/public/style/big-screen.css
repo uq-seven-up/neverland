@@ -1,0 +1,14 @@
+@import url("global.css") screen;
+/* big-screen.css */
+/* Styles definitions for content shown on the large public display. */
+
+.widget-container
+{
+    display:flex;
+    justify-content: space-around;
+    align-items: center;    
+}
+
+.widget{
+    border: 1px solid gray;
+}

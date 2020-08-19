@@ -2,9 +2,8 @@ import React from "react"
 
 import {API} from "@7up/common-utils"
 import {AxiosResponse } from 'axios';
-interface ExperimentProp {
-  name: string
-}
+
+interface RssWidgetProp {}
 
 interface RssArticle {
     author: string
@@ -17,18 +16,16 @@ interface RssArticle {
     title: string
 }
 
-interface ExperimentState {
-  status: "" | "error" | "success"
+interface RssWidgetState {
   feed:RssArticle[]
 }
 
 
-class Experiment extends React.Component<ExperimentProp, ExperimentState> {  
-    constructor(props: any) {
+class RssWidget extends React.Component<RssWidgetProp, RssWidgetState> {  
+    constructor(props: RssWidgetProp) {
         super(props)
 
         this.state = {
-            status: "",
             feed:[]        
         }       
     }
@@ -36,9 +33,6 @@ class Experiment extends React.Component<ExperimentProp, ExperimentState> {
     /* ########################################################*/
     /* React lif cycle event.*/
     public componentDidMount(): void {
-        console.log('Component Did Mount')
-        //let data = {foo:'this is something'}
-        //this.callAPI('','POST','/screen/test',data);
         this.callAPI('','GET','/screen/uqnews');
     }
     /* ########################################################*/
@@ -78,9 +72,7 @@ class Experiment extends React.Component<ExperimentProp, ExperimentState> {
   
     /* ########################################################*/
     /* UI Rendering*/
-    private renderSubComponentFoo() {
-        if (this.state.status === 'error') return <div>Something Something Something</div>
-
+    private renderArticles() {        
         return (
         <div>
             <h3>UQ News Headlines</h3>
@@ -95,12 +87,12 @@ class Experiment extends React.Component<ExperimentProp, ExperimentState> {
 
     public render() {
         return (
-        <div>
-            <h2>News Feed Component</h2>
-            {this.renderSubComponentFoo()}
+        <div className="widget">
+            <h2>UQ News</h2>
+            {this.renderArticles()}
         </div>               
         )
     }
 }
 
-export default Experiment
+export default RssWidget

@@ -1,16 +1,15 @@
 import React from "react"
 
+interface WidgetContainerProp {}
+interface WidgetContainerState {}
 
-class WidgetContainer extends React.Component<any,any> {  
- 
-
-    /* ########################################################*/
-    /* React lif cycle event.*/
-    public componentDidMount(): void {
-        /* Do nothing for now. */
-    }
-    /* ########################################################*/
-
+/**
+ * This container will hold all widgets and is responsible for orchestrating
+ * the scheduling the display of widgets.
+ * 
+ * (I know in the current simplistic form this could have been done without defining a class component.)
+ */
+class WidgetContainer extends React.Component<WidgetContainerProp,WidgetContainerState> {
     public render() {
         return (
         <div className="widget-container">

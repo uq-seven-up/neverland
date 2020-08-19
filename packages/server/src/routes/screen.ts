@@ -23,7 +23,8 @@ router.get('/uqnews',async(req:Request,res:Response) => {
 	try{		
 		await rssParser.parseURL('https://www.uq.edu.au/news/rss/news_feed.xml',(err,feed) => {
 		if (err) throw err;
-		res.send(feed)
+		let result = {success:true,data:feed}
+		res.send(result)
 	});
 	} catch(error)
 	{

@@ -12,8 +12,6 @@ function make(cb){
         var tsResult = gulp.src(["src/**/*.tsx","src/**/*.ts","!src/**/*test.tsx","!src/**/*test.ts"]).pipe(tsProject());
         tsResult.js.pipe(gulp.dest('./dist'));
         tsResult.dts.pipe(gulp.dest('./dist'));
-
-        gulp.src('src/styles/*.css').pipe(gulp.dest('dist/styles/'));
         cb();
 }
 

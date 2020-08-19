@@ -1,4 +1,2 @@
-export * from "./components/menu_items";
-export * from "./types/AddressTypes";
-export * from "./types/GlobalTypes";
-export * from "./types/ItemCode";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });

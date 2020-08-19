@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -34,7 +35,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import axios from 'axios';
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.API = void 0;
+var axios_1 = require("axios");
 ;
 var API = (function () {
     function API() {
@@ -56,7 +59,7 @@ var API = (function () {
                         };
                         if (params)
                             config.data = params;
-                        return [4, axios.request(config)];
+                        return [4, axios_1.default.request(config)];
                     case 1:
                         response = _a.sent();
                         callback(response);
@@ -67,9 +70,9 @@ var API = (function () {
         if (API.instance) {
             return API.instance;
         }
-        axios.defaults.withCredentials = false;
-        axios.defaults.baseURL = CFKIT_API.BASE_URL;
-        axios.defaults.validateStatus = function (status) {
+        axios_1.default.defaults.withCredentials = false;
+        axios_1.default.defaults.baseURL = CFKIT_API.BASE_URL;
+        axios_1.default.defaults.validateStatus = function (status) {
             return status < 500;
         };
         API.instance = this;
@@ -88,4 +91,4 @@ var API = (function () {
     API.CFKIT_ENVIRONMENT = 'development';
     return API;
 }());
-export { API };
+exports.API = API;

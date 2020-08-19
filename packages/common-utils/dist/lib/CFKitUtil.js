@@ -1,3 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CFKitUtil = void 0;
 var CFKitUtil = (function () {
     function CFKitUtil() {
     }
@@ -191,4 +194,4 @@ var CFKitUtil = (function () {
     CFKitUtil.UNDEFINED_DATE = new Date(1900, 0, 1, 0, 0, 0, 0);
     return CFKitUtil;
 }());
-export { CFKitUtil };
+exports.CFKitUtil = CFKitUtil;

@@ -11,7 +11,6 @@ function build(cb){
 	tsResult.js.pipe(gulp.dest('./dist'));
 	tsResult.dts.pipe(gulp.dest('./dist'));
 	
-	gulp.src('src/styles/*.css').pipe(gulp.dest('dist/styles/'));
 	cb();
 }
 

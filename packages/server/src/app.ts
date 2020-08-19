@@ -1,9 +1,13 @@
 import express = require('express');
-const app: express.Application = express();
-app.get('/',function(req,res){
-	res.send('Hello World');
-});
+import screenRouter = require('./routes/screen');
 
-app.listen(3000,function(){
-	console.log('Example app listening on port 3000');
+const app: express.Application = express();
+const PORT = 3000;
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/api/screen',screenRouter);
+
+app.listen(PORT,function(){
+	console.log(`Express is listening on port ${PORT}`);
 });

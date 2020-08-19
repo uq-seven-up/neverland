@@ -16,6 +16,6 @@
   "scripts": {
     "tsc": "tsc",
     "dev": "ts-node-dev --respawn --transpileOnly ./src/app.ts",
-    "prod": "tsc && node ./dist/app.js"
+    "build": "tsc && node ./dist/app.js"
   }
 }

@@ -14,13 +14,13 @@ export class API {
     static CFKIT_ENVIRONMENT = 'development';
     static instance:API;
 
-    constructor(){
+    constructor(baseUrl:string){
         if(API.instance){
             return API.instance;
         }
         
         axios.defaults.withCredentials = false;
-        axios.defaults.baseURL = CFKIT_API.BASE_URL;
+        axios.defaults.baseURL = baseUrl;
         axios.defaults.validateStatus =  function (status) {
             return status < 500; // Reject only if the status code is greater than or equal to 500
         };

@@ -28,7 +28,10 @@ Then switch to the "develop" branch.
 
 ### Building the project
 
-The following command will build all packages.
+The following command will build all packages.  
+
+### YOU MUST DO THIS AT LEAST ONCE THE VERY FIRST TIME YOU CHECKOUT THE SOURCE CODE.
+
 
 #### Windows
 `./build.bat`
@@ -36,28 +39,49 @@ The following command will build all packages.
 #### Linux / Mac OS
 `./build.sh`
 
-### Day to Day development.
+## Day to Day development.
 All the usual commands that you can find on the web for working with react / typescript application created with the create-react tool should work. Just remeber the project is configured to use YARN and not NPM and we are using the YARN workspaces feature to afford us the ability to easily share private packages.
 
+## Changing code inside of the common-* packages
+For code changes to common packages to be available the changes packages must be rebuilt.
+
+In the console change to the ./packages/common-* folder.
+
+The following commands are available:  
+`yarn build`  
+Builds the server source code and runs all unit-tests. 
+
+## Starting the REST API server
+As all the client applications rely on the REST API server, it is recommended to have the REST API running during all development.
+
+In the console change to the ./packages/server folder.
+
+The following commands are available:  
+`yarn build`  
+Builds the server source code.  
+
+`yarn start`  
+Starts up the node express server.  
+
+`yarn dev`  
+Starts up the node express server and watches the source code for any changes. If source code changes are detected the code is automatically re-compiled and the node server is restarted with the new source code changes.  
+
+## Starting the Client Applications
+As all the client applications rely on the REST API server, it is recommended to have the REST API running during all development.
+
+In the console change to the ./packages/client-* folder.
+
+The following commands are available:  
+`yarn build`  
+Builds the client source code for production.  
+
+`yarn start`  
+Starts up the client application and launches a web-browser windows.  
+
+`yarn test`  
+Launches a tool for running unit-tests.
+
 ---
-### Using Docker as a development environment.
-Not recommended on Mac OS or Windows, but you can try it.
-
-#### Windows
-`./start.bat`
-
-#### Linux / Mac OS
-`./start.sh`
-
-Then choose option 1. This will launch a docker build environment and start a bash shell inside of the linux
-container. 
-
-Inside the bash shell you can use the same commands for building and working with the source code as described for Linux.
-
-The start.sh script also provides the option to build the docke build environment from the provided docker file.
-
----
-
 ## Project folder structure.
 
 **./docker**  

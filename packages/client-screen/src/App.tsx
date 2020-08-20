@@ -1,13 +1,16 @@
 import React from 'react';
 import WidgetContainer from './component/WidgetContainer'
 import RssWidget from './component/RssWidget'
+import WeatherWidget from './component/WeatherWidget'
 import TestWidget from './component/TestWidget';
+
 
 function App() {
   return (          
         <WidgetContainer>
           <TestWidget name="Proof of Concept Widget"/>
-          <RssWidget/>
+      <RssWidget />
+      <WeatherWidget  name="Weather Widget PoC"/>
         </WidgetContainer>
   );
 }

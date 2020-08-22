@@ -1,9 +1,7 @@
 version: 0.2
 # AWS Code build definition that builds all node projects inside of this repository.
 env:
-    shell: bash 
-    #variables:
-      # NODE_OPTIONS: "--max-old-space-size=5120"
+    shell: bash
 phases:
     install:
       runtime-versions:
@@ -27,6 +25,7 @@ phases:
     post_build:
         commands:
           - echo Build $CODEBUILD_BUILD_NUMBER completed on `date`
+          - aws s3 ls s3://deco7381-build-artifacts/
 artifacts:
   files:
     - ./packages/client-mobile/build/**/*

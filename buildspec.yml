@@ -1,0 +1,29 @@
+version: 0.1
+# AWS Code build definition that builds all node projects inside of this repository.
+env:
+    shell: bash 
+    variables:
+      # NODE_OPTIONS: "--max-old-space-size=5120"
+phases:
+    install:
+      runtime-versions:
+        nodejs: 10
+      commands:
+        - echo Install phase started on `date`
+    pre_build:
+      commands:
+        - echo Pre-build started on `date`
+        - cd $CODEBUILD_SRC_DIR
+        - yarn install
+    build:
+      commands:
+        - echo Build started on `date`
+        - cd $CODEBUILD_SRC_DIR
+        - yarn --cwd ./packages/common-types/ build
+        - yarn --cwd ./packages/common-utils/ build
+        - yarn --cwd ./packages/server/ build
+        - yarn --cwd ./packages/client-mobile/ build
+        - yarn --cwd ./packages/client-screen/ build
+    post_build:
+        commands:
+          - echo Build $CODEBUILD_BUILD_NUMBER completed on `date`

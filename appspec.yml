@@ -23,10 +23,10 @@ os: linux
 #   "files" section altogether. A blank or incomplete "files" section
 #   may cause associated deployments to fail.
 files:
-  - source: /client-mobile
-    destination: /var/www/html/
+  - source: client-mobile
+    destination: /var/www/html/client-mobile
   - source: client-screen
-    destination: /var/www/html/
+    destination: /var/www/html/client-screen
 # For deployments to Amazon Linux, Ubuntu Server, or RHEL instances,
 #   you can specify a "permissions" 
 #   section here that describes special permissions to apply to the files 

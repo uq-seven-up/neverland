@@ -39,8 +39,5 @@ phases:
           - echo Build $CODEBUILD_BUILD_NUMBER completed on `date`
 artifacts:
   files:
-    - ./appspec.yml
-    - ./packages/client-mobile/build/**/*
-    - ./packages/client-screen/build/**/*
-    - ./packages/server/dist/**/*
+    - ./deco7381.tar.gzip
   discard-paths: no

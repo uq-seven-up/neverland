@@ -27,7 +27,7 @@ phases:
           - echo Packaging started on `date`
           - cd $CODEBUILD_SRC_DIR
           - mkdir -p ./bin
-          - cp ./src/appspec.yml ./bin/
+          - cp ./appspec.yml ./bin/
           - mkdir ./bin/client-mobile
           - cp -R ./packages/client-mobile/build/* ./bin/client-mobile/
           - mkdir -p ./bin/client-screen

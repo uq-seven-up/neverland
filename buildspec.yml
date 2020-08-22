@@ -7,7 +7,7 @@ env:
 phases:
     install:
       runtime-versions:
-        nodejs: 10
+        nodejs: 12
       commands:
         - echo Install phase started on `date`
     pre_build:
@@ -27,3 +27,9 @@ phases:
     post_build:
         commands:
           - echo Build $CODEBUILD_BUILD_NUMBER completed on `date`
+artifacts:
+  files:
+    - ./packages/client-mobile/build/**/*
+    - ./packages/client-screen/build/**/*
+    - ./packages/server/dist/**/*
+  discard-paths: no

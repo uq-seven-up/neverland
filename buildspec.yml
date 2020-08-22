@@ -1,4 +1,4 @@
-version: 0.1
+version: 0.2
 # AWS Code build definition that builds all node projects inside of this repository.
 env:
     shell: bash 

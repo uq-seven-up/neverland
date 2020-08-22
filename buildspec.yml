@@ -24,10 +24,22 @@ phases:
         - yarn --cwd ./packages/client-screen/ build
     post_build:
         commands:
+          - echo Packaging started on `date`
+          - cd $CODEBUILD_SRC_DIR
+          - mkdir -p ./bin
+          - cp ./src/appspec.yml ./bin/
+          - mkdir ./bin/client-mobile
+          - cp -R ./packages/client-mobile/build/* ./bin/client-mobile/
+          - mkdir -p ./bin/client-screen
+          - cp -R ./packages/client-screen/build/* ./bin/client-screen/
+          - mkdir -p ./bin/server
+          - cp -R ./packages/server/dist/* ./bin/server/
+          - cd $CODEBUILD_SRC_DIR/bin
+          - tar -cvzf ../deco7381.tar.gzip .
           - echo Build $CODEBUILD_BUILD_NUMBER completed on `date`
-          - aws s3 ls s3://deco7381-build-artifacts/
 artifacts:
   files:
+    - ./appspec.yml
     - ./packages/client-mobile/build/**/*
     - ./packages/client-screen/build/**/*
     - ./packages/server/dist/**/*

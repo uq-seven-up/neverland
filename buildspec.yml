@@ -2,7 +2,7 @@ version: 0.1
 # AWS Code build definition that builds all node projects inside of this repository.
 env:
     shell: bash 
-    variables:
+    #variables:
       # NODE_OPTIONS: "--max-old-space-size=5120"
 phases:
     install:

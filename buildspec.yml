@@ -35,7 +35,7 @@ phases:
           - mkdir -p ./bin/server
           - cp -R ./packages/server/dist/* ./bin/server/
           - cd $CODEBUILD_SRC_DIR/bin
-          - tar -cvzf ../deco7381.tar.gzip .
+          - tar -cvzf ../deco7381_$CODEBUILD_BUILD_NUMBER.tar.gzip .
           - echo Build $CODEBUILD_BUILD_NUMBER completed on `date`
 artifacts:
   files:

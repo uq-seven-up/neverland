@@ -32,6 +32,15 @@ The following command will build all packages.
 
 ### YOU MUST DO THIS AT LEAST ONCE THE VERY FIRST TIME YOU CHECKOUT THE SOURCE CODE.
 
+For development you MUST create the following file:
+
+`./packages/client-screen/.env.local`  
+
+File contents:  
+`REACT_APP_NEVERMIND_API_BASE=http://localhost:3080/api`
+
+If you do NOT generate this file then client applications will contact the production REST API.
+
 
 #### Windows
 `./build.bat`

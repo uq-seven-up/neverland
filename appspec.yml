@@ -11,3 +11,4 @@ files:
     destination: /var/www/html/client-screen
   - source: server
     destination: /opt/deco-server
+# end of file.

@@ -9,3 +9,5 @@ yarn-error\.log
 # Ignore visual studio code specific files.
 .directory
 *.code-workspace
+# ignore locale environment variables.
+.env*.local

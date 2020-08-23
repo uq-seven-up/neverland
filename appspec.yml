@@ -11,3 +11,11 @@ files:
     destination: /var/www/html/client-screen
   - source: server
     destination: /opt/deco-server
+
+hooks:
+  BeforeInstall:
+    - location: scripts/before-install.sh
+      timeout: 120 
+  ApplicationStart:
+    - location: scripts/application-start.sh
+      timeout: 120

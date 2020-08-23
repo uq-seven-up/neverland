@@ -35,7 +35,7 @@ phases:
           - mkdir -p ./bin/client-screen
           - cp -R ./packages/client-screen/build/* ./bin/client-screen/
           - mkdir -p ./bin/server
-          - cp -R ./packages/server/dist/* ./bin/server/
+          - cp -R ./packages/server/build/* ./bin/server/
           - cd $CODEBUILD_SRC_DIR/bin
           - tar -cvzf ../deco7381-$CODEBUILD_BUILD_NUMBER.tar.gz .
           - echo Build $CODEBUILD_BUILD_NUMBER completed on `date`

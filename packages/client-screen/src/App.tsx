@@ -8,9 +8,10 @@ import TestWidget from './component/TestWidget';
 function App() {
   return (
 	<WidgetContainer>
-		<TestWidget name="Proof of Concept Widget"/>
-		<RssWidget />
 		<WeatherWidget  name="Weather Widget PoC"/>
+		<TestWidget name="UQ Lakes"/>
+		<TestWidget name="UQ Chancellor's Place"/>
+		<RssWidget />
 	</WidgetContainer>
   );
 }

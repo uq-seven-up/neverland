@@ -2,62 +2,131 @@
 /* big-screen.css */
 /* Styles definitions for content shown on the large public display. */
 
-/* Page Styles */
-body{
-    margin:20px;
+@import url('https://fonts.googleapis.com/css2?family=Varta:wght@300;500;600&display=swap');
+
+body, h2, .content{
+	font-family: 'Varta', sans-serif;
+	font-weight: 500;
 }
 
-header
+body
 {
-    margin-bottom:20px;
-}
-
-header h1 {
-    font-size: 2em;
+	width:100vw;
+	height:100vh;
+	padding:40px;
+	box-sizing: border-box;	
+	background: rgb(147,124,179);
+	background: linear-gradient(347deg, rgba(147,124,179,1) 0%, rgba(81,44,123,1) 59%);
 }
 
 .widget-container
 {
-    display:flex;
-    justify-content: space-around;
-    align-items: flex-start;    
+	display: inline-flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: top;
 }
 
-/* Widget Styles */
-.widget{
-    border: 1px solid gray;
-    padding: 10px;
-}
-
-.widget h2
+/* ############################### */
+/* Standard widget styles. */
+.widget
 {
-    font-size: 1.3em;
-    margin-bottom: 10px;
+	display: inline-block;	
+	overflow: hidden;
+	min-width: 300px;
+	margin:0px 5px 5px 5px;
 }
 
-.widget h2
+.widget .heading{
+	display: flex;
+	background-color:white;
+	padding: 0px 10px;
+	height: 35px;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	border:1px solid white;
+	border-radius: 15px 15px 0px 0px;
+}
+
+.widget .heading h2
 {
-    font-size: 1.3em;
-    margin-bottom: 15px;
+	position: relative;top:3px;left:0; /* ensure content appears as vertically centered.*/
+	color: #59545d;
+	font-size: 1.3em;	
 }
 
-.widget ul
+.widget .heading figure{
+	height:30px;
+	width:30px;
+	background-image: url('../gfx/uq-logo-40x40.png');
+	background-size: contain;
+	background-repeat: no-repeat;
+}
+
+.widget .content
 {
-    list-style-type: square;
-    list-style-position: inside;
+	min-height: 40px;
+	background-color:#b1a8b9;
+	border:1px solid #b1a8b9;
+	border-radius: 0px 0px 15px 15px;
+	padding: 10px 10px 15px 10px;
+	color: #59545d;
 }
 
-.widget ul li
+.widget .content li
 {
-    padding-bottom:10px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: #59545d;
+	color: white;
+	margin: 2px 0;
+	padding: 2px 10px;
+	font-weight: 300;
+	font-size: 1.0em;
 }
 
-/*Weather Widget*/
+.widget .content li div {margin-top:2px;}/* ensure content appears as vertically centered.*/
 
-.widget.weather{
-    border-radius: 25px;
+/* ############################### */
+/* Specific widget styles.*/
 
+/* ================================= */
+/* News Widget */
+.widget.news .heading h2
+{
+	color: #502984;
 }
+
+.widget.news li
+{
+	background-color: #502984;
+}
+/* ================================= */
+
+
+/* ================================= */
+/* Transit Widget */
+.widget.transit figure
+{
+	color: #502984;	
+	background-image: url('../gfx/bus-icon-40x40.png');
+}
+/* ================================= */
+
+
+/* ================================= */
+/* Weather Widget */
+.widget.weather .content
+{
+	border: none;
+	background-color:inherit;
+	padding:0;
+	margin:0;
+	max-width:400px;
+}
+
 
 .app {
     background-image: url(../cold-bg.jpg);
@@ -125,3 +194,4 @@ header h1 {
     text-shadow: 3px 3px rgba(50, 50, 70, 0.5);
     padding-bottom: 15px;
 }
+/* ================================= */

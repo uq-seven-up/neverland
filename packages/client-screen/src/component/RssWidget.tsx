@@ -110,10 +110,15 @@ class RssWidget extends React.Component<RssWidgetProp, RssWidgetState> {
 
     public render() {
         return (
-        <div className="widget">
-            <h2>UQ News</h2>
-            {this.renderArticles()}
-        </div>               
+        <section className="widget news">
+            <div className="heading">
+				<h2>UQ News</h2>
+				<figure></figure>
+			</div>
+			<div className="content">
+				{this.renderArticles()}
+			</div>
+        </section>
         )
     }
     /* ########################################################*/

@@ -17,7 +17,7 @@ class TestWidget extends React.Component<TestWidgetProp, TestWidgetState> {
         super(props)
 
         this.state = {
-            status: "on"   
+            status: "on"
         }       
     }
 
@@ -40,21 +40,55 @@ class TestWidget extends React.Component<TestWidgetProp, TestWidgetState> {
      * @returns JSX element
      */
     private renderSubComponentFoo() {
-        if (this.state.status === 'on') return <div>Something Something Something</div>
+        if (this.state.status === 'off') return <div>Something Something Something</div>
 
         return (
-        <div>
-            <h3>This is some sub-component</h3>            
-        </div>
+        <ul>
+            <li>
+				<div>66</div>
+				<div>RBWH station, Herston</div>
+				<div>9min</div>
+			</li>
+			<li>
+				<div>66</div>
+				<div>RBWH station, Herston</div>
+				<div>9min</div>
+			</li> 
+			<li>
+				<div>66</div>
+				<div>RBWH station, Herston</div>
+				<div>9min</div>
+			</li> 
+			<li>
+				<div>66</div>
+				<div>RBWH station, Herston</div>
+				<div>9min</div>
+			</li> 
+			<li>
+				<div>66</div>
+				<div>RBWH station, Herston</div>
+				<div>9min</div>
+			</li> 
+			<li>
+				<div>66</div>
+				<div>RBWH station, Herston</div>
+				<div>9min</div>
+			</li>             
+        </ul>
         )
     }
 
     public render() {
         return (
-        <div className="widget">
-            <h2>{this.props.name}</h2>
-            {this.renderSubComponentFoo()}
-        </div>               
+		<section className="widget transit">
+        	<div className="heading">
+				<h2>{this.props.name}</h2>
+				<figure></figure>
+			</div>
+			<div className="content">
+            	{this.renderSubComponentFoo()}
+			</div>
+        </section>
         )
     }
 }

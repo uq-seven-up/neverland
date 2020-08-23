@@ -13,8 +13,8 @@ class WidgetContainer extends React.Component<WidgetContainerProp,WidgetContaine
     public render() {
         return (
         <div className="widget-container">
-            {this.props.children}            
-        </div>               
+            {this.props.children}
+        </div>
         )
     }
 }

@@ -79,30 +79,31 @@ class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetStat
    
   public render() {
     return (
-      <div className="widget weather">
-        <div className={(this.state.weather.main.temp > 17) ? 'app warm' : 'app'}>
-          <div>
-            <div className="location-box">
-              <div className="location">{this.state.weather.name}, {this.state.weather.sys.country}</div>
-              <div className="date">{this.dateBuilder(new Date())}</div>
-            </div>
-            <div className="weather-box">
-              <div className="temp">
-                {Math.round(this.state.weather.main.temp)}°c <br></br>
-                feels like: {Math.round(this.state.weather.main.feels_like)}°c
-              </div>
-              
-              <div className="weather_status">{this.state.weather.weather[0].main}, {this.state.weather.weather[0].description} </div>
-              
-            </div>
-          </div>
-        </div>
-      </div>
+      <section className="widget weather">
+		<div className="content">
+			<div className={(this.state.weather.main.temp > 17) ? 'app warm' : 'app'}>
+			<div>
+				<div className="location-box">
+					<div className="location">
+						{this.state.weather.name}, {this.state.weather.sys.country}
+					</div>
+					<div className="date">{this.dateBuilder(new Date())}</div>
+				</div>
+				<div className="weather-box">
+					<div className="temp">
+						{Math.round(this.state.weather.main.temp)}°c <br></br>
+						feels like: {Math.round(this.state.weather.main.feels_like)}°c
+					</div>				
+					<div className="weather_status">
+						{this.state.weather.weather[0].main}, {this.state.weather.weather[0].description} 
+					</div>
+				</div>
+			</div>
+		  </div>
+		</div>
+	</section>
     )
   }
 }
 
 export default WeatherWidget
-
-
-

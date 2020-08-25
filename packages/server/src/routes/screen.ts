@@ -1,13 +1,14 @@
 import * as express from 'express';
 import { Request, Response } from "express";
 import RSSParser = require('rss-parser');
+import dotenv from "dotenv";
 
 /**
  * Defines routes which are intended to be used to provide 
  * data to the display screen.
  */
 const router = express.Router();
-
+dotenv.config();
 
 /**
  * Proof of concept for grabbing a parameter from the URL and assigning 
@@ -25,6 +26,28 @@ router.get('/test:id',(req:Request,res:Response):void => {
  */
 router.post('/test',(req:Request,res:Response):void => {	
 	// Echo back the response body.
+	res.send(req.body)
+});
+
+router.get('/mongo',(req:Request,res:Response):void => {	
+	// Echo back the response body.
+	const username = 'develop';
+	const password = 'QSzoUTXxMxxRiwz4';
+	const dbname = 'neverland-dev'
+	const dbconfig = {
+		useNewUrlParser:true,
+		useUnifiedTopology:true
+	}
+	const uri = `mongodb+srv://${username}:${password}@cluster0.0omfj.mongodb.net/${dbname}?retryWrites=true&w=majority`;
+	//const client = new mongodb.MongoClient(uri,dbconfig);
+	console.log('The value of PORT is:', process.env.mongoserver,process.env.mongousername,process.env.mongopassword,process.env.mongodbname);
+//	client.connect(err,db:) => {
+//		const collection = client.connect();
+//		// perform actions on the collection object
+//		collection.insertOne({msg:"helloworld"});
+//		client.close();
+//	});
+	
 	res.send(req.body)
 });
 

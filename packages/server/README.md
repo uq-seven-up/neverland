@@ -1,1 +1,9 @@
-The server NODE.js code will live here.
+# Server Notes
+To operatate correctly the server relies on the following environment variables.
+
+
+
+mongoserver = cluster host name  
+mongousername = username  
+mongopassword = somepassword   
+mongodbname = database name  

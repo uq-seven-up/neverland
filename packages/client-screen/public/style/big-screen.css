@@ -125,8 +125,8 @@ body
 	padding:0;
 	margin:0;
 	max-width:400px;
+	
 }
-
 
 .app {
     background-image: url(../cold-bg.jpg);
@@ -142,11 +142,14 @@ body
 
 .location-box .location {
     color: #FFF;
-    font-size: 40px;
+    font-size: 35px;
     font-weight: 500;
     text-align: center;
     text-shadow: 3px 3px rgba(50, 50, 70, 0.5);
-    padding-top: 15px;
+	padding-top: 15px;
+	/*background-image:url(../gfx/uq-logo-40x40.png);
+	background-repeat: no-repeat;
+	background-position-x: right;*/
 }
   
 .location-box .date {
@@ -172,7 +175,7 @@ body
     padding: 15px 25px;
   
     color: #FFF;
-    font-size: 90px;
+    font-size: 35px;
     font-weight: 900;
   
     text-shadow: 3px 6px rgba(50, 50, 70, 0.5);
@@ -189,7 +192,7 @@ body
 
 .weather_status{
     color: #FFF;
-    font-size: 42px;
+    font-size: 25px;
     font-weight: 700;
     text-shadow: 3px 3px rgba(50, 50, 70, 0.5);
     padding-bottom: 15px;

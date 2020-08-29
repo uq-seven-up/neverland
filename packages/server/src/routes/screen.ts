@@ -15,7 +15,7 @@ dotenv.config();
  * Proof of concept for grabbing a parameter from the URL and assigning 
  * it to a variable.
  */
-router.get('/test:id',(req:Request,res:Response):void => {
+router.get('/test/:id',(req:Request,res:Response):void => {
 	const {id} = req.params;
 	res.send({id})
 });
@@ -55,6 +55,19 @@ router.post('/mongo/example',async(req:Request,res:Response) => {
 router.get('/mongo/example',async(req:Request,res:Response) => {
 	try {
 		await DB.Models.Example.find({}, (err, results) => {
+			if (err) throw err;
+			res.send({results})
+		})	
+	} catch (error) {
+		console.log(error);
+		express.response.sendStatus(500)
+	}
+});
+
+router.get('/mongo/example/:id',async(req:Request,res:Response) => {
+	const {id} = req.params;
+	try {
+		await DB.Models.Example.findById(id,(err, results) => {
 			if (err) throw err;
 			res.send({results})
 		})	

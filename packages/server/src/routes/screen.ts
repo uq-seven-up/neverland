@@ -30,7 +30,7 @@ router.post('/test',(req:Request,res:Response):void => {
 	res.send(req.body)
 });
 
-router.get('/mongo/example',async(req:Request,res:Response) => {	
+router.post('/mongo/example',async(req:Request,res:Response) => {	
 	// Echo back the response body.
 	let contact = new DB.Models.Example(
 		{
@@ -47,7 +47,19 @@ router.get('/mongo/example',async(req:Request,res:Response) => {
 			res.send({sucess:true,message:"Saved example to mongodb."})
 		})	
 	} catch (error) {
-		console.log('Some error occured saving data to the datastore.')
+		console.log(error);
+		express.response.sendStatus(500)
+	}
+});
+
+router.get('/mongo/example',async(req:Request,res:Response) => {
+	try {
+		await DB.Models.Example.find({}, (err, results) => {
+			if (err) throw err;
+			res.send({results})
+		})	
+	} catch (error) {
+		console.log(error);
 		express.response.sendStatus(500)
 	}
 });

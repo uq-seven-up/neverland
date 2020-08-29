@@ -2,6 +2,7 @@ import * as express from 'express';
 import { Request, Response } from "express";
 import RSSParser = require('rss-parser');
 import dotenv from "dotenv";
+import {DB} from '../controller/db'
 
 /**
  * Defines routes which are intended to be used to provide 
@@ -29,28 +30,27 @@ router.post('/test',(req:Request,res:Response):void => {
 	res.send(req.body)
 });
 
-router.get('/mongo',(req:Request,res:Response):void => {	
+router.get('/mongo/example',async(req:Request,res:Response) => {	
 	// Echo back the response body.
-	const username = 'develop';
-	const password = 'QSzoUTXxMxxRiwz4';
-	const dbname = 'neverland-dev'
-	const dbconfig = {
-		useNewUrlParser:true,
-		useUnifiedTopology:true
-	}
-	const uri = `mongodb+srv://${username}:${password}@cluster0.0omfj.mongodb.net/${dbname}?retryWrites=true&w=majority`;
-	//const client = new mongodb.MongoClient(uri,dbconfig);
-	console.log('The value of PORT is:', process.env.mongoserver,process.env.mongousername,process.env.mongopassword,process.env.mongodbname);
-//	client.connect(err,db:) => {
-//		const collection = client.connect();
-//		// perform actions on the collection object
-//		collection.insertOne({msg:"helloworld"});
-//		client.close();
-//	});
+	let contact = new DB.Models.Example(
+		{
+			name:"jack",
+			email:"jack@work.com",
+			phone:"1234567",
+			message:"Testing mongoose example."
+		}
+	);
 	
-	res.send(req.body)
+	try {
+		await contact.save((err:any) => {
+			if (err) throw err;
+			res.send({sucess:true,message:"Saved example to mongodb."})
+		})	
+	} catch (error) {
+		console.log('Some error occured saving data to the datastore.')
+		express.response.sendStatus(500)
+	}
 });
-
 
 /**
  * Fetch and parse the RSS news feed published by UQ.

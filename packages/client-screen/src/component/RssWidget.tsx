@@ -86,7 +86,7 @@ class RssWidget extends React.Component<RssWidgetProp, RssWidgetState> {
      */
     private handleApiCallSuccess = (name:string,method:string,endpoint:string,result:any):void =>
     {        
-        this.setState({feed:result.data.items})                
+        this.setState({feed:result.data})                
     }
     /* ########################################################*/
 

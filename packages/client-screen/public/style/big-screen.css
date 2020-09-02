@@ -1,4 +1,5 @@
 @import url("global.css") screen;
+
 /* big-screen.css */
 /* Styles definitions for content shown on the large public display. */
 
@@ -129,72 +130,55 @@ body
 }
 
 .app {
-    background-image: url(../cold-bg.jpg);
-    background-size: cover;
-    background-position: center;
+ 
     border-radius: 25px;
     
 }
   
 .app.warm {
-    background-image: url(../warm-bg.jpg)
+	border-radius: 25px;
 }
 
-.location-box .location {
+  
+.location-box .date {
     color: #FFF;
     font-size: 35px;
     font-weight: 500;
     text-align: center;
-    text-shadow: 3px 3px rgba(50, 50, 70, 0.5);
-	padding-top: 15px;
-	/*background-image:url(../gfx/uq-logo-40x40.png);
-	background-repeat: no-repeat;
-	background-position-x: right;*/
-}
-  
-.location-box .date {
-    color: #FFF;
-    font-size: 20px;
-    font-weight: 300;
-    font-style: italic;
-    text-align: center;
-    text-shadow: 2px 2px rgba(50, 50, 70, 0.5);
+    text-shadow: 1px 1px rgba(203, 203, 238, 0.5);
 }
   
 .weather-box {
-    text-align: center;
-}
-  
-.weather-box .temp {
-    position: relative;
-    display: inline-block;
-    margin: 15px 15px;
-    background-color: rgba(255, 255, 255, 0.2);
+	display:flex;
+	justify-content: center;
+	margin: 15px 15px;
+
     border-radius: 16px;
-  
-    padding: 15px 25px;
-  
-    color: #FFF;
-    font-size: 35px;
-    font-weight: 900;
-  
-    text-shadow: 3px 6px rgba(50, 50, 70, 0.5);
-    text-align: center;
-    box-shadow: 3px 6px rgba(0, 0, 0, 0.2);
-}
-  
-.weather-box .weather {
-    color: #FFFF;
-    font-size: 48px;
-    font-weight: 700;
-    text-shadow: 3px 3px rgba(50, 50, 70, 0.5);
 }
 
-.weather_status{
-    color: #FFF;
-    font-size: 25px;
-    font-weight: 700;
-    text-shadow: 3px 3px rgba(50, 50, 70, 0.5);
-    padding-bottom: 15px;
+
+.weather-box .icon {
+	background-image: url('../gfx/Sunny_tr.png');
+	background-size: contain;
+	background-repeat: no-repeat;
+    margin: 5px 2px;
+	padding: 40px 40px;
+	filter: drop-shadow(2px 2px 2px #555555); 
 }
+
+
+
+  
+.weather-box .temp {
+    padding: 25px 25px;
+    color: #FFF;
+    font-size: 45px;
+    font-weight: 900;
+	text-align: auto;
+    text-shadow: 1px 1px rgba(203, 203, 238, 0.5);
+
+}
+
+
+
 /* ================================= */

@@ -1,5 +1,6 @@
 import React from "react"
 
+
 interface WeatherWidgetProp {
   name: string
 }
@@ -45,15 +46,15 @@ class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetStat
   }
   /* ########################################################*/
   private dateBuilder = (d: Date) => {
-    let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   
     let day = days[d.getDay()];
     let date = d.getDate();
     let month = months[d.getMonth()];
     let year = d.getFullYear();
   
-    return `${day} ${date} ${month} ${year}`
+    return `${day}, ${date} ${month} ${year}`
   }
     
   private fetchWeather() {
@@ -84,19 +85,15 @@ class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetStat
 			<div className={(this.state.weather.main.temp > 17) ? 'app warm' : 'app'}>
 			<div>
 				<div className="location-box">
-					<div className="location">
-						{this.state.weather.name}, {this.state.weather.sys.country}
-					</div>
 					<div className="date">{this.dateBuilder(new Date())}</div>
 				</div>
-				<div className="weather-box">
-					<div className="temp">
-						{Math.round(this.state.weather.main.temp)}°c <br></br>
-						feels like: {Math.round(this.state.weather.main.feels_like)}°c
-					</div>				
-					<div className="weather_status">
-						{this.state.weather.weather[0].main}, {this.state.weather.weather[0].description} 
-					</div>
+          <div className="weather-box">
+            <div className="icon"></div>  
+            <div className="temp">
+            
+              {Math.round(this.state.weather.main.temp)}°c 
+            </div>				
+
 				</div>
 			</div>
 		  </div>

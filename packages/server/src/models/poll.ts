@@ -1,6 +1,6 @@
 import { Schema, model, Document, Model } from 'mongoose';
 
-declare interface IPollOption{
+export declare interface IPollOption{
     key: string
     response: string
     votes: number

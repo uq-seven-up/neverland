@@ -1,9 +1,8 @@
 import * as express from 'express';
 import { Request, Response } from "express";
-import RSSParser = require('rss-parser');
 import dotenv from "dotenv";
 import {DB} from '../controller/db'
-import { IPoll} from '../models/poll';
+import {IPoll, IPollOption} from '../models/poll';
 import {CFKitUtil} from '@7up/common-utils'
 
 /**
@@ -14,7 +13,7 @@ const router = express.Router();
 dotenv.config();
 
 
-router.post('/create',async(req:Request,res:Response) => {
+router.post('/create',async(req:Request,res:Response) => {	
 	let poll = new DB.Models.Poll();
 	poll._id = CFKitUtil.createGUID();
 	poll.name = 'TechPoll-1'
@@ -29,7 +28,7 @@ router.post('/create',async(req:Request,res:Response) => {
 	await poll.save((error:any,object:IPoll) => {		
 		if(error){
 			console.log(error)
-			res.status(500).send({success:false,'msg':'Error creating poll.',error:error})
+			res.status(500).send({success:false,'msg':'Error creating poll.'})
 			return;
 		}
 
@@ -37,6 +36,24 @@ router.post('/create',async(req:Request,res:Response) => {
 	});
 });
 
+
+router.get('/active',async(req:Request,res:Response) => {	
+	const pollid = 'd7abfc00-cff1-4c08-9282-2d50dad17d31';	
+	try{
+		let poll =  await DB.Models.Poll.findById(pollid);
+		if(poll)
+		{
+			res.send({success:true,data:{poll:poll}});
+		}else
+		{
+			res.status(404).send({success:false,'msg':'Cannot find the poll witht the specified id.'})
+		}
+	} catch(error)
+	{
+		console.log('Error fetching poll.',error);
+		res.status(500).send({success:false,'msg':'Error fetching poll.'})
+	}
+});
 
 router.get('/:pollid',async(req:Request,res:Response) => {
 	const {pollid} = req.params;	
@@ -47,38 +64,45 @@ router.get('/:pollid',async(req:Request,res:Response) => {
 			res.send({success:true,data:{poll:poll}});
 		}else
 		{
-			res.status(404).send({success:false,'msg':'Can not find poll for the specified id.'})
+			res.status(404).send({success:false,'msg':'Cannot find the poll witht the specified id.'})
 		}
 	} catch(error)
 	{
-		console.log('Error fetching RSS cache.');
-		res.status(500).send({success:false,'msg':'Error fetching RSS cache.',error:error})
+		console.log('Error fetching poll.',error);
+		res.status(500).send({success:false,'msg':'Error fetching poll.'})
 	}		
 });
 
 
 router.post('/:pollid/vote',async(req:Request,res:Response) => {
 	const {pollid} = req.params;	
+	let {key} = req.body
 	let poll:IPoll | null;
 
 	try{
 		poll =  await DB.Models.Poll.findById(pollid);
 		if(!poll)
 		{			
-			res.status(404).send({success:false,'msg':'Can not find poll for the specified id.'})
+			res.status(404).send({success:false,'msg':'Cannot find the poll for the specified id.'})
 		}
 	} catch(error)
 	{
-		console.log('Error updating votes.');
-		res.status(500).send({success:false,'msg':'Error updating votes.',error:error})
+		console.log('Error updating votes.',error);
+		res.status(500).send({success:false,'msg':'Error updating votes.'})
 	}
 	
-
-	poll!.answer[0].votes = poll!.answer[0].votes + 1;
+	poll!.answer.some((pollOption:IPollOption)=>{
+		if(pollOption.key === key)
+		{
+			pollOption.votes++;
+			return true;
+		}
+	});
 	
 	await poll!.save((error:any,object:IPoll) => {		
 		if(error){
-			res.status(500).send({success:false,'msg':'Error updating votes.',error:error})
+			console.log('Error updating votes.',error);
+			res.status(500).send({success:false,'msg':'Error updating votes.'})
 			return;
 		}
 

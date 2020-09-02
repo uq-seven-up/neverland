@@ -6,7 +6,8 @@
   "author": "Aurélie Teyssier, Christophe Sarasin,Marcel Scherzer, Sajjad Brohi, Sebastian Robayo Delgado, Sindre Gulbrandsen",
   "license": "MIT",
   "dependencies": {
-    "@7up/common-types": "^0.0.1",
+	"@7up/common-types": "^0.0.1",
+	"@7up/common-utils": "^0.0.2",
     "@testing-library/dom": "^7.22.2",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.7",

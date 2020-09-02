@@ -118,6 +118,14 @@ body
 
 
 /* ================================= */
+/* QR Code Widget */
+.widget.qrcode .content
+{	
+	text-align: center;
+}
+/* ================================= */
+
+/* ================================= */
 /* Weather Widget */
 .widget.weather .content
 {

@@ -5,6 +5,7 @@ import WidgetContainer from './component/WidgetContainer'
 import RssWidget from './component/RssWidget'
 import TestWidget from './component/TestWidget';
 import ClockWidget from './component/ClockWidget';
+import QRCodeWidget from './component/QRCodeWidget';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
 		<TestWidget name="UQ Chancellor's Place"/>
 		<RssWidget />
 		<ClockWidget name="Clock" />
+		<QRCodeWidget></QRCodeWidget>
 	</WidgetContainer>
   );
 }

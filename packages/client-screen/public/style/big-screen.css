@@ -125,6 +125,42 @@ body
 }
 /* ================================= */
 
+
+/* ================================= */
+/* Poll Widget */
+.widget.poll .content h2
+{	
+	font-size:20px;
+	color:black;
+	text-align: center;
+	margin-bottom:10px;
+}
+
+.widget.poll table
+{
+	width:100%;
+}
+
+.widget.poll td
+{
+	color:#0e0e0e;
+	padding:4px;
+}
+
+.widget.poll tr:nth-child(odd) td
+{
+	background-color:#59545D;
+	color:white;
+}
+
+.widget.poll td:last-child
+{	
+	font-size:20px;
+	color:black;
+	text-align: center;
+}
+/* ================================= */
+
 /* ================================= */
 /* Weather Widget */
 .widget.weather .content

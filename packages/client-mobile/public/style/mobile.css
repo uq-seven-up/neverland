@@ -1,0 +1,54 @@
+@import url("global.css") screen;
+
+/* mobile.css */
+/* Styles definitions for mobile. */
+
+@import url('https://fonts.googleapis.com/css2?family=Varta:wght@300;500;600&display=swap');
+
+body, h2, .content{
+	font-family: 'Varta', sans-serif;
+	font-weight: 500;
+}
+
+body
+{
+	width:100vw;
+	height:100vh;
+	box-sizing: border-box;	
+	background: rgb(147,124,179);
+	background: linear-gradient(347deg, rgba(147,124,179,1) 0%, rgba(81,44,123,1) 59%);
+}
+
+#root
+{
+	display: flex;
+	width:100vw;
+	height:100vh;
+	box-sizing: border-box;	
+	justify-content: center;
+	align-items: center;
+}
+
+h2
+{
+	font-family: 'Varta', sans-serif;	
+	font-weight:600;
+	font-size:28px;
+	color:white;
+}
+
+section
+{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;	
+}
+
+section button{
+	font-family: 'Varta', sans-serif;
+	height:35px;
+	font-weight:500;
+	font-size:15px;
+	margin-bottom:15px;
+	box-sizing: border-box;
+}

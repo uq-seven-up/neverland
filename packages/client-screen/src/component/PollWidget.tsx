@@ -121,23 +121,28 @@ class PollWidget extends React.Component<PollWidgetProp, PollWidgetState> {
      */
     private renderPoll():JSX.Element {        
         return (
-            <ul>
+			<table>					
+				<tbody>
                 {this.state.poll.answer.map((answer:IPollOption) => (
-                    <li key={answer.key}>{answer.response} {answer.votes}</li>
+                    <tr key={answer.key}>
+						<td>{answer.response}</td>
+						 <td><span>{answer.votes}</span></td>
+					</tr>
                 ))}
-            </ul>        
+				</tbody>
+            </table>
         )
     }
 
     public render() {
         return (
-        <section className="widget news">
+        <section className="widget poll">
             <div className="heading">
 				<h2>UQ Poll</h2>
 				<figure></figure>
 			</div>
 			<div className="content">
-				<h2>{this.state.poll.question}</h2>
+				<h2>{this.state.poll.question}</h2>				
 				{this.renderPoll()}
 			</div>
         </section>

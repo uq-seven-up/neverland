@@ -165,8 +165,26 @@ body
 }
 
 
-.weather-box .icon {
-	background-image: url('../gfx/Sunny_tr.png');
+.weather-box .sunny-icon {
+	background-image: url('../gfx/Sunny-icon.png');
+	background-size: contain;
+	background-repeat: no-repeat;
+    margin: 5px 2px;
+	padding: 40px 40px;
+	filter: drop-shadow(2px 2px 2px #555555); 
+}
+
+.weather-box .rainy-icon {
+	background-image: url('../gfx/Rainy-icon.png');
+	background-size: contain;
+	background-repeat: no-repeat;
+    margin: 5px 2px;
+	padding: 40px 40px;
+	filter: drop-shadow(3px 3px 3px #555555); 
+}
+
+.weather-box .cloudy-icon {
+	background-image: url('../gfx/Cloudy-icon.png');
 	background-size: contain;
 	background-repeat: no-repeat;
     margin: 5px 2px;

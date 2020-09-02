@@ -63,7 +63,6 @@ class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetStat
       .then(res => res.json())
       .then(result => {
         this.setState({ weather: result });
-  
       });
 
   }
@@ -79,16 +78,25 @@ class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetStat
    */
    
   public render() {
+    let iconName = ''
+    if (this.state.weather.weather[0].main === 'Clouds') {
+      iconName = 'cloudy-icon'
+    } else if (this.state.weather.weather[0].main === 'Clear') {
+      iconName = 'sunny-icon'
+    } else {
+      iconName = 'rainy-icon'
+    }
+    
     return (
       <section className="widget weather">
 		<div className="content">
-			<div className={(this.state.weather.main.temp > 17) ? 'app warm' : 'app'}>
+		
 			<div>
 				<div className="location-box">
 					<div className="date">{this.dateBuilder(new Date())}</div>
 				</div>
           <div className="weather-box">
-            <div className="icon"></div>  
+            <div className={iconName}></div>  
             <div className="temp">
             
               {Math.round(this.state.weather.main.temp)}°c 
@@ -96,7 +104,7 @@ class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetStat
 
 				</div>
 			</div>
-		  </div>
+		 
 		</div>
 	</section>
     )

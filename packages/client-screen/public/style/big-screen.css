@@ -23,6 +23,7 @@ body
 {
 	display: inline-flex;
 	flex-direction: row;
+	flex-wrap: wrap;
 	justify-content: space-between;
 	align-items: top;
 }
@@ -115,6 +116,14 @@ body
 }
 /* ================================= */
 
+
+/* ================================= */
+/* QR Code Widget */
+.widget.qrcode .content
+{	
+	text-align: center;
+}
+/* ================================= */
 
 /* ================================= */
 /* Weather Widget */

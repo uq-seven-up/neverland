@@ -1,6 +1,9 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 
+
+
+
 interface ClockWidgetProp {
   name: string
 }
@@ -8,8 +11,11 @@ interface ClockWidgetProp {
 /**
  * Clock widget for the big screen
  */
-function ClockWidget(props: any) {    
+function ClockWidget(props:any) {    
     const [date, setDate] = useState(new Date());
+
+
+    
   
    //Replaces componentDidMount and componentWillUnmount
    useEffect(() => {
@@ -26,18 +32,18 @@ function ClockWidget(props: any) {
    function tick() {
     setDate(new Date());
    }
+   
+ 
+
+
+
+
+
      
    //Return time
     return (
 		<section className="widget clock">
-        	<div className="heading">
-				<h2>{props.name}</h2>
-				<figure></figure>
-			</div>
-        
-			<div className="content">
-                <p>{date.toLocaleTimeString()}</p>
-			</div>
+      <p>{date.toLocaleTimeString(navigator.language, {hour: '2-digit', minute: '2-digit'})}</p>
         </section>
         )
 }

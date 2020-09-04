@@ -118,12 +118,28 @@ body
 
 
 /* ================================= */
+/* Clock Widget */
+.widget.clock
+{	
+	padding: 25px 25px;
+    color: #FFF;
+    font-size: 45px;
+    font-weight: 900;
+	text-align: auto;
+    text-shadow: 1px 1px rgba(203, 203, 238, 0.5);
+}
+/* ================================= */
+
+
+
+/* ================================= */
 /* QR Code Widget */
 .widget.qrcode .content
 {	
 	text-align: center;
 }
 /* ================================= */
+
 
 
 /* ================================= */

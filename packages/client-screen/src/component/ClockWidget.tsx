@@ -2,8 +2,6 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 
 
-
-
 interface ClockWidgetProp {
   name: string
 }
@@ -15,8 +13,6 @@ function ClockWidget(props:any) {
     const [date, setDate] = useState(new Date());
 
 
-    
-  
    //Replaces componentDidMount and componentWillUnmount
    useEffect(() => {
     var timerID = setInterval( () => tick(), 1000 );
@@ -32,14 +28,7 @@ function ClockWidget(props:any) {
    function tick() {
     setDate(new Date());
    }
-   
- 
-
-
-
-
-
-     
+    
    //Return time
     return (
 		<section className="widget clock">
@@ -48,5 +37,4 @@ function ClockWidget(props:any) {
         )
 }
         
-
 export default ClockWidget

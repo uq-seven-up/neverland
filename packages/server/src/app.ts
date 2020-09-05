@@ -3,6 +3,7 @@ import {Request,Response } from "express";
 import exampleRoutes = require('./routes/example');
 import pollRoutes = require('./routes/poll');
 import screenRoutes = require('./routes/screen');
+import busRoutes = require('./routes/bus');
 import {DB} from './controller/db';
 
 const app: express.Application = express();
@@ -22,6 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/example',exampleRoutes);
 app.use('/api/poll',pollRoutes);
 app.use('/api/screen',screenRoutes);
+app.use('/api/bus', busRoutes);
 
 app.listen(PORT,function(){
 	console.log(`Express is listening on port ${PORT}`);

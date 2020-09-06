@@ -60,6 +60,7 @@ router.get('/translink-times/', async(req:Request,res:Response) => {
     var day = req.query.day;
     var bus_times: BusTime[] = [];
     var today: Date = new Date();
+    today.setTime(today.getTime() + (10*60*60*1000));
     const FILTER = {
         "trip_id" : get_filter(day),
         "stop_id":{$in:get_stop_ids(stop)}
@@ -91,7 +92,7 @@ router.get('/translink-times/', async(req:Request,res:Response) => {
 
                     bus_times.push(bus_time);
                     counter++;
-                    
+
                     if(counter > 5){
                         break;
                     }

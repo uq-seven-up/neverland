@@ -102,7 +102,7 @@ class BusWidget extends React.Component<BusWidgetProp, BusWidgetState> {
      * @returns JSX element
      */
     private renderBusTimes() {
-        if (this.state.status === 'off') return <div>Something Something Something</div>
+        if (this.state.status === 'off') return <div></div>
 
         return (
             <ul>

@@ -99,7 +99,7 @@ class RssWidget extends React.Component<RssWidgetProp, RssWidgetState> {
      * @returns JSX element
      */
     private renderArticles():JSX.Element {        
-		let n = 4; /* only show the first n items. */
+		let n = 5; /* only show the first n items. */
 
 		return (
             <ul>

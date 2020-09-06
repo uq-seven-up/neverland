@@ -37,7 +37,7 @@ body
 	display: inline-block;	
 	overflow: hidden;
 	min-width: 200px;
-	margin:20px 20px 20px 20px;
+	margin:20px 40px 20px 20px;
 }
 
 .widget .heading{
@@ -120,73 +120,60 @@ body
 
 
 
-
 /* Placement of boxes: */
 /* ================================= */
 /* Clock Widget */
 .widget.clock
 {		
-	padding: 25px 25px;
+	width: 15vw;
     color: #FFF;
-    font-size: 60px;
+    font-size: 90px;
     font-weight: 900;
-	text-align: center;
+	margin-left: 40px;
 }
-/* ================================= */
-/*Weather widget */
+
 
 /* ================================= */
 /* Placeholder image */
 .Interactivity.widget .content{
 	
+	border-radius: 10px;
+	height: 60vh;
+	width: 70vw;
+}
+
+.Interactivity.widget .placeholder{
+	background-image: url('../gfx/Placeholder-image.png');
 	height: 400px;
-	width: 800px;
+	width: 60vw;
+	background-size: cover;
+	background-repeat: no-repeat;
+	padding: 50px;	
 }
-
-.widget.weather{
-	
-	position: absolute;
-	top: 150px
-}
-
 
 /* ================================= */
-/*Study widget */
-
-.widget.study img{
-max-height: 40vh;
+/*Weather widget */
+.widget.weather{
+	
+	width: 15vw;
+	position: absolute;
+	top: 110px;
 }
 
 /* ================================= */
 /*News widget */
 
-.widget.news {																												
-	max-height: 20vh;
-}
-
-
-/* ================================= */
-/*Game widget */
-
-.widget.game img {
-
-	max-height: 40vh;
-	
-}
-
-.Interactivity.widget .placeholder{
-	background-image: url('../gfx/Placeholder-image.png');
-	height: 300px;
-	width: 650px;
-	background-size: cover;
-	background-repeat: no-repeat;
-	padding: 50px;
-	
+.widget.news{
+	width: 25vw;
 }
 
 /* ================================= */
 /* QR Code Widget */
 
+.widget.qrcode {
+	position: absolute;
+	bottom: 30px;
+}
 
 .widget.qrcode .content
 {
@@ -194,12 +181,16 @@ max-height: 40vh;
 }
 /* ================================= */
 
+.widget.transit {
+	width: 20vw;
+}
+
 
 
 /* ================================= */
 /* Poll Widget */
 .widget.poll {
-
+	max-height: 30vh;
 }
 
 .widget.poll .content h2
@@ -258,7 +249,7 @@ max-height: 40vh;
 .weather-box {
 	display:flex;
 	justify-content: center;
-	margin: 15px 15px;
+	margin: 5px 15px;
 
     border-radius: 16px;
 }
@@ -292,8 +283,6 @@ max-height: 40vh;
 }
 
 
-
-  
 .weather-box .temp {
     padding: 25px 25px;
     color: #FFF;

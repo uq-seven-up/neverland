@@ -144,7 +144,7 @@ body
 
 .Interactivity.widget .placeholder{
 	background-image: url('../gfx/Placeholder-image.png');
-	height: 400px;
+	height: 500px;
 	width: 60vw;
 	background-size: cover;
 	background-repeat: no-repeat;

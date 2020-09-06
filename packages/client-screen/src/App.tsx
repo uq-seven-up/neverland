@@ -3,7 +3,6 @@ import React from 'react';
 import WeatherWidget from './component/WeatherWidget'
 import WidgetContainer from './component/WidgetContainer'
 import RssWidget from './component/RssWidget'
-import TestWidget from './component/TestWidget';
 import ClockWidget from './component/ClockWidget';
 import QRCodeWidget from './component/QRCodeWidget';
 import PollWidget from './component/PollWidget';
@@ -14,16 +13,20 @@ function App() {
   return (
 	<>
 		<WidgetContainer>
-			<ClockWidget name="Clock" />
-			<WeatherWidget  name="Weather Widget PoC"/>
+			<div className="weatherTime">
+				<ClockWidget name="Clock" />
+				<WeatherWidget  name="Weather Widget PoC"/>
+			</div>
 			<BusWidget name="UQ Lakes"/>
 			<BusWidget name="UQ Chancellor's Place"/>
 			<RssWidget />					
 		</WidgetContainer>
 
 		<WidgetContainer>
-			<QRCodeWidget></QRCodeWidget>
-			<PollWidget></PollWidget>
+			<div className="pollContainer">
+				<PollWidget></PollWidget>
+				<QRCodeWidget></QRCodeWidget>
+			</div>
 			<InteractivityWidget name = "Placeholder Widget"/>
 		</WidgetContainer>
 	</>

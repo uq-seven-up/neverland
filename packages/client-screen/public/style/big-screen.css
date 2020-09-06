@@ -24,7 +24,7 @@ body
 {
 	display: flex;
 	flex-direction: row;
-	justify-content: flex-start;
+	justify-content: space-between;
 	align-content: flex-start;
 	flex-wrap: wrap;
 	
@@ -36,7 +36,7 @@ body
 {
 	display: inline-block;	
 	overflow: hidden;
-	min-width: 200px;
+	width: 250px;
 	margin:20px 40px 20px 20px;
 }
 
@@ -97,6 +97,10 @@ body
 
 /* ================================= */
 /* News Widget */
+.widget.news
+{
+	flex-grow: 1;
+}
 .widget.news .heading h2
 {
 	color: #502984;
@@ -132,65 +136,72 @@ body
 	margin-left: 40px;
 }
 
+.widget.clock p{
+	text-align:center;
+	font-size: 50px;
+	font-weight: bold;
+}
 
 /* ================================= */
 /* Placeholder image */
-.Interactivity.widget .content{
-	
+.Interactivity.widget
+{
+	flex-grow: 2;
+	box-sizing:border-box;
+	min-height: 250px;
+}
+
+.Interactivity.widget .content{	
 	border-radius: 10px;
-	height: 60vh;
-	width: 70vw;
+	
 }
 
 .Interactivity.widget .placeholder{
-	background-image: url('../gfx/Placeholder-image.png');
-	height: 500px;
-	width: 60vw;
-	background-size: cover;
+	background-image: url('../gfx/Placeholder-image.png');	
+	background-size: contain;
 	background-repeat: no-repeat;
 	padding: 50px;	
+	min-height: 400px;
+	background-position: center; 
 }
 
 /* ================================= */
 /*Weather widget */
-.widget.weather{
-	
-	width: 15vw;
-	position: absolute;
-	top: 110px;
-}
+
 
 /* ================================= */
 /*News widget */
 
-.widget.news{
-	width: 25vw;
-}
 
 /* ================================= */
 /* QR Code Widget */
-
-.widget.qrcode {
-	position: absolute;
-	bottom: 30px;
+.widget.qrcode
+{
+	width: 300px;
+	text-align: center;	
 }
 
 .widget.qrcode .content
 {
 	text-align: center;
+	
+}
+
+.widget.qrcode img
+{
+	width:100%;
+	
 }
 /* ================================= */
 
-.widget.transit {
-	width: 20vw;
-}
+
 
 
 
 /* ================================= */
 /* Poll Widget */
 .widget.poll {
-	max-height: 30vh;
+	width:300px;
 }
 
 .widget.poll .content h2
@@ -288,11 +299,23 @@ body
     color: #FFF;
     font-size: 45px;
     font-weight: 900;
-	text-align: auto;
-    text-shadow: 1px 1px rgba(203, 203, 238, 0.5);
+	text-shadow: 1px 1px rgba(203, 203, 238, 0.5);
 
 }
 
 
 
 /* ================================= */
+
+.weatherTime
+{
+	display:flex;
+	flex-direction: column;
+}
+
+.pollContainer
+{
+	display:flex;
+	flex-direction: column;
+	justify-content: space-between;
+}

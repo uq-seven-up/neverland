@@ -7,12 +7,7 @@ import TestWidget from './component/TestWidget';
 import ClockWidget from './component/ClockWidget';
 import QRCodeWidget from './component/QRCodeWidget';
 import PollWidget from './component/PollWidget';
-<<<<<<< HEAD
-import StudySpace from './component/StudySpace';
-import GameWidget from './component/GameWidget';
-=======
 import InteractivityWidget from './component/InteractivityWidget';
->>>>>>> 243aed5bcfef4d785dadfc5fe727ecb88673b217
 
 function App() {
   return (

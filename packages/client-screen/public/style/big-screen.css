@@ -14,8 +14,8 @@ body
 {
 	width:100vw;
 	height:100vh;
-	padding:40px;
-	box-sizing: content-box;	
+	padding:30px;
+	box-sizing: border-box;	
 	background: rgb(147,124,179);
 	background: linear-gradient(347deg, rgba(147,124,179,1) 0%, rgba(81,44,123,1) 59%);
 }
@@ -142,12 +142,6 @@ body
 	top: 150px
 }
 
-/* ================================= */
-/*Transit widget */
-
-.widget.transit {
-
-}
 
 /* ================================= */
 /*Study widget */
@@ -160,7 +154,7 @@ max-height: 40vh;
 /*News widget */
 
 .widget.news {																												
-	/* max-height: 20vh; */
+	max-height: 20vh;
 }
 
 
@@ -176,9 +170,6 @@ max-height: 40vh;
 /* ================================= */
 /* QR Code Widget */
 
-.widget.qrcode {
-
-}
 
 .widget.qrcode .content
 {

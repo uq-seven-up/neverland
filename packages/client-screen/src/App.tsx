@@ -13,7 +13,6 @@ import BusWidget from './component/BusWidget';
 function App() {
   return (
 	<>
-
 		<WidgetContainer>
 			<ClockWidget name="Clock" />
 			<WeatherWidget  name="Weather Widget PoC"/>

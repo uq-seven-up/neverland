@@ -102,7 +102,42 @@ class BusWidget extends React.Component<BusWidgetProp, BusWidgetState> {
      * @returns JSX element
      */
     private renderBusTimes() {
-        if (this.state.status === 'off') return <div></div>
+        if (this.state.status === 'off'){
+            return (
+                <ul>
+                    <li>
+                        <div>66</div>
+                        <div>RBWH Station</div>
+                        <div>08:00 AM</div>
+                    </li>
+                    <li>
+                        <div>66</div>
+                        <div>RBWH Station</div>
+                        <div>08:00 AM</div>
+                    </li>
+                    <li>
+                        <div>66</div>
+                        <div>RBWH Station</div>
+                        <div>08:00 AM</div>
+                    </li>
+                    <li>
+                        <div>66</div>
+                        <div>RBWH Station</div>
+                        <div>08:00 AM</div>
+                    </li>
+                    <li>
+                        <div>66</div>
+                        <div>RBWH Station</div>
+                        <div>08:00 AM</div>
+                    </li>
+                    <li>
+                        <div>66</div>
+                        <div>RBWH Station</div>
+                        <div>08:00 AM</div>
+                    </li>
+                </ul>
+            );
+        } 
 
         return (
             <ul>

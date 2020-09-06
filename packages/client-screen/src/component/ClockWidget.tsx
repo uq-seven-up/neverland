@@ -32,6 +32,7 @@ function ClockWidget(props:any) {
    //Return time
     return (
 		<section className="widget clock">
+      {/* string modified for displaying only HH:MM */}
       <p>{date.toLocaleTimeString(navigator.language, {hour: '2-digit', minute: '2-digit'})}</p>
         </section>
         )

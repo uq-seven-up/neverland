@@ -15,17 +15,19 @@ body
 	width:100vw;
 	height:100vh;
 	padding:40px;
-	box-sizing: border-box;	
+	box-sizing: content-box;	
 	background: rgb(147,124,179);
 	background: linear-gradient(347deg, rgba(147,124,179,1) 0%, rgba(81,44,123,1) 59%);
 }
 
 .widget-container
 {
-	display: inline-flex;
+	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
-	align-items: top;
+	justify-content: flex-start;
+	align-content: flex-start;
+	flex-wrap: wrap;
+	
 }
 
 /* ############################### */
@@ -34,8 +36,8 @@ body
 {
 	display: inline-block;	
 	overflow: hidden;
-	min-width: 300px;
-	margin:0px 5px 5px 5px;
+	min-width: 200px;
+	margin:20px 20px 20px 20px;
 }
 
 .widget .heading{
@@ -117,25 +119,69 @@ body
 /* ================================= */
 
 
+
+
+/* Placement of boxes: */
 /* ================================= */
 /* Clock Widget */
 .widget.clock
-{	
+{		
 	padding: 25px 25px;
     color: #FFF;
-    font-size: 45px;
+    font-size: 60px;
     font-weight: 900;
-	text-align: auto;
-    text-shadow: 1px 1px rgba(203, 203, 238, 0.5);
+	text-align: center;
 }
 /* ================================= */
+/*Weather widget */
 
 
+.widget.weather{
+	
+	position: absolute;
+	top: 150px
+}
+
+/* ================================= */
+/*Transit widget */
+
+.widget.transit {
+
+}
+
+/* ================================= */
+/*Study widget */
+
+.widget.study img{
+max-height: 40vh;
+}
+
+/* ================================= */
+/*News widget */
+
+.widget.news {																												
+	/* max-height: 20vh; */
+}
+
+
+/* ================================= */
+/*Game widget */
+
+.widget.game img {
+
+	max-height: 40vh;
+	
+}
 
 /* ================================= */
 /* QR Code Widget */
+
+.widget.qrcode {
+
+}
+
 .widget.qrcode .content
-{	
+{
 	text-align: center;
 }
 /* ================================= */
@@ -144,6 +190,10 @@ body
 
 /* ================================= */
 /* Poll Widget */
+.widget.poll {
+
+}
+
 .widget.poll .content h2
 {	
 	font-size:20px;

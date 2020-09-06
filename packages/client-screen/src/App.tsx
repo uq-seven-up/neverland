@@ -7,17 +7,25 @@ import TestWidget from './component/TestWidget';
 import ClockWidget from './component/ClockWidget';
 import QRCodeWidget from './component/QRCodeWidget';
 import PollWidget from './component/PollWidget';
+import StudySpace from './component/StudySpace';
+import GameWidget from './component/GameWidget';
 
 function App() {
   return (
 	<>
+
 		<WidgetContainer>
-			<WeatherWidget  name="Weather Widget PoC"/>
-			<ClockWidget name="Clock" />	
+			<ClockWidget name="Clock" />
+			<WeatherWidget  name="Weather Widget PoC"/>		
 			<TestWidget name="UQ Lakes"/>
 			<TestWidget name="UQ Chancellor's Place"/>
-			<RssWidget />					
+			<RssWidget />	
+			<StudySpace />
+			<GameWidget />				
+			{/* <QRCodeWidget />
+			<PollWidget /> */}
 		</WidgetContainer>
+
 		<WidgetContainer>
 			<QRCodeWidget></QRCodeWidget>
 			<PollWidget></PollWidget>

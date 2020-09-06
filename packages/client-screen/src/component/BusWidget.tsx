@@ -6,7 +6,7 @@ import {AxiosResponse } from 'axios';
 interface BusTime{
     route_id: string;
     trip_id: string;
-    departure_date: string;
+    departure_time: string;
     trip_headsign: string;
 }
 
@@ -102,7 +102,7 @@ class BusWidget extends React.Component<BusWidgetProp, BusWidgetState> {
      * @returns JSX element
      */
     private renderBusTimes() {
-        if (this.state.status === 'off'){
+        if (this.state.status === 'off' || this.state.busTimes.length === 0){
             return (
                 <ul>
                     <li>
@@ -138,9 +138,7 @@ class BusWidget extends React.Component<BusWidgetProp, BusWidgetState> {
                 </ul>
             );
         } 
-
-        
-        if(this.state.busTimes.length > 0) {
+        else {
             return (
                 <ul>
                     {this.state.busTimes.map((item: BusTime) => (
@@ -152,23 +150,13 @@ class BusWidget extends React.Component<BusWidgetProp, BusWidgetState> {
                                 {item.trip_headsign}
                             </div>
                             <div>
-                                {item.departure_date}
+                                {item.departure_time}
                             </div>
                         </li>
                     ))}
                 </ul>
             );    
         }
-        else {
-            return (
-                <ul>
-                    <li>
-                        <div>No more buses scheduled</div>
-                    </li>
-                </ul>
-            );    
-        }
-        
     }
 
     public render() {

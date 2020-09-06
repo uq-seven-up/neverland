@@ -7,7 +7,7 @@ interface BusTime {
 	stop_id: number,
 	route_id: number;
     trip_id: string;
-    departure_date: string;
+    departure_time: string;
     trip_headsign: string;
 }
 
@@ -78,12 +78,20 @@ router.get('/translink-times/', async(req:Request,res:Response) => {
                     var bus_time: BusTime = {
 						stop_id: row.stop_id,
 						route_id: row.route_id.split('-')[0],
-                        departure_date: dateString,
+                        departure_time: dateString,
                         trip_id: row.trip_id,
                         trip_headsign: row.trip_headsign
                     };
+
+                    var alreadyIn = bus_times.filter(x => x.route_id === bus_time.route_id && x.departure_time === bus_time.departure_time);
+
+                    if(alreadyIn.length !== 0) {
+                        continue;
+                    }
+
                     bus_times.push(bus_time);
                     counter++;
+                    
                     if(counter > 5){
                         break;
                     }

@@ -54,37 +54,21 @@ router.get('/get-bus-times/',async(req:Request,res:Response) => {
 router.get('/translink-times/', async(req:Request,res:Response) => {
     var stop = req.query.stop;
     var day = req.query.day;
-
-    const sqlite3 = require('sqlite3').verbose();
-	let db = new sqlite3.Database('C:\\Projects\\neverland_database\\gtfs.db', (err: { message: any; }) => {
-		if (err) {
-			return console.error(err.message);
-		}
-		
-		console.log('Connected to the gtfs SQlite database.');
-    });
     var bus_times: BusTime[] = [];
     var today: Date = new Date();
-
-    let sql = `SELECT t.route_id, t.trip_headsign,st.stop_id, st.departure_time, st.trip_id FROM stop_times AS st, trips AS t
-                WHERE st.stop_id IN (`;
-    sql += get_stop_ids(stop);
-    sql +=`) AND st.trip_id LIKE '%` + day + `%'
-                AND st.trip_id = t.trip_id
-                ORDER BY st.departure_time`;
-
-	try{
-		await db.all(sql, [], (err: any, rows: any)=>{
-            if(err){
-                throw err;
-            }
+    const FILTER = {
+        "trip_id" : get_filter(day),
+        "stop_id":{$in:get_stop_ids(stop)}
+    }
+    
+    try {
+        await DB.Models.BusTime.find(FILTER, (err, results) => {
+            if (err) throw err;
             var counter = 0;
-            for(var i = 0; i < rows.length; i++) {
-                
-                var row: any = rows[i];
+            for(var i = 0; i < results.length; i++) {
+                var row: any = results[i];
                 var splitTime: string[] = row.departure_time.split(':');
-                var parsedDate: Date = new Date(today.getFullYear(), today.getMonth(), today.getDate(), parseInt(splitTime[0]), parseInt(splitTime[1]), parseInt(splitTime[2]));
-                
+                var parsedDate: Date = new Date(today.getFullYear(), today.getMonth(), today.getDate(), parseInt(splitTime[0]), parseInt(splitTime[1]));
                 if(parsedDate >= today) {
                     var dateString = parsedDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
                     var bus_time: BusTime = {
@@ -103,40 +87,37 @@ router.get('/translink-times/', async(req:Request,res:Response) => {
             }
 
             res.send({success:true,data:bus_times});
-        })
-	} catch(err) {
-		console.error(err);
-    };
-});
-
-router.get('/translink-init',async(req:Request,res:Response) => {
-	const gtfs = require('gtfs');
-	
-	const config = require('../../translinkconfig.json');
-	
-	gtfs.import(config)
-        .then(() => {
-        console.log('Import Successful');
-        })
-        .catch((err: any) => {
-        console.error(err);
-        });
-        
-	res.send("Importing data!");
+        })	
+    } catch (error) {
+        console.log(error);
+        express.response.sendStatus(500)
+    }
 });
 
 function get_stop_ids(stop: any) {
-    var result: string = "";
+    var result: number[]=[];
     switch(stop) {
         case "uqlakes":
-            result = `'1853', '1877', '1878', '1880', '1883'`;
+            result = [1853, 1877, 1878, 1880, 1883];
         break;
         case "chancellor":
-            result = `'1802', '1797', '1798', '1799', '1801'`;
+            result = [1802, 1797, 1798, 1799, 1801];
         break;
     }
 
     return result;
+}
+
+function get_filter(day: any) {
+    if(day === "Weekday") {
+        return /.*Weekday./;
+    }
+    else if(day === "Saturday"){
+        return /.*.Saturday./;
+    }
+    else {
+        return /.*Sunday./;
+    }
 }
 
 export = router;

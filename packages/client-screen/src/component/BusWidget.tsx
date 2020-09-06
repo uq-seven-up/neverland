@@ -139,23 +139,36 @@ class BusWidget extends React.Component<BusWidgetProp, BusWidgetState> {
             );
         } 
 
-        return (
-            <ul>
-                {this.state.busTimes.map((item: BusTime) => (
+        
+        if(this.state.busTimes.length > 0) {
+            return (
+                <ul>
+                    {this.state.busTimes.map((item: BusTime) => (
+                        <li>
+                            <div>
+                                {item.route_id}
+                            </div>
+                            <div>
+                                {item.trip_headsign}
+                            </div>
+                            <div>
+                                {item.departure_date}
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            );    
+        }
+        else {
+            return (
+                <ul>
                     <li>
-                        <div>
-                            {item.route_id}
-                        </div>
-                        <div>
-                            {item.trip_headsign}
-                        </div>
-                        <div>
-                            {item.departure_date}
-                        </div>
+                        <div>No more buses scheduled</div>
                     </li>
-                ))}
-            </ul>
-        )
+                </ul>
+            );    
+        }
+        
     }
 
     public render() {

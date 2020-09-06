@@ -24,7 +24,11 @@ dotenv.config();
  */
 router.get('/get-bus-times/',async(req:Request,res:Response) => {
     const url = require('url');
-    var today: Date = new Date();
+    // Date object initialized as per Brisbane timezone. Returns a datetime string
+    let brisbane_date_string = new Date().toLocaleString("en-US", { timeZone: "Australia/Brisbane" });
+    let today = new Date(brisbane_date_string);
+    
+
     var redirectValue: string = "";
     switch(today.getDay()) {
         case 1:

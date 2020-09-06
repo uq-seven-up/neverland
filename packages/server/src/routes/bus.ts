@@ -2,7 +2,15 @@ import * as express from 'express';
 import { Request, Response } from "express";
 import dotenv from "dotenv";
 import {DB} from '../controller/db'
-import {IBusTimes, IBusTime} from '../models/bus-time';
+
+interface BusTime {
+	stop_id: number,
+	route_id: number;
+    trip_id: string;
+    departure_date: string;
+    trip_headsign: string;
+}
+
 /**
  * Defines routes which are intended to be used to provide 
  * data to the display screen.
@@ -55,10 +63,10 @@ router.get('/translink-times/', async(req:Request,res:Response) => {
 		
 		console.log('Connected to the gtfs SQlite database.');
     });
-    var bus_times: IBusTime[] = [];
+    var bus_times: BusTime[] = [];
     var today: Date = new Date();
 
-    let sql = `SELECT t.route_id, t.trip_headsign, st.departure_time, st.trip_id FROM stop_times AS st, trips AS t
+    let sql = `SELECT t.route_id, t.trip_headsign,st.stop_id, st.departure_time, st.trip_id FROM stop_times AS st, trips AS t
                 WHERE st.stop_id IN (`;
     sql += get_stop_ids(stop);
     sql +=`) AND st.trip_id LIKE '%` + day + `%'
@@ -79,8 +87,9 @@ router.get('/translink-times/', async(req:Request,res:Response) => {
                 
                 if(parsedDate >= today) {
                     var dateString = parsedDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                    var bus_time: IBusTime = {
-                        route_id: row.route_id.split('-')[0],
+                    var bus_time: BusTime = {
+						stop_id: row.stop_id,
+						route_id: row.route_id.split('-')[0],
                         departure_date: dateString,
                         trip_id: row.trip_id,
                         trip_headsign: row.trip_headsign

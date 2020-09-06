@@ -3,6 +3,7 @@ import { connect, connection, Connection } from 'mongoose';
 import { Example, ExampleModel } from '../models/example';
 import { Poll, PollModel } from '../models/poll';
 import { RssFeed, RssFeedModel } from '../models/rss';
+import {BusTime, BusTimeModel} from '../models/bus-time';
 
 const _env = dotenv.config()
 const MONGO_SERVER = process.env.mongoserver as string;
@@ -14,7 +15,8 @@ const MONG_URL = `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_SERV
 declare interface IModels {
 	Example: ExampleModel,
 	RssFeed:RssFeedModel,
-	Poll:PollModel
+	Poll:PollModel,
+	BusTime:BusTimeModel
 }
 
 export class DB {
@@ -32,7 +34,9 @@ export class DB {
 			// This is where we initialise all models.
 			Example: new Example().model,
 			Poll: new Poll().model,
-			RssFeed: new RssFeed().model
+			RssFeed: new RssFeed().model,
+			BusTime: new BusTime().model
+
 		}
     }
 

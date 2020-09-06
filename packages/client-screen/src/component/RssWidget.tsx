@@ -99,12 +99,14 @@ class RssWidget extends React.Component<RssWidgetProp, RssWidgetState> {
      * @returns JSX element
      */
     private renderArticles():JSX.Element {        
-        return (
+		let n = 4; /* only show the first n items. */
+
+		return (
             <ul>
-                {this.state.feed.map((item:RssArticle) => (
-                    <li key={item.guid}>{item.title}</li>
+                {this.state.feed.slice(0,n).map((item:RssArticle) => (	
+					<li key={item.guid}>{item.title}</li>
                 ))}
-            </ul>        
+            </ul>
         )
     }
 

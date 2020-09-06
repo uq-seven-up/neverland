@@ -130,7 +130,24 @@ body
 }
 /* ================================= */
 
+/* ================================= */
+/* Placeholder image */
+.Interactivity.widget .content{
+	
+	height: 400px;
+	width: 800px;
+}
 
+
+.Interactivity.widget .placeholder{
+	background-image: url('../gfx/Placeholder-image.png');
+	height: 300px;
+	width: 650px;
+	background-size: cover;
+	background-repeat: no-repeat;
+	padding: 50px;
+	
+}
 
 /* ================================= */
 /* QR Code Widget */
@@ -189,17 +206,6 @@ body
 	
 }
 
-.app {
- 
-    border-radius: 25px;
-    
-}
-  
-.app.warm {
-	border-radius: 25px;
-}
-
-  
 .location-box .date {
     color: #FFF;
     font-size: 35px;

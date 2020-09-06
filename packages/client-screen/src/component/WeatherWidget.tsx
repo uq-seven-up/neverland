@@ -88,9 +88,10 @@ class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetStat
     }
     
     return (
+    
       <section className="widget weather">
+        
 		<div className="content">
-		
 			<div>
 				<div className="location-box">
 					<div className="date">{this.dateBuilder(new Date())}</div>

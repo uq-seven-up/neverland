@@ -7,6 +7,7 @@ import TestWidget from './component/TestWidget';
 import ClockWidget from './component/ClockWidget';
 import QRCodeWidget from './component/QRCodeWidget';
 import PollWidget from './component/PollWidget';
+import InteractivityWidget from './component/InteractivityWidget';
 
 function App() {
   return (
@@ -16,11 +17,13 @@ function App() {
 			<ClockWidget name="Clock" />	
 			<TestWidget name="UQ Lakes"/>
 			<TestWidget name="UQ Chancellor's Place"/>
-			<RssWidget />					
+				<RssWidget />					
+				
 		</WidgetContainer>
 		<WidgetContainer>
 			<QRCodeWidget></QRCodeWidget>
-			<PollWidget></PollWidget>
+				<PollWidget></PollWidget>
+				<InteractivityWidget name = "Placeholder Widget"/>
 		</WidgetContainer>
 	</>
   );

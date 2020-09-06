@@ -2,7 +2,7 @@ import * as express from 'express';
 import { Request, Response } from "express";
 import dotenv from "dotenv";
 import {DB} from '../controller/db'
-import {IBusTime} from '../models/bus-time';
+import {IBusTimes, IBusTime} from '../models/bus-time';
 /**
  * Defines routes which are intended to be used to provide 
  * data to the display screen.
@@ -14,10 +14,10 @@ dotenv.config();
 /**
  * Returns bus times for UQ Lakes (still need to implement method for chancellor's place)
  */
-router.get('/get-bus-times',async(req:Request,res:Response) => {
+router.get('/get-bus-times/',async(req:Request,res:Response) => {
+    const url = require('url');
     var today: Date = new Date();
     var redirectValue: string = "";
-
     switch(today.getDay()) {
         case 1:
         case 2:
@@ -29,70 +29,24 @@ router.get('/get-bus-times',async(req:Request,res:Response) => {
         case 6:
             redirectValue = "Saturday"
             break;
-        case 7:
+        case 0:
             redirectValue = "Sunday";
             break;
     }
     
-    res.redirect("translink-times/"+ redirectValue);
+    res.redirect(url.format({
+        pathname: "translink-times",
+        query: {
+            "stop": req.query["stop"],
+            "day": redirectValue
+        }
+    }));
 });
 
-router.get('/translink-weekday', async(req:Request,res:Response) => {
-    const sqlite3 = require('sqlite3').verbose();
-	let db = new sqlite3.Database('C:\\Projects\\neverland_database\\gtfs.db', (err: { message: any; }) => {
-		if (err) {
-			return console.error(err.message);
-		}
-		
-		console.log('Connected to the gtfs SQlite database.');
-    });
-    var trip_ids: string[] = [];
-    var bus_times: IBusTime[] = [];
-    var today: Date = new Date();
+router.get('/translink-times/', async(req:Request,res:Response) => {
+    var stop = req.query.stop;
+    var day = req.query.day;
 
-    let sql = `SELECT t.route_id, t.trip_headsign, st.departure_time, st.trip_id FROM stop_times AS st, trips AS t
-                WHERE st.stop_id IN (
-                    '1853',
-                    '1877',
-                    '1878',
-                    '1880',
-                    '1883')
-                AND st.trip_id LIKE '%Weekday%'
-                AND st.trip_id = t.trip_id
-                ORDER BY st.departure_time`;
-
-	try{
-		await db.all(sql, [], (err: any, rows: any)=>{
-            if(err){
-                throw err;
-            }
-
-            rows.forEach((row: any) =>{
-                // console.log(row.route_id + " | " + row.trip_id + " | " + row.departure_time + " | " + row.trip_headsign);
-                trip_ids.push(row.trip_id);
-                var splitTime: string[] = row.departure_time.split(':');
-                var parsedDate: Date = new Date(today.getFullYear(), today.getMonth(), today.getDate(), parseInt(splitTime[0]), parseInt(splitTime[1]), parseInt(splitTime[2]));
-                
-                if(parsedDate >= today) {
-                    var bus_time: IBusTime = {
-                        route_id: row.route_id,
-                        departure_date: parsedDate,
-                        trip_id: row.trip_id,
-                        trip_headsign: row.trip_headsign
-                    };
-                    bus_times.push(bus_time);
-                }
-            });
-            
-            res.send(JSON.stringify(bus_times));
-        })
-	} catch(err) {
-		console.error(err);
-    };
-});
-
-router.get('/translink-times/:day', async(req:Request,res:Response) => {
-    const {day} = req.params;
     const sqlite3 = require('sqlite3').verbose();
 	let db = new sqlite3.Database('C:\\Projects\\neverland_database\\gtfs.db', (err: { message: any; }) => {
 		if (err) {
@@ -105,13 +59,9 @@ router.get('/translink-times/:day', async(req:Request,res:Response) => {
     var today: Date = new Date();
 
     let sql = `SELECT t.route_id, t.trip_headsign, st.departure_time, st.trip_id FROM stop_times AS st, trips AS t
-                WHERE st.stop_id IN (
-                    '1853',
-                    '1877',
-                    '1878',
-                    '1880',
-                    '1883')
-                AND st.trip_id LIKE '%` + day + `%'
+                WHERE st.stop_id IN (`;
+    sql += get_stop_ids(stop);
+    sql +=`) AND st.trip_id LIKE '%` + day + `%'
                 AND st.trip_id = t.trip_id
                 ORDER BY st.departure_time`;
 
@@ -120,24 +70,30 @@ router.get('/translink-times/:day', async(req:Request,res:Response) => {
             if(err){
                 throw err;
             }
-
-            rows.forEach((row: any) =>{
-                // console.log(row.route_id + " | " + row.trip_id + " | " + row.departure_time + " | " + row.trip_headsign);
+            var counter = 0;
+            for(var i = 0; i < rows.length; i++) {
+                
+                var row: any = rows[i];
                 var splitTime: string[] = row.departure_time.split(':');
                 var parsedDate: Date = new Date(today.getFullYear(), today.getMonth(), today.getDate(), parseInt(splitTime[0]), parseInt(splitTime[1]), parseInt(splitTime[2]));
                 
                 if(parsedDate >= today) {
+                    var dateString = parsedDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
                     var bus_time: IBusTime = {
-                        route_id: row.route_id,
-                        departure_date: parsedDate,
+                        route_id: row.route_id.split('-')[0],
+                        departure_date: dateString,
                         trip_id: row.trip_id,
                         trip_headsign: row.trip_headsign
                     };
                     bus_times.push(bus_time);
+                    counter++;
+                    if(counter > 5){
+                        break;
+                    }
                 }
-            });
-            
-            res.send(JSON.stringify(bus_times));
+            }
+
+            res.send({success:true,data:bus_times});
         })
 	} catch(err) {
 		console.error(err);
@@ -159,5 +115,19 @@ router.get('/translink-init',async(req:Request,res:Response) => {
         
 	res.send("Importing data!");
 });
+
+function get_stop_ids(stop: any) {
+    var result: string = "";
+    switch(stop) {
+        case "uqlakes":
+            result = `'1853', '1877', '1878', '1880', '1883'`;
+        break;
+        case "chancellor":
+            result = `'1802', '1797', '1798', '1799', '1801'`;
+        break;
+    }
+
+    return result;
+}
 
 export = router;

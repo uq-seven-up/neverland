@@ -7,6 +7,7 @@ import TestWidget from './component/TestWidget';
 import ClockWidget from './component/ClockWidget';
 import QRCodeWidget from './component/QRCodeWidget';
 import PollWidget from './component/PollWidget';
+import BusWidget from './component/BusWidget';
 
 function App() {
   return (
@@ -14,8 +15,8 @@ function App() {
 		<WidgetContainer>
 			<WeatherWidget  name="Weather Widget PoC"/>
 			<ClockWidget name="Clock" />	
-			<TestWidget name="UQ Lakes"/>
-			<TestWidget name="UQ Chancellor's Place"/>
+			<BusWidget name="UQ Lakes"/>
+			<BusWidget name="UQ Chancellor's Place"/>
 			<RssWidget />					
 		</WidgetContainer>
 		<WidgetContainer>

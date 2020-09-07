@@ -140,7 +140,7 @@ class PollView extends React.Component<PollViewProp, PollViewState> {
 		if(this.state.voted)
 		{
 			return(<>
-			<h2>Thanks for Voting.</h2>
+			<h2>Thanks for Participating.</h2>
 			</>)
 		}
 

@@ -2,18 +2,30 @@ var Ship = function(id,heading,surface) {
 	this.id = id;
 	this.heading = heading;
 	this.surface = surface;
+	this._undo.heading = heading; 
+	this._undo.surface = this._clone(this.surface);
 };
 
 Ship.prototype = {
 	id:'',
 	heading:'N',
 	surface:[],
+	_undo:{
+		heading:'',
+		surface:[]
+	},
 	forward:function(distance){
 		this.push(this.heading,distance)
 	},
 
+	undo:function(){
+		this.heading = this._undo.heading;
+		this.surface = this._clone(this._undo.surface);
+	},
+
 	turn:function(direction){
 		let angle = direction === "left" ? -90 : 90;
+		
 		switch(this.heading)
 		{
 			case 'N':
@@ -53,14 +65,21 @@ Ship.prototype = {
 				x = distance * -1;
 				break;
 		}
-		
+		this._undo.surface = this._clone(this.surface);
 		for(const i in this.surface){			
 			this.surface[i].x += x;
 			this.surface[i].y += y;
 		}
 	},
 
+	_clone:function(src){
+		return JSON.parse(JSON.stringify(src));	
+	},
+
 	_rotate:function(angle){
+		this._undo.heading = this.heading;
+		this._undo.surface = this._clone(this.surface);
+
 		for(const i in this.surface){			
 			let tuple = this._rotatePoint(this.surface[0].x,this.surface[0].y, this.surface[i].x, this.surface[i].y, angle);				
 			this.surface[i].x = Math.round(tuple.x);
@@ -84,8 +103,8 @@ Ship.prototype = {
 
 
 var model = {
-	COLS:10,
-	ROWS:10,
+	COLS:30,
+	ROWS:30,
 	ships:[
 		new Ship('1234','W',[{x:5,y:5,s:3},{x:4,y:5,s:3},{x:6,y:5,s:3},{x:5,y:6,s:3}]),
 		new Ship('5678','S',[{x:9,y:1,s:3},{x:9,y:0,s:3},{x:9,y:2,s:3}])
@@ -228,29 +247,76 @@ var controller = {
 
 	turn:function(direction){
 		let ship = model.getActiveShip();
-		if(ship)
-		{
-			ship.turn(direction);
-			view.refresh();
-		}
+		if(ship === null) return;
+		
+		ship.turn(direction);
+		controller._process(ship);
 	},
 
 	forward:function(distance){
 		let ship = model.getActiveShip();
-		if(ship)
-		{
-			ship.forward(distance);
-			view.refresh();
-		}
+		if(ship === null) return;
+		
+		ship.forward(distance);
+		controller._process(ship);		
 	},
 
 	push:function(direction,distance){
 		let ship = model.getActiveShip();
-		if(ship)
+		if(ship === null) return;
+		
+		ship.push(direction,distance);					
+		controller._process(ship);
+	},
+
+	_process:function(ship)
+	{
+		if(!controller.isValidPosition(ship,model.tiles))
 		{
-			ship.push(direction,distance);
-			view.refresh();
+			ship.undo();
+			alert('Invalid move. The ship must not leave the battle zone');
+		} 
+
+
+		let shipB = controller.collissionDetection(ship);
+		if(shipB)
+		{
+			ship.undo();
+			let text = "Ship " + ship.id + " ran into ship " + shipB.id;
+			alert(text);
+		}		
+		view.refresh();
+	},
+
+	isValidPosition:function(ship,){
+		/* validate that the full ship is contained inside of the map. */
+		for(let i in ship.surface)
+		{
+			let surface = ship.surface[i];
+			if(surface.x < 0 || surface.x >= model.COLS) return false
+			if(surface.y < 0 || surface.y >= model.ROWS) return false
 		}
+				
+		return true;
+	},
+
+	collissionDetection:function(ship){			
+		for(let i in model.ships)
+		{ 
+			let ship_b = model.ships[i];
+			if(ship_b.id === ship.id) continue; // Ensure a ship does not collide with itself.
+			for(let j in ship_b.surface)
+			{
+				let surface_b = ship_b.surface[j];
+				for(let k in ship.surface)
+				{
+					let surface = ship.surface[k];
+					if(surface.x === surface_b.x && surface.y === surface_b.y) return ship_b;
+				}
+			}			
+		}
+
+		return null;
 	}
 };
 

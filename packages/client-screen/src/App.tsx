@@ -3,7 +3,6 @@ import React from 'react';
 import WeatherWidget from './component/WeatherWidget'
 import WidgetContainer from './component/WidgetContainer'
 import RssWidget from './component/RssWidget'
-import TestWidget from './component/TestWidget';
 import ClockWidget from './component/ClockWidget';
 import QRCodeWidget from './component/QRCodeWidget';
 import PollWidget from './component/PollWidget';

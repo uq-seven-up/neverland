@@ -7,7 +7,7 @@ interface BusTime {
 	stop_id: number,
 	route_id: number;
     trip_id: string;
-    departure_date: string;
+    departure_time: string;
     trip_headsign: string;
 }
 
@@ -24,7 +24,11 @@ dotenv.config();
  */
 router.get('/get-bus-times/',async(req:Request,res:Response) => {
     const url = require('url');
-    var today: Date = new Date();
+    // Date object initialized as per Brisbane timezone. Returns a datetime string
+    let brisbane_date_string = new Date().toLocaleString("en-US", { timeZone: "Australia/Brisbane" });
+    let today = new Date(brisbane_date_string);
+    
+
     var redirectValue: string = "";
     switch(today.getDay()) {
         case 1:
@@ -56,6 +60,7 @@ router.get('/translink-times/', async(req:Request,res:Response) => {
     var day = req.query.day;
     var bus_times: BusTime[] = [];
     var today: Date = new Date();
+    today.setTime(today.getTime() + (10*60*60*1000));
     const FILTER = {
         "trip_id" : get_filter(day),
         "stop_id":{$in:get_stop_ids(stop)}
@@ -74,12 +79,20 @@ router.get('/translink-times/', async(req:Request,res:Response) => {
                     var bus_time: BusTime = {
 						stop_id: row.stop_id,
 						route_id: row.route_id.split('-')[0],
-                        departure_date: dateString,
+                        departure_time: dateString,
                         trip_id: row.trip_id,
                         trip_headsign: row.trip_headsign
                     };
+
+                    var alreadyIn = bus_times.filter(x => x.route_id === bus_time.route_id && x.departure_time === bus_time.departure_time);
+
+                    if(alreadyIn.length !== 0) {
+                        continue;
+                    }
+
                     bus_times.push(bus_time);
                     counter++;
+
                     if(counter > 5){
                         break;
                     }

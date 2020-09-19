@@ -6,6 +6,7 @@ node_modules
 dist
 build
 yarn-error\.log
+package-lock.json
 # Ignore visual studio code specific files.
 .directory
 *.code-workspace

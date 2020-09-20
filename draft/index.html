@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>7UP - Proof of concept</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href="index.css" rel="stylesheet" type="text/css">
+	</head>
+	<body>
+		<main>
+			<div id="root"></div>
+			<aside>
+				<div class="player">
+					<input type="radio" id="ship_1" name="shipId" value="1234" checked>
+					<label for="ship_1">Ship 1</label>
+					<input type="radio" id="ship_2" name="shipId" value="5678">
+					<label for="ship_2">Ship 2</label>
+				</div>
+				
+				<div class="compass">
+					<button onclick="controller.push('N',1);return false;">North</button>
+					<button onclick="controller.push('E',1);return false;">East</button>
+					<button onclick="controller.push('S',1);return false;">South</button>
+					<button onclick="controller.push('W',1);return false;">West</button>
+				</div>				
+				
+				<div class="shipController">
+					<button id="btnLeft" onclick="controller.turn('left');return false;">Left</button>
+					<button id="btnRight" onclick="controller.turn('right');return false;">Right</button>
+					<button id="btnForward" onclick="controller.forward(1);return false;">Forward</button>
+					<button id="btnFire" onclick="controller.fire();return false;">Fire</button>
+					<div class="fireInput">
+						<label for="fire_x">X:</label>
+						<input type="text" id="fire_x" value="">
+						<label for="fire_y">Y:</label>
+						<input type="text" id="fire_y" value="">
+					</div>
+				</div>				
+			</aside>
+		</main>
+		
+		<script src="index.js"></script>
+	</body>
+</html>

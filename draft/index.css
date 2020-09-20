@@ -1,0 +1,98 @@
+main
+{
+	display:flex;
+	flex-direction: row;
+}
+
+aside{
+	display:flex;
+	justify-content: space-around;
+	flex-direction: column;
+	align-items: center;
+	flex-grow:1;
+}
+
+table{
+	width:800px;
+	height:800px;
+}
+
+td{
+	border:1px solid #cccccc;
+	text-align:center;
+	vertical-align: middle;
+}
+
+.compass{
+	display: grid;
+	height:200px;
+	width:200px;
+	grid-template-columns: 33% auto 33%;
+	grid-template-rows:33% auto 33%;			
+}
+
+.compass button:nth-child(1){
+	grid-column-start:2;
+	grid-column-end:2;
+	grid-row-start:1;
+	grid-row-end:1;
+}
+
+.compass button:nth-child(2){
+	grid-column-start:3;
+	grid-column-end:3;
+	grid-row-start:2;
+	grid-row-end:2;
+}
+.compass button:nth-child(3){
+	grid-column-start:2;
+	grid-column-end:2;
+	grid-row-start:3;
+	grid-row-end:3;
+}
+.compass button:nth-child(4){
+	grid-column-start:1;
+	grid-column-end:1;
+	grid-row-start:2;
+	grid-row-end:2;
+}
+
+.shipController{
+	display: grid;
+	grid-template-columns: 33% auto 33%;
+	grid-template-rows:33% auto 33%;			
+}
+
+#btnLeft{
+	grid-column-start:1;
+	grid-column-end:1;
+	grid-row-start:3;
+	grid-row-end:3;
+}
+
+#btnRight{
+	grid-column-start:3;
+	grid-column-end:3;
+	grid-row-start:3;
+	grid-row-end:3;
+}
+
+#btnForward{
+	grid-column-start:2;
+	grid-column-end:2;
+	grid-row-start:1;
+	grid-row-end:1;
+}
+#btnFire{
+	grid-column-start:2;
+	grid-column-end:2;
+	grid-row-start:3;
+	grid-row-end:3;
+}
+
+.shipController div.fireInput{
+	grid-column-start:2;
+	grid-column-end:2;
+	grid-row-start:2;
+	grid-row-end:2;
+}

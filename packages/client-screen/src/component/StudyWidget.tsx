@@ -3,39 +3,38 @@ import React from 'react';
 import { API } from '@7up/common-utils';
 import { AxiosResponse } from 'axios';
 
-interface RssArticle {
-	author: string;
-	content: string;
-	creator: string;
-	guid: string;
-	isoDate: Date;
-	link: string;
-	pubDate: Date;
-	title: string;
+interface SpaceAvailability {
+	[key: string]: string;
 }
 
-interface RssWidgetProp {}
+interface StudyWidgetProp {}
 
-interface RssWidgetState {
-	feed: RssArticle[];
+interface SpaceAvailabilityState {
+	SpaceAvailability: SpaceAvailability[];
 }
 
 /**
- * This widget displays news articles retrieved by the REST Server from the UQ RSS news feed.
+ * This widget is a proof of concept implementation of a
+ * react component using a class.
  */
-class RssWidget extends React.Component<RssWidgetProp, RssWidgetState> {
-	constructor(props: RssWidgetProp) {
+class StudyWidget extends React.Component<
+	StudyWidgetProp,
+	SpaceAvailabilityState
+> {
+	constructor(props: StudyWidgetProp) {
 		super(props);
 
 		this.state = {
-			feed: [],
+			SpaceAvailability: [],
 		};
 	}
 
 	/* ########################################################*/
-	/* React life-cycle methods.*/
+	/* React life-cycle event.*/
 	public componentDidMount(): void {
-		this.callAPI('', 'GET', '/screen/uqnews');
+		console.log('Component Did Mount');
+		// var stop_value = this.props.name === 'UQ Lakes' ? 'uqlakes' : 'chancellor';
+		this.callAPI('', 'GET', '/studyspace/availability-data');
 	}
 	/* ########################################################*/
 
@@ -95,41 +94,23 @@ class RssWidget extends React.Component<RssWidgetProp, RssWidgetState> {
 		endpoint: string,
 		result: any,
 	): void => {
-		this.setState({ feed: result.data });
+		this.setState({ SpaceAvailability: result.data });
 	};
 	/* ########################################################*/
 
-	/* ########################################################*/
-	/* UI Rendering*/
-	/**
-	 * Render the list of articles received from the RSS feed retrieved by the REST Server.
-	 *
-	 * @returns JSX element
-	 */
-	private renderArticles(): JSX.Element {
-		let n = 5; /* only show the first n items. */
-
-		return (
-			<ul>
-				{this.state.feed.slice(0, n).map((item: RssArticle) => (
-					<li key={item.guid}>{item.title}</li>
-				))}
-			</ul>
-		);
-	}
-
 	public render() {
 		return (
-			<section className="widget news">
-				<div className="heading">
-					<h2>UQ News</h2>
-					<figure></figure>
-				</div>
-				<div className="content">{this.renderArticles()}</div>
+			<section className="widget">
+				{/* {this.state.SpaceAvailability.map((item: SpaceAvailability) => (
+					<li>
+						<div>{item}</div>
+					</li>
+				))} */}
+				<h1>Test</h1>
+				<h1>Test</h1>
 			</section>
 		);
 	}
-	/* ########################################################*/
 }
 
-export default RssWidget;
+export default StudyWidget;

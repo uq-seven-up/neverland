@@ -2,3 +2,5 @@ export {API} from "./lib/Api";
 export * from "./lib/CFKitUtil";
 export { default as getFirstDayLastDayUTC } from "./components/getFirstDayLastDayUTC";
 export { default as isFlagSet } from "./components/flags";
+export { default as GameBoard } from "./components/battle/GameBoard";
+export {Ship} from "./lib/battle/Ship";

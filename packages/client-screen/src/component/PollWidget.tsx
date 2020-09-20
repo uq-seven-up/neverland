@@ -48,7 +48,7 @@ class PollWidget extends React.Component<PollWidgetProp, PollWidgetState> {
     /* React life-cycle methods.*/
     public componentDidMount(): void {
 		this.callAPI('fetchActivePoll','GET','/poll/active');
-		this.interval = setInterval(() => this.callAPI('fetchActivePoll','GET','/poll/active'), 2000);						
+		this.interval = setInterval(() => this.callAPI('fetchActivePoll','GET','/poll/active'), 10000);						
 	}
 	
 	public componentWillUnmount(): void {

@@ -54,7 +54,7 @@ const server = app.listen(PORT, function () {
 app.locals.ws = new WebSocket.Server({noServer:true,clientTracking:true}) as WebSocket.Server;
 app.locals.ws.on('connection', (socket : GameWebSocket, req:Request) => {
 	socket.uuid = req.url.replace('/?uuid=', '');
-	if(socket.uuid !== '')
+	if(socket.uuid !== '' && socket.uuid !== '/' && socket.uuid !== 'POLL_WIDGET')
 	{
 		app.locals.game.addPlayer(socket.uuid);
 	}

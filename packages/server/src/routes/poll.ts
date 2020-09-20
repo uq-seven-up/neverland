@@ -1,5 +1,6 @@
 import * as express from 'express';
 import { Request, Response } from "express";
+import WebSocket from 'ws';
 import dotenv from "dotenv";
 import {DB} from '../controller/db'
 import {IPoll, IPollOption} from '../models/poll';
@@ -60,7 +61,7 @@ router.get('/:pollid',async(req:Request,res:Response) => {
 	try{
 		let poll =  await DB.Models.Poll.findById(pollid);
 		if(poll)
-		{
+		{			
 			res.send({success:true,data:{poll:poll}});
 		}else
 		{
@@ -105,6 +106,15 @@ router.post('/:pollid/vote',async(req:Request,res:Response) => {
 			res.status(500).send({success:false,'msg':'Error updating votes.'})
 			return;
 		}
+
+		let data = {poll:'refresh'}
+		
+		req.app.locals.ws.clients.forEach(function each(client:any) {
+			if (client.readyState === WebSocket.OPEN && client.uuid === 'POLL_WIDGET') {			
+				client.send(JSON.stringify(data));
+				return;
+			}
+		});
 
 		res.send({success:true,data:{poll:poll}})
 	});

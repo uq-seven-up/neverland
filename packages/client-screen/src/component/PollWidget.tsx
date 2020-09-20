@@ -27,11 +27,15 @@ interface PollWidgetState {
  * This widget displays news articles retrieved by the REST Server from the UQ RSS news feed.
  */
 class PollWidget extends React.Component<PollWidgetProp, PollWidgetState> {  
+	private ws:any;
 	private interval:any;
 	
 	constructor(props: PollWidgetState) {
         super(props)
-
+		/* 
+		NOTE: REACT call a constructor twice in strict mode. Which is why the websocket code is not here.
+		https://github.com/facebook/react/issues/12856#issuecomment-613145789
+		*/		
         this.state = {
             poll:{
 				_id:'',
@@ -47,12 +51,26 @@ class PollWidget extends React.Component<PollWidgetProp, PollWidgetState> {
     /* ########################################################*/
     /* React life-cycle methods.*/
     public componentDidMount(): void {
+		this.ws = new WebSocket(process.env.REACT_APP_SOCKET_SERVER as string + '?uuid=POLL_WIDGET');
+		this.ws.onopen = () => {
+			// on connecting, do nothing but log it to the console
+			console.log('Poll connected to socket server.')
+		}
+
+		this.ws.onmessage = (evt:any) => {
+			// listen to data sent from the websocket server
+			const data = JSON.parse(evt.data)
+			if(data.poll)
+			{
+				this.callAPI('fetchActivePoll','GET','/poll/active');
+			}
+		}
+
 		this.callAPI('fetchActivePoll','GET','/poll/active');
-		this.interval = setInterval(() => this.callAPI('fetchActivePoll','GET','/poll/active'), 10000);						
 	}
 	
 	public componentWillUnmount(): void {
-        clearInterval(this.interval);
+        this.ws.terminate();
 	}
     /* ########################################################*/
 

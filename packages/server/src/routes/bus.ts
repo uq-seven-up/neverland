@@ -67,6 +67,8 @@ router.get('/translink-times/', async (req: Request, res: Response) => {
 		trip_id: get_filter(day),
 		stop_id: { $in: get_stop_ids(stop) },
 	};
+	var timeout = -1;
+	var gotTimeout = false;
 
 	try {
 		await DB.Models.BusTime.find(FILTER, (err, results) => {
@@ -82,7 +84,13 @@ router.get('/translink-times/', async (req: Request, res: Response) => {
 					parseInt(splitTime[0]),
 					parseInt(splitTime[1]),
 				);
+
 				if (parsedDate >= today) {
+					if(!gotTimeout) {
+						timeout = Math.abs(parsedDate.getTime() - today.getTime());
+						gotTimeout = true
+					}
+
 					var dateString = parsedDate.toLocaleTimeString([], {
 						hour: '2-digit',
 						minute: '2-digit',
@@ -114,7 +122,7 @@ router.get('/translink-times/', async (req: Request, res: Response) => {
 				}
 			}
 
-			res.send({ success: true, data: bus_times });
+			res.send({ success: true, data: bus_times, next: timeout});
 		});
 	} catch (error) {
 		console.log(error);

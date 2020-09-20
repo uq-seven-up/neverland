@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useEffect} from "react";
 
 import {API} from "@7up/common-utils"
 import {AxiosResponse } from 'axios';
@@ -16,7 +16,8 @@ interface BusWidgetProp {
 
 interface BusWidgetState {
   status: "on" | "off",
-  busTimes: BusTime[]
+  busTimes: BusTime[],
+  timeout: number
 }
 
 /**
@@ -29,14 +30,14 @@ class BusWidget extends React.Component<BusWidgetProp, BusWidgetState> {
 
         this.state = {
             status: "off",
-            busTimes: []
+            busTimes: [],
+            timeout: -1
         }       
     }
 
     /* ########################################################*/
     /* React life-cycle event.*/
     public componentDidMount(): void {
-        console.log('Component Did Mount')
         var stop_value = this.props.name === "UQ Lakes"? "uqlakes": "chancellor";
         this.callAPI('', 'GET', '/bus/get-bus-times?stop=' + stop_value);
     }
@@ -87,7 +88,7 @@ class BusWidget extends React.Component<BusWidgetProp, BusWidgetState> {
      */
     private handleApiCallSuccess = (name:string,method:string,endpoint:string,result:any):void =>
     {
-        this.setState({status: 'on', busTimes:result.data});
+        this.setState({status: 'on', busTimes:result.data, timeout:result.next});
     }
     /* ########################################################*/
 
@@ -139,6 +140,13 @@ class BusWidget extends React.Component<BusWidgetProp, BusWidgetState> {
             );
         } 
         else {
+            // Get the next bus time and remount component at time
+            if(this.state.timeout != -1) {
+                setTimeout(function(comp: BusWidget){
+                    comp.componentDidMount();
+                }, this.state.timeout, this);
+            }
+
             return (
                 <ul>
                     {this.state.busTimes.map((item: BusTime) => (

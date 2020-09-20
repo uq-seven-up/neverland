@@ -29,6 +29,7 @@
     "start": "tsc && node ./dist/app.js"
   },
   "devDependencies": {
+    "@types/ws": "^7.2.6",
     "concurrently": "^5.3.0",
     "nodemon": "^2.0.4",
     "ts-loader": "^8.0.2",

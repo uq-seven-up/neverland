@@ -12,7 +12,7 @@ interface GameClientState {
  * react component using a class.
  */
 class GameClient extends React.Component<GameClientProp, GameClientState> {    		
-	ws = new WebSocket('ws://localhost:3080/?uuid=' + CFKitUtil.createGUID());
+	ws = new WebSocket(process.env.REACT_APP_SOCKET_SERVER as string + '?uuid=' + CFKitUtil.createGUID());
 	
 	constructor(props: GameClientProp) {
         super(props)

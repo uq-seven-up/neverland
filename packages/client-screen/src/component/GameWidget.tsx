@@ -12,7 +12,7 @@ interface GameWidgetState {
  * react component using a class.
  */
 class GameWidget extends React.Component<GameWidgetProp, GameWidgetState> {    
-	ws = new WebSocket('ws://localhost:3080');
+	ws = new WebSocket(process.env.REACT_APP_SOCKET_SERVER as string);
 	
 	constructor(props: GameWidgetState) {
         super(props)

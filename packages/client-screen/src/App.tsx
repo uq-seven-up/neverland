@@ -6,9 +6,9 @@ import RssWidget from './component/RssWidget';
 import ClockWidget from './component/ClockWidget';
 import QRCodeWidget from './component/QRCodeWidget';
 import PollWidget from './component/PollWidget';
-import InteractivityWidget from './component/InteractivityWidget';
 import BusWidget from './component/BusWidget';
 import StudyWidget from './component/StudyWidget';
+import GameWidget from './component/GameWidget';
 
 function App() {
 	return (
@@ -23,9 +23,9 @@ function App() {
 			</WidgetContainer>
 
 			<WidgetContainer>
-				<QRCodeWidget></QRCodeWidget>
-				<PollWidget></PollWidget>
-				<InteractivityWidget name="Placeholder Widget" />
+				<QRCodeWidget/>
+				<PollWidget/>
+				<GameWidget/>
 			</WidgetContainer>
 		</>
 	);

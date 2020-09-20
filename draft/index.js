@@ -14,6 +14,14 @@ Ship.prototype = {
 		heading:'',
 		surface:[]
 	},
+
+	isDead:function(){		
+		for(const i in this.surface){			
+			if(this.surface[i].s > 0) return false;
+		}
+		return true;
+	},
+
 	forward:function(distance){
 		this.push(this.heading,distance)
 	},
@@ -236,6 +244,14 @@ var controller = {
 				if(surface.x === x && surface.y === y){
 					hit = true;
 					surface.s = 0;
+					if(ship.isDead()){						
+						alert("Ship Sunk");
+						model.ships.splice(i,1);
+					}else
+					{
+						alert("Kaboom");
+					}					
+					break;
 				} 
 			}
 		}

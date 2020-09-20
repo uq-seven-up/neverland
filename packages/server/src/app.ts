@@ -5,6 +5,7 @@ import WebSocket from 'ws';
 import {DB} from './controller/db';
 import busRoutes = require('./routes/bus');
 import exampleRoutes = require('./routes/example');
+import gameRoutes = require('./routes/game');
 import pollRoutes = require('./routes/poll');
 import screenRoutes = require('./routes/screen');
 import StudySpaceRoutes = require('./routes/study-space');
@@ -27,6 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 
 /* Register REST routes. */
 app.use('/api/example', exampleRoutes);
+app.use('/api/game', gameRoutes);
 app.use('/api/poll', pollRoutes);
 app.use('/api/screen', screenRoutes);
 app.use('/api/bus', busRoutes);

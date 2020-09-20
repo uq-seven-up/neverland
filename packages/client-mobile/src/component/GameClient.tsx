@@ -11,13 +11,15 @@ interface GameClientState {
  * This widget is a proof of concept implementation of a 
  * react component using a class.
  */
-class GameClient extends React.Component<GameClientProp, GameClientState> {    		
-	ws = new WebSocket(process.env.REACT_APP_SOCKET_SERVER as string + '?uuid=' + CFKitUtil.createGUID());
-	
+class GameClient extends React.Component<GameClientProp, GameClientState> {    			
+	private ws:any;
 	constructor(props: GameClientProp) {
         super(props)
-		
-        this.state = {
+		/* 
+		NOTE: REACT call a constructor twice in strict mode. Which is why the websocket code is not here.
+		https://github.com/facebook/react/issues/12856#issuecomment-613145789
+		*/
+		this.state = {
 			dataFromServer:'none'	
         }
     }
@@ -25,11 +27,9 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
     /* ########################################################*/
     /* React life-cycle methods.*/
     public componentDidMount(): void {
-		
-		console.log('GameClient mounted');
+		this.ws = new WebSocket(process.env.REACT_APP_SOCKET_SERVER as string + '?uuid=' + CFKitUtil.createGUID());
 		this.ws.onopen = () => {
-			// on connecting, do nothing but log it to the console
-			console.log('connected to web socket server.')
+			console.log('Game client connected to server.')
 		}
 
 		this.ws.onmessage = (evt:any) => {
@@ -39,7 +39,7 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		}
 
 		this.ws.onclose = () => {
-			console.log('client disconnected')			
+			console.log('Game client disconnected')			
 		}
     }
     /* ########################################################*/

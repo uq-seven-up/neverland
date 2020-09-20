@@ -24,9 +24,7 @@ class GameWidget extends React.Component<GameWidgetProp, GameWidgetState> {
 
     /* ########################################################*/
     /* React life-cycle methods.*/
-    public componentDidMount(): void {
-		
-		console.log('Game Widget mounted');
+    public componentDidMount(): void {		
 		this.ws.onopen = () => {
 			// on connecting, do nothing but log it to the console
 			console.log('Connected to web socket server.')

@@ -27,8 +27,6 @@ router.get('/availability-data/', async (req: Request, res: Response) => {
 		const page = await browser.newPage();
 		const librarySpaceAvailability: LibrarySpaceObject = {};
 
-		await page.setViewport({ width: 1199, height: 900 });
-
 		await page.goto(link);
 
 		await page.waitForSelector('#computersList .paper-item-0');

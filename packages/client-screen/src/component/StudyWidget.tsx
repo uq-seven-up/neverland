@@ -10,7 +10,7 @@ interface SpaceAvailability {
 interface StudyWidgetProp {}
 
 interface SpaceAvailabilityState {
-	SpaceAvailability: SpaceAvailability[];
+	spaceAvailability: SpaceAvailability[];
 }
 
 /**
@@ -25,7 +25,7 @@ class StudyWidget extends React.Component<
 		super(props);
 
 		this.state = {
-			SpaceAvailability: [],
+			spaceAvailability: [],
 		};
 	}
 
@@ -94,20 +94,25 @@ class StudyWidget extends React.Component<
 		endpoint: string,
 		result: any,
 	): void => {
-		this.setState({ SpaceAvailability: result.data });
+		this.setState({ spaceAvailability: result.data });
 	};
 	/* ########################################################*/
 
 	public render() {
 		return (
 			<section className="widget">
-				{/* {this.state.SpaceAvailability.map((item: SpaceAvailability) => (
-					<li>
-						<div>{item}</div>
-					</li>
-				))} */}
-				<h1>Test</h1>
-				<h1>Test</h1>
+				<div className="heading">
+					<h2>UQ Study Spaces</h2>
+					<figure></figure>
+				</div>
+				<div className="content">
+					{Object.keys(this.state.spaceAvailability).map((key: any) => (
+						<div>
+							<span>{`${key} = `}</span>
+							<span>{` ${this.state.spaceAvailability[key]}% filled`}</span>
+						</div>
+					))}
+				</div>
 			</section>
 		);
 	}

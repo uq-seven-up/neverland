@@ -12,3 +12,10 @@ export interface GameTile{
 }
 
 export type GameMap = Map<string,GameTile>;
+
+export enum CompassHeading {
+	North = 1,
+	East,
+	South,
+	West
+};

@@ -1,5 +1,5 @@
 import React from "react"
-
+import {CFKitUtil} from '@7up/common-utils';
 
 interface GameClientProp {}
 interface GameClientState {
@@ -12,7 +12,7 @@ interface GameClientState {
  * react component using a class.
  */
 class GameClient extends React.Component<GameClientProp, GameClientState> {    		
-	ws = new WebSocket('ws://localhost:3080');
+	ws = new WebSocket('ws://localhost:3080/?uuid=' + CFKitUtil.createGUID());
 	
 	constructor(props: GameClientProp) {
         super(props)
@@ -46,15 +46,20 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
     /* ########################################################*/
 	
 
-	private handleClick = (e:React.MouseEvent) =>
+	private handleClick = (e:React.MouseEvent<HTMLElement>) =>
 	{
 		e.preventDefault();
+		let heading = e.currentTarget.dataset.heading;
+		console.log('heading',heading)
+		
 		if(this.ws.readyState === this.ws.OPEN){
 			let data = {
-				message:"Hello from client!"
+				widget:"game",
+				action:"move",
+				heading:heading
 			}
 			this.ws.send(JSON.stringify(data));
-			console.log('Data Sent')
+			console.log('Data Sent',data)
 		}		
 	}
 
@@ -65,7 +70,10 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		return(
 		<section>
         	<h1>Game client</h1>		
-			<button onClick={this.handleClick}>Move Up</button>
+			<button data-heading="N" onClick={this.handleClick}>North</button>
+			<button data-heading="E" onClick={this.handleClick}>East</button>
+			<button data-heading="S" onClick={this.handleClick}>South</button>
+			<button data-heading="W" onClick={this.handleClick}>West</button>
 		</section>
         )
     }

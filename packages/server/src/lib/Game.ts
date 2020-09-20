@@ -29,6 +29,12 @@ export class Game
 		return _gameMap
 	}
 
+	public reset()
+	{
+		this._players = 0;
+		this._ships=[];
+	}
+
 	public addPlayer(guid:string)
 	{
 		this._players++;
@@ -40,16 +46,31 @@ export class Game
 		}
 	}
 
+	public turnShip(shipId:string,direction:'left'|'right'){
+		let ship = this.getShip(shipId);
+		if(ship === null) return
+		
+		ship.turn(direction);
+		this.validateShipMovement(ship);
+	}
+
+	public driveShip(shipId:string){
+		let ship = this.getShip(shipId);
+		if(ship === null) return
+		
+		const distance = 1;		
+		ship.drive(distance);
+		this.validateShipMovement(ship);		
+	}
+
+
 	public moveShip(shipId:string,heading:CompassHeading,distance:number):void
 	{
-		console.log('Moving Ship')
-		for(let ship of this._ships)
-		{
-			if(ship.id === shipId){
-				ship.push(heading,distance);
-				this.validateShipMovement(ship);
-			}
-		}		
+		let ship = this.getShip(shipId);
+		if(ship === null) return
+
+		ship.move(heading,distance);
+		this.validateShipMovement(ship);		
 	}
 
 	public broadCastGameMap(ws:any):any
@@ -66,6 +87,35 @@ export class Game
 				client.send(JSON.stringify(data));
 			}
 		});
+	}
+
+	public sendGameMap(uuid:string,ws:any):any
+	{
+		let mapObject:any = {};  
+		this.gameMap.forEach((value, key) => {  
+			mapObject[key] = value
+		}); 
+
+		let data = {gameMap:mapObject}
+		
+		ws.clients.forEach(function each(client:any) {
+			if (client.readyState === WebSocket.OPEN && client.uuid === uuid) {			
+				client.send(JSON.stringify(data));
+				return;
+			}
+		});
+	}
+
+	private getShip(shipId:string):Ship | null
+	{
+		for(let ship of this._ships)
+		{
+			if(ship.id === shipId){
+				return ship				
+			}
+		}
+		
+		return null;
 	}
 
 	private validateShipMovement(ship:Ship)

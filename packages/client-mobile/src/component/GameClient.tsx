@@ -35,8 +35,7 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		this.ws.onmessage = (evt:any) => {
 			// listen to data sent from the websocket server
 			const message = JSON.parse(evt.data)
-			this.setState({dataFromServer: message})
-			console.log(message)
+			this.setState({dataFromServer: message})			
 		}
 
 		this.ws.onclose = () => {
@@ -46,11 +45,10 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
     /* ########################################################*/
 	
 
-	private handleClick = (e:React.MouseEvent<HTMLElement>) =>
+	private handleClickMove = (e:React.MouseEvent<HTMLElement>) =>
 	{
 		e.preventDefault();
 		let heading = e.currentTarget.dataset.heading;
-		console.log('heading',heading)
 		
 		if(this.ws.readyState === this.ws.OPEN){
 			let data = {
@@ -59,21 +57,50 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 				heading:heading
 			}
 			this.ws.send(JSON.stringify(data));
+		}		
+	}
+
+	private handleClickDrive = (e:React.MouseEvent<HTMLElement>) =>
+	{
+		e.preventDefault();
+		if(this.ws.readyState === this.ws.OPEN){
+			let data = {
+				widget:"game",
+				action:"drive"
+			}
+			this.ws.send(JSON.stringify(data));
 			console.log('Data Sent',data)
+		}		
+	}
+
+	private handleClickTurn = (e:React.MouseEvent<HTMLElement>) =>
+	{
+		e.preventDefault();
+		let direction = e.currentTarget.dataset.direction;
+		
+		if(this.ws.readyState === this.ws.OPEN){
+			let data = {
+				widget:"game",
+				action:"turn",
+				direction:direction
+			}
+			this.ws.send(JSON.stringify(data));		
 		}		
 	}
 
 	/* ########################################################*/
     /* UI Rendering */
 	public render() {		
-		//console.log(this.state.dataFromServer);
 		return(
 		<section>
         	<h1>Game client</h1>		
-			<button data-heading="N" onClick={this.handleClick}>North</button>
-			<button data-heading="E" onClick={this.handleClick}>East</button>
-			<button data-heading="S" onClick={this.handleClick}>South</button>
-			<button data-heading="W" onClick={this.handleClick}>West</button>
+			<button data-heading="N" onClick={this.handleClickMove}>North</button>
+			<button data-heading="E" onClick={this.handleClickMove}>East</button>
+			<button data-heading="S" onClick={this.handleClickMove}>South</button>
+			<button data-heading="W" onClick={this.handleClickMove}>West</button>
+			<button onClick={this.handleClickDrive}>Drive</button>
+			<button data-direction="left" onClick={this.handleClickTurn}>Left</button>
+			<button data-direction="right" onClick={this.handleClickTurn}>Right</button>
 		</section>
         )
     }

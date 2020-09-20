@@ -28,6 +28,16 @@ router.get('/move',(req:Request,res:Response):void => {
 });
 
 
+router.get('/reset',(req:Request,res:Response):void => {
+	console.log('reset');
+	let game = req.app.locals.game as Game;
+	game.reset();	
+	
+	let data = game.broadCastGameMap(req.app.locals.ws);
+
+	res.send({results:'Reset Game',data})
+});
+
 /**
  * Proof of concept for pushing a message to all connected web socket clients 
  * in response to a REST call.

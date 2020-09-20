@@ -36,8 +36,8 @@ export class Ship
 		return true;
 	}
 
-	public forward(distance:number):void{
-		this.push(this._heading,distance)
+	public drive(distance:number):void{
+		this.move(this._heading,distance)
 	}
 
 	public undo():void{
@@ -66,7 +66,7 @@ export class Ship
 		this._rotate(angle)
 	}
 
-	public push(direction:CompassHeading,distance:number):void{
+	public move(direction:CompassHeading,distance:number):void{
 		let x,y;
 		switch(direction)
 		{

@@ -58,6 +58,7 @@ app.locals.ws.on('connection', (socket : GameWebSocket, req:Request) => {
 	{
 		app.locals.game.addPlayer(socket.uuid);
 	}
+	app.locals.game.sendGameMap(socket.uuid,app.locals.ws);
 	
 	socket.on('message', message => {
 		const data = JSON.parse(message.toString());
@@ -66,6 +67,7 @@ app.locals.ws.on('connection', (socket : GameWebSocket, req:Request) => {
 			switch(data.widget)
 			{
 				case 'game':
+					let shipId = socket.uuid;
 					switch(data.action)
 					{
 						case 'move':
@@ -85,9 +87,17 @@ app.locals.ws.on('connection', (socket : GameWebSocket, req:Request) => {
 									heading = CompassHeading.West
 									break;
 							}
-							app.locals.game.moveShip(socket.uuid,heading,1);
-							app.locals.game.broadCastGameMap(app.locals.ws);
-							console.log(socket.uuid)
+							app.locals.game.moveShip(shipId,heading,1);
+							app.locals.game.broadCastGameMap(app.locals.ws);							
+							break;
+						case 'turn':
+							let direction = data.direction === 'left' ? 'left' : 'right';							
+							app.locals.game.turnShip(shipId,direction);
+							app.locals.game.broadCastGameMap(app.locals.ws);							
+							break;
+						case 'drive':
+							app.locals.game.driveShip(shipId);
+							app.locals.game.broadCastGameMap(app.locals.ws);							
 							break;
 						default:
 							console.log(message);

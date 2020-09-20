@@ -29,7 +29,7 @@ export class Game
 		return _gameMap
 	}
 
-	public reset()
+	public reset():void
 	{
 		this._players = 0;
 		this._ships=[];
@@ -38,12 +38,21 @@ export class Game
 	public addPlayer(guid:string)
 	{
 		this._players++;
-		if(this._players == 0)
+		this._ships.push(new Ship(guid,CompassHeading.North,this._players,5))		
+	}
+
+	public removePlayer(guid:string)
+	{
+		this._players--;
+		let i = 0;
+		for(let ship of this._ships)
 		{
-			this._ships.push(new Ship(guid,CompassHeading.North,2,5))
-		}else{
-			this._ships.push(new Ship(guid,CompassHeading.North,5,5))
+			if(ship.id === guid){
+				break;				
+			}
+			i++;
 		}
+		this._ships.splice(i,1);
 	}
 
 	public turnShip(shipId:string,direction:'left'|'right'){
@@ -87,6 +96,8 @@ export class Game
 				client.send(JSON.stringify(data));
 			}
 		});
+
+		return data;
 	}
 
 	public sendGameMap(uuid:string,ws:any):any

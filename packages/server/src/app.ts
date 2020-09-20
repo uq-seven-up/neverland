@@ -56,10 +56,17 @@ app.locals.ws.on('connection', (socket : GameWebSocket, req:Request) => {
 	socket.uuid = req.url.replace('/?uuid=', '');
 	if(socket.uuid !== '' && socket.uuid !== '/' && socket.uuid !== 'POLL_WIDGET')
 	{
+		console.log('adding player',socket.uuid);
 		app.locals.game.addPlayer(socket.uuid);
 	}
-	app.locals.game.sendGameMap(socket.uuid,app.locals.ws);
+	app.locals.game.broadCastGameMap(app.locals.ws);
 	
+	socket.on('close', (code:number,reason:string) => {
+		console.log('Closing',socket.uuid);
+		app.locals.game.removePlayer(socket.uuid);
+		app.locals.game.broadCastGameMap(app.locals.ws);
+	});
+
 	socket.on('message', message => {
 		const data = JSON.parse(message.toString());
 		if(data.widget)
@@ -106,9 +113,7 @@ app.locals.ws.on('connection', (socket : GameWebSocket, req:Request) => {
 				default:
 					console.log(message);
 			}
-		}
-		
-		console.log(message)
+		}				
 	});
 });
 

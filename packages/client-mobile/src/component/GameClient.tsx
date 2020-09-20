@@ -36,12 +36,12 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 			// listen to data sent from the websocket server
 			const message = JSON.parse(evt.data)
 			this.setState({dataFromServer: message})
-				console.log(message)
-			}
-	
-			this.ws.onclose = () => {
-				console.log('client disconnected')			
-			}
+			console.log(message)
+		}
+
+		this.ws.onclose = () => {
+			console.log('client disconnected')			
+		}
     }
     /* ########################################################*/
 	

@@ -18,7 +18,7 @@ declare interface IPoll{
     creation_date: Date
 }
 
-interface PollWidgetProp {}
+interface PollWidgetProp {id?:string}
 interface PollWidgetState {
   poll:IPoll
 }
@@ -31,7 +31,7 @@ class PollWidget extends React.Component<PollWidgetProp, PollWidgetState> {
 	private interval:any;
 	
 	constructor(props: PollWidgetState) {
-        super(props)
+        super(props as any)
 		/* 
 		NOTE: REACT call a constructor twice in strict mode. Which is why the websocket code is not here.
 		https://github.com/facebook/react/issues/12856#issuecomment-613145789
@@ -154,7 +154,7 @@ class PollWidget extends React.Component<PollWidgetProp, PollWidgetState> {
 
     public render() {
         return (
-        <section className="widget poll">
+        <section id={this.props.id} className="widget poll">
             <div className="heading">
 				<h2>UQ Poll</h2>
 				<figure></figure>

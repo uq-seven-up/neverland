@@ -11,7 +11,8 @@ interface BusTime{
 }
 
 interface BusWidgetProp {
-  name: string
+    name: string,
+    id?:string,
 }
 
 interface BusWidgetState {
@@ -169,7 +170,7 @@ class BusWidget extends React.Component<BusWidgetProp, BusWidgetState> {
 
     public render() {
         return (
-		<section className="widget transit">
+		<section id={this.props.id} className="widget transit">
         	<div className="heading">
 				<h2>{this.props.name}</h2>
 				<figure></figure>

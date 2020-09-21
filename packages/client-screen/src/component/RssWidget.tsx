@@ -14,7 +14,7 @@ interface RssArticle {
 	title: string;
 }
 
-interface RssWidgetProp {}
+interface RssWidgetProp {id?:string}
 
 interface RssWidgetState {
 	feed: RssArticle[];
@@ -120,7 +120,7 @@ class RssWidget extends React.Component<RssWidgetProp, RssWidgetState> {
 
 	public render() {
 		return (
-			<section className="widget news">
+			<section id={this.props.id} className="widget news">
 				<div className="heading">
 					<h2>UQ News</h2>
 					<figure></figure>

@@ -1,7 +1,8 @@
 import React from "react"
 
 interface InteractivityWidgetProp {
-  name: string
+  name: string,
+  id?:string
 }
 
 interface InteractivityWidgeState {
@@ -32,7 +33,7 @@ class InteractivityWidget extends React.Component<InteractivityWidgetProp, Inter
   
     public render() {
         return (
-		<section className="Interactivity widget">
+		<section id={this.props.id} className="Interactivity widget">
 			<div className="content">
         <div className="placeholder"></div>
 			</div>

@@ -2,7 +2,7 @@ import React from "react"
 import {GameMap} from '@7up/common-types';
 import {GameBoard} from '@7up/common-utils'
 
-interface GameWidgetProp {}
+interface GameWidgetProp {id?:string}
 interface GameWidgetState {
 	gameMap:GameMap
 }
@@ -15,7 +15,7 @@ class GameWidget extends React.Component<GameWidgetProp, GameWidgetState> {
 	ws = new WebSocket(process.env.REACT_APP_SOCKET_SERVER as string);
 	
 	constructor(props: GameWidgetState) {
-        super(props)
+        super(props as any)
 		
         this.state = {
 			gameMap:new Map() as GameMap	
@@ -55,7 +55,7 @@ class GameWidget extends React.Component<GameWidgetProp, GameWidgetState> {
     /* UI Rendering*/
     public render() {						
 		return (		
-            <GameBoard cols={10} rows={10} gameMap={this.state.gameMap}></GameBoard> 
+            <GameBoard id={this.props.id} cols={10} rows={10} gameMap={this.state.gameMap}></GameBoard> 
         )
     }
 }

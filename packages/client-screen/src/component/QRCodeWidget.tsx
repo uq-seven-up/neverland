@@ -1,6 +1,6 @@
 import React from "react"
 
-interface QRCodeWidgetProp {}
+interface QRCodeWidgetProp {id?:string}
 
 interface QRCodeWidgetState {}
 
@@ -14,7 +14,7 @@ class QRCodeWidget extends React.Component<QRCodeWidgetProp, QRCodeWidgetState> 
     public render() {
 		let imageName = process.env.NODE_ENV === 'development' ? 'development-mobile-qr.png' : 'production-mobile-qr.png'		
 		return (
-		<section className="widget qrcode">
+		<section id={this.props.id} className="widget qrcode">
         	<div className="heading">
 				<h2>Scan to Interact</h2>
 				<figure></figure>

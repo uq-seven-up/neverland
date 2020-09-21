@@ -1,6 +1,6 @@
 import React from "react"
 
-interface WidgetContainerProp {}
+interface WidgetContainerProp {id?:string}
 interface WidgetContainerState {}
 
 /**
@@ -12,7 +12,7 @@ interface WidgetContainerState {}
 class WidgetContainer extends React.Component<WidgetContainerProp,WidgetContainerState> {
     public render() {
         return (
-        <div className="widget-container">
+        <div id={this.props.id} className="widget-container">
             {this.props.children}
         </div>
         )

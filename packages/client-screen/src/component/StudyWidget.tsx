@@ -7,7 +7,7 @@ interface SpaceAvailability {
 	[key: string]: string;
 }
 
-interface StudyWidgetProp {}
+interface StudyWidgetProp {id?:string}
 
 interface SpaceAvailabilityState {
 	spaceAvailability: SpaceAvailability[];
@@ -100,7 +100,7 @@ class StudyWidget extends React.Component<
 
 	public render() {
 		return (
-			<section className="widget">
+			<section id={this.props.id} className="widget">
 				<div className="heading">
 					<h2>UQ Study Spaces</h2>
 					<figure></figure>

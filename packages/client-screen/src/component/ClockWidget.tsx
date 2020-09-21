@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react';
 
 
 interface ClockWidgetProp {
-  name: string
+  name: string,
+  id?:string
 }
 
 /**
@@ -31,7 +32,7 @@ function ClockWidget(props:any) {
     
    //Return time
     return (
-		<section className="widget clock">
+		<section id={props.id} className="widget clock">
       {/* string modified for displaying only HH:MM */}
       <p>{date.toLocaleTimeString(navigator.language, {hour: '2-digit', minute: '2-digit'})}</p>
         </section>

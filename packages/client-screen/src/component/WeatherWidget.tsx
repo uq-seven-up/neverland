@@ -2,7 +2,8 @@ import React from "react"
 
 
 interface WeatherWidgetProp {
-  name: string
+  name: string,
+  id?:string
 }
 
 interface WeatherWidgetState {
@@ -88,7 +89,7 @@ class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetStat
     }
     
     return (
-      <section className="widget weather">
+      <section id={this.props.id} className="widget weather">
 		<div className="content">
 		
 			<div>

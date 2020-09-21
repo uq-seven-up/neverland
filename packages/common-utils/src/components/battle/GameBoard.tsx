@@ -6,7 +6,8 @@ import {GameMap} from '@7up/common-types';
 interface GameBoardProp {
 	rows:number, /* The game boards row count. */
 	cols:number,  /* The game boards column count. */
-	gameMap:GameMap
+	gameMap:GameMap,
+	id?:string
 }
 
 /**
@@ -40,7 +41,7 @@ class GameBoard extends React.Component<GameBoardProp> {
 		}
 				
 		return(
-		<div className="gameMap">
+		<div id={this.props.id} className="gameMap">
         	<table>
 				<tbody>
 					{rows}

@@ -14,21 +14,73 @@ body
 {
 	width:100vw;
 	height:100vh;
-	padding:30px;
 	box-sizing: border-box;	
 	background: rgb(147,124,179);
 	background: linear-gradient(347deg, rgba(147,124,179,1) 0%, rgba(81,44,123,1) 59%);
 }
 
-.widget-container
-{
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-content: flex-start;
-	flex-wrap: wrap;
-	
+#root{
+	display: grid;
+	grid-template-columns: 340px 300px 300px auto 300px;
+	grid-template-rows: 80px 200px 380px 300px auto;
 }
+
+#widget_clock{
+	grid-column-start: 1;
+	grid-column-end: 1;
+	grid-row-start: 1;
+	grid-row-end: 1;
+}
+#widget_weather{
+	display: flex;
+	grid-column-start: 1;
+	grid-column-end: 1;
+	grid-row-start: 2;
+	grid-row-end: 2;
+}
+#widget_bus_uq_lake{
+	grid-column-start: 2;
+	grid-column-end: 2;
+	grid-row-start: 1;
+	grid-row-end: 3;
+}
+#widget_bus_uq_chancellor{
+	grid-column-start: 3;
+	grid-column-end: 3;
+	grid-row-start: 1;
+	grid-row-end: 3;
+}
+#widget_rss{
+	grid-column-start: 5;
+	grid-column-end: 5;
+	grid-row-start: 1;
+	grid-row-end: 3;
+}
+#widget_study{
+	grid-column-start: 4;
+	grid-column-end: 4;
+	grid-row-start: 1;
+	grid-row-end: 3;
+}
+#widget_qr{
+	grid-column-start: 1;
+	grid-column-end: 1;
+	grid-row-start: 3;
+	grid-row-end: 3;
+}
+#widget_poll{
+	grid-column-start: 5;
+	grid-column-end: 5;
+	grid-row-start: 3;
+	grid-row-end: 3;
+}
+#widget_game{
+	grid-column-start: 2;
+	grid-column-end: 4;
+	grid-row-start: 3;
+	grid-row-end: 3;
+}
+
 
 /* ############################### */
 /* Standard widget styles. */

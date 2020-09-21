@@ -1,7 +1,6 @@
 import React from 'react';
 
 import WeatherWidget from './component/WeatherWidget';
-import WidgetContainer from './component/WidgetContainer';
 import RssWidget from './component/RssWidget';
 import ClockWidget from './component/ClockWidget';
 import QRCodeWidget from './component/QRCodeWidget';
@@ -13,20 +12,15 @@ import GameWidget from './component/GameWidget';
 function App() {
 	return (
 		<>
-			<WidgetContainer>
-				<ClockWidget name="Clock" />
-				<WeatherWidget name="Weather Widget PoC" />
-				<BusWidget name="UQ Lakes" />
-				<BusWidget name="UQ Chancellor's Place" />
-				<RssWidget />
-				<StudyWidget />
-			</WidgetContainer>
-
-			<WidgetContainer>
-				<QRCodeWidget/>
-				<PollWidget/>
-				<GameWidget/>
-			</WidgetContainer>
+			<ClockWidget id="widget_clock" name="Clock" />
+			<WeatherWidget id="widget_weather" name="Weather Widget PoC" />
+			<BusWidget id="widget_bus_uq_lake" name="UQ Lakes" />
+			<BusWidget id="widget_bus_uq_chancellor" name="UQ Chancellor's Place" />
+			<RssWidget id="widget_rss" />
+			<StudyWidget id="widget_study" />
+			<QRCodeWidget id="widget_qr"/>
+			<PollWidget id="widget_poll"/>
+			<GameWidget id="widget_game"/>
 		</>
 	);
 }

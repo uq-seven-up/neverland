@@ -1,21 +1,19 @@
 import React from "react"
+import {NavLink} from 'react-router-dom';
 
-function Menu(){
+const Menu = () => {
 
 return (
 
-<section className='section2'>
-    
+<div className='section2'>
     <div className='box4'>
-        <figure></figure>
+    <NavLink to='/PollView'><figure></figure></NavLink>
     </div>
-
     <div className='box5'>
-        <figure></figure>
+    <NavLink to='/GameClient'><figure></figure></NavLink>
     </div>
-    
-</section>
-)
+</div>
+);
 }   	
 
 export default Menu

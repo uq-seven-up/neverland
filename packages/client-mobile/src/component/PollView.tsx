@@ -127,6 +127,7 @@ class PollView extends React.Component<PollViewProp, PollViewState> {
 	{
 		return (
 			<>
+            <h1>Select your answer</h1>
 			{
 				this.state.poll.answer.map((answer:IPollOption) => (
 					<button key={answer.key} data-key={answer.key} onClick={this.handleClick}>{answer.response}</button>

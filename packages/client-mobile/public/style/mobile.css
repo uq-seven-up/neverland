@@ -10,7 +10,6 @@ body, h2, h1, .content{
 	font-weight: 500;
 	color: white;
 	text-align: center;
-	margin-top: 5vh;
 }
 
 body
@@ -21,6 +20,7 @@ body
 	background: rgb(147,124,179);
 	background: linear-gradient(347deg, rgba(147,124,179,1) 0%, rgba(81,44,123,1) 59%);
 }
+
 
 .section1 {
 	display: flex;
@@ -36,7 +36,6 @@ body
 	text-shadow: -3px 0 #896EAA, 0 3px #896EAA, 3px 0 #896EAA, 0 -3px #896EAA;
 	line-height: 0.9;
 	text-transform: uppercase;
-	/* text-shadow: 2px 2px 5px #896EAA; */
 }
 
 
@@ -55,78 +54,43 @@ body
 	flex-wrap: nowrap;
 	position: absolute; bottom: 0;
 	background-color: white;
-}
-
-.section2 h2 {
-	color: black;
-}
-
-.section2 .box4 {
-	height: 20vh;
-	width: 50vw;
-	
+	z-index: 1;
 }
 
 .section2 .box4 figure {
 	height: 20vh;
-	width: 40vw;
+	width: 50vw;
 	background-image: url('../gfx/pollicon.png');
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
 }
 
-.section2 .box5 {
-	height: 20vh;
-	width: 50vw;
-	
-}
-
 .section2 .box5 figure {
 	height: 20vh;
-	width: 40vw;
+	width: 50vw;
 	background-image: url('../gfx/gameicon.png');
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
 }
 
-#root
-{
-	display: flex;
-	width:100vw;
-	height:100vh;
-	box-sizing: border-box;	
-	justify-content: space-around;
-	align-items: flex-start;
-}
 
-
-/* h2
+h2
 {
 	font-family: 'Varta', sans-serif;	
 	font-weight:600;
 	font-size:28px;
 	color:white;
-} */
-
-section
-{
-	display: flex;
-	flex-direction: column;
-	justify-content: start;	
 }
-
-
 
 section button{
 	font-weight:500;
 	font-size:15px;
 	margin-bottom:15px;
 	box-sizing: border-box;
-	width: 70vw;
+	width: 60vw;
 }
-
 
 
 #chevron1 {
@@ -213,4 +177,3 @@ section button{
 	transform: skew(0deg, -35deg);
   }
 
-  

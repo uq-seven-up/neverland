@@ -14,7 +14,7 @@ Note: You could also use the provided docker container as a build environment, i
 
 --- 
 
-### Grab the source-code from Git Hub
+### Grab the source-code
 
 All shell commands should be run in the terminal appropriate for your operating system. i.e. Powershell (Windows) or Terminal/Console (Linux/Mac OS).
 

@@ -1,15 +1,18 @@
 import React from 'react';
 
-import GameClient from './component/GameClient'
 import PollView from './component/PollView'
+import FrontPage from './component/FrontPage'
+import Menu from './component/Menu'
 
 function App() {
   return (
     <>
-		<PollView></PollView>
-		<GameClient></GameClient>
+    <FrontPage />
+    <Menu />
+    {/* <PollView></PollView>  */}
     </>
   );
 }
+
 
 export default App;

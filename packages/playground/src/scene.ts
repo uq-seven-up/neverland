@@ -51,7 +51,7 @@ export default class HelloWorldScene extends Phaser.Scene
 		this.load.image("tiger", tigerImg);
 		this.load.image("red", particleImg);
 		
-		this.openWebSocket();	
+		//this.openWebSocket();	
 	}
 
 	create() {

@@ -1,5 +1,6 @@
 import React from "react"
-
+import { API } from '@7up/common-utils';
+import { AxiosResponse } from 'axios';
 
 interface WeatherWidgetProp {
   name: string,
@@ -11,41 +12,26 @@ interface WeatherWidgetState {
 }
 
 interface WeatherData {
-  name: string
-  main: { temp: number, feels_like:number}
-  weather: [{ main: string, description: string }]
-  sys: { country: string }
+  main: { temp: number,}
+  weather: [{ main: string}]
 }
 /**
  * This widget is a proof of concept implementation of a 
  * react component using a class.
  */
 class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetState> {
-  
-  private api = {
-    key: "876d2f560d0fdf408518c005b833fad6",
-    base: "https://api.openweathermap.org/data/2.5/"
-  }
-  
+    
   constructor(props: any) {
     super(props)
 
     this.state = {
       weather: {
-        name: "Brisbane",
-        main: { temp: 25, feels_like: 25} ,
-        weather: [{main: "cloud", description: "cloudy"}],
-        sys: {country: "AU"}}
+     
+        main: { temp: 25} ,
+        weather: [{ main: "cloud"}],
+      }
     }
   }
-
-    
-  /* ########################################################*/
-  /* React life-cycle event.*/
-  public componentDidMount(): void {
-    this.fetchWeather();
-  }
-  /* ########################################################*/
   private dateBuilder = (d: Date) => {
     let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -58,15 +44,78 @@ class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetStat
     return `${day}, ${date} ${month} ${year}`
   }
     
-  private fetchWeather() {
-  
-    fetch(`${this.api.base}weather?q=Brisbane&units=metric&APPID=${this.api.key}`)
-      .then(res => res.json())
-      .then(result => {
-        this.setState({ weather: result });
-      });
-
+    
+  /* ########################################################*/
+  /* React life-cycle event.*/
+  public componentDidMount(): void {
+    console.log('Component Did Mount');
+    // var stop_value = this.props.name === 'UQ Lakes' ? 'uqlakes' : 'chancellor';
+    this.callAPI('', 'GET', '/weather/weather-data');
   }
+  /* ########################################################*/
+/* ########################################################*/
+
+	/* ########################################################*/
+	/* Working methods. */
+	/**
+	 * Make an API call to the neverland REST server.
+	 *
+	 * @param name - An arbitrary identifier for this request, this value is passed through to the provide callback.
+	 * @param method - The HTTP method that will be used for the request.
+	 * @param endpoint - The API endpoint (route) which is called on the REST Server.
+	 * @param data - Optional: A simple object which is passed to the REST API inside of the request body.
+	 * @param hideBusy - Optional: not implemented yet. (suppresses the loading spinner)
+	 * @returns void
+	 */
+	private callAPI = (
+		name: string,
+		method: 'GET' | 'POST' | 'PUT' | 'DELETE',
+		endpoint: string,
+		data?: any,
+		hideBusy?: boolean,
+	): void => {
+		let baseUrl = (process.env.REACT_APP_NEVERMIND_API_BASE as any) as string;
+		new API(baseUrl).call(
+			method,
+			endpoint,
+			(response: AxiosResponse<any>) => {
+				if (response.status === 200) {
+					if (this.handleApiCallSuccess) {
+						this.handleApiCallSuccess(name, method, endpoint, response.data);
+					}
+				} else if (response.status === 500) {
+					alert('Server Error: 500');
+				} else {
+					alert(response.data.msg.displayTxt);
+				}
+			},
+			data,
+		);
+  };
+  
+  	/* ########################################################*/
+
+	/* ########################################################*/
+	/* Event Handlers. */
+	/**
+	 * This method is called by callAPI() afer a successfull response has been received from the REST Server.
+	 *
+	 * @param name - The name that was passed in to the callAPI method when this request was initiated.
+	 * @param method - The HTTP method that was passed in to the callAPI method when this request was initiated.
+	 * @param endpoint - The API endpoint (route) that was passed in to the callAPI method when this request was initiated.
+	 * @param result - The data received from the REST APIs response body.
+	 * @returns void
+	 */
+	private handleApiCallSuccess = (
+		name: string,
+		method: string,
+		endpoint: string,
+		result: any,
+	): void => {
+		this.setState({ weather: result.data });
+	};
+/* ########################################################*/
+
   
   /* ########################################################*/
   /* UI Rendering*/

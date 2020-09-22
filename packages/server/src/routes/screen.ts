@@ -63,22 +63,5 @@ router.get('/uqnews',async(req:Request,res:Response) => {
 	});
 });
 
-router.get('/weather', async(req: Request, res: Response) => {
-	const api = {
-		key: "449c1afcdfb1e4a46195ffa200b56b4e",
-		base: "https://api.openweathermap.org/data/2.5/"
-	}
-	try {
-		await fetch(`${api.base}weather?q=Brisbane&units=metric&APPID=${api.key}`)
-			.then(res => res.json())
-			.then(result => {
-				res.send(result);
-			
-			});
-	} catch (error) {
-		console.log('Some error occured fetching data from the news feed.')
-		express.response.sendStatus(500)
-	}
-});
 
 export = router;

@@ -23,7 +23,7 @@ interface WeatherData {
 class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetState> {
   
   private api = {
-    key: "449c1afcdfb1e4a46195ffa200b56b4e",
+    key: "876d2f560d0fdf408518c005b833fad6",
     base: "https://api.openweathermap.org/data/2.5/"
   }
   

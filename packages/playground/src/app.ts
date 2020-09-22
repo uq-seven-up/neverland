@@ -3,14 +3,16 @@ import HelloWorldScene from "./scene";
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
-	width: 800,
-	height: 600,
+	width: 896,
+	height: 448,
 	physics: {
 		default: 'arcade',
 		arcade: {
 			gravity: { y: 200 }
 		}
 	},
+	parent: 'phaser-game',
+	transparent:false,
 	scene: [HelloWorldScene]
 }
 

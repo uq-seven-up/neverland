@@ -21,6 +21,7 @@ function App() {
 			<QRCodeWidget id="widget_qr"/>
 			<PollWidget id="widget_poll"/>
 			<GameWidget id="widget_game"/>
+			<div id="phaser-game"></div>
 		</>
 	);
 }

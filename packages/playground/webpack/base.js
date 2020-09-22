@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
-  entry:"./src/index.ts",
+  entry:"./src/app.ts",
   mode: "development",
   devtool: "eval-source-map",
   output:{

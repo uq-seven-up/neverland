@@ -1,7 +1,7 @@
 {
   "name": "neverland-server",
   "version": "0.0.1",
-  "description": "Provides middlerware for the neverland uq interactive public screen.",
+  "description": "Provides middleware for the neverland uq interactive public screen.",
   "main": "index.js",
   "author": "Aurélie Teyssier, Christophe Sarasin,Marcel Scherzer, Sajjad Brohi, Sebastian Robayo Delgado, Sindre Gulbrandsen",
   "license": "MIT",

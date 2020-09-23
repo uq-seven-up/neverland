@@ -190,7 +190,7 @@ body {
 
 /* ================================= */
 /* Study Space Widget */
-.widget.study content .library {
+.widget.study .content .library {
 	background-color: #502984;
 }
 /* ================================= */

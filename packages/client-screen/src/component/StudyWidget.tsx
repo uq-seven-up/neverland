@@ -2,7 +2,7 @@ import React from 'react';
 
 import { API } from '@7up/common-utils';
 import { AxiosResponse } from 'axios';
-
+import ProgressBar from './ProgressBar';
 interface SpaceAvailability {
 	[key: string]: string;
 }
@@ -162,12 +162,7 @@ class StudyWidget extends React.Component<
 				</div>
 				<div className="content">
 					{this.renderTimings()}
-					{/* {Object.keys(this.state.spaceAvailability).map((key: any) => (
-						<div className="library">
-							<span>{`${key} `}</span>
-							<span>{`(${this.state.spaceAvailability[key]}%)`}</span>
-						</div>
-					))} */}
+					<ProgressBar />
 				</div>
 			</section>
 		);

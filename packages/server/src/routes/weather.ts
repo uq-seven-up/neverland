@@ -55,8 +55,8 @@ router.get('/weather', async (req: Request, res: Response) => {
 				weatherData!.status = result.weather[0].main as string;
 			});
 	} catch (error) {
-		console.log('Some error occured fetching data from the Weather API.')
-		res.status(500).send({ success: false, 'msg': 'Error fetching Weather data.',foo:API_URL,key:API_KEY})
+		console.log('Some error occured fetching data from the Weather API.',error)
+		res.status(500).send({ success: false, 'msg': 'Error fetching Weather data.',error})
 		
 	}
 

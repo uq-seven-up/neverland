@@ -18,6 +18,7 @@ router.get('/availability-data/', async (req: Request, res: Response) => {
 	const link = 'https://www.library.uq.edu.au/';
 
 	const browser = await puppeteer.launch({
+		args: ['--no-sandbox', '--disable-setuid-sandbox'],
 		headless: true,
 		slowMo: 100,
 		devtools: true,

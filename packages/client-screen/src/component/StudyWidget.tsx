@@ -7,7 +7,9 @@ interface SpaceAvailability {
 	[key: string]: string;
 }
 
-interface StudyWidgetProp {id?:string}
+interface StudyWidgetProp {
+	id?: string;
+}
 
 interface SpaceAvailabilityState {
 	spaceAvailability: SpaceAvailability[];
@@ -100,16 +102,16 @@ class StudyWidget extends React.Component<
 
 	public render() {
 		return (
-			<section id={this.props.id} className="widget">
+			<section id={this.props.id} className="widget study">
 				<div className="heading">
 					<h2>UQ Study Spaces</h2>
 					<figure></figure>
 				</div>
 				<div className="content">
 					{Object.keys(this.state.spaceAvailability).map((key: any) => (
-						<div>
-							<span>{`${key} = `}</span>
-							<span>{` ${this.state.spaceAvailability[key]}% filled`}</span>
+						<div className="library">
+							<span>{`${key} `}</span>
+							<span>{`(${this.state.spaceAvailability[key]}%)`}</span>
 						</div>
 					))}
 				</div>

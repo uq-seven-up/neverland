@@ -1,5 +1,6 @@
 import express = require('express');
 import { Request, Response } from 'express';
+import cors from 'cors';
 import WebSocket from 'ws';
 
 import {DB} from './controller/db';
@@ -28,14 +29,16 @@ new DB.Models.RssFeed();
 app.locals.game = new Game();
 
 /* Set headers to allows cross origin resource sharing (CORS) for the exposed REST API. */
-app.all('*', function (req: Request, res: Response, next: any) {
-	res.header('Access-Control-Allow-Origin', '*');
-	res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-	res.header('Access-Control-Allow-Headers', 'Content-Type,authorization');
-	next();
-});
+//app.all('*', function (req: Request, res: Response, next: any) {
+//	res.header('Access-Control-Allow-Origin', '*');
+//	res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+//	res.header('Access-Control-Allow-Headers', 'Content-Type,authorization');
+//	next();
+//});
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 
 /* Register REST routes. */
 app.use('/api/example', exampleRoutes);

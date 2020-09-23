@@ -1,0 +1,230 @@
+{
+	"textures": [
+		{
+			"image": "my-knight-0.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 64,
+				"h": 770
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "Walk_1.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 77
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 77
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 77
+					}
+				},
+				{
+					"filename": "Walk_2.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 77
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 77
+					},
+					"frame": {
+						"x": 0,
+						"y": 77,
+						"w": 64,
+						"h": 77
+					}
+				},
+				{
+					"filename": "Walk_3.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 77
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 77
+					},
+					"frame": {
+						"x": 0,
+						"y": 154,
+						"w": 64,
+						"h": 77
+					}
+				},
+				{
+					"filename": "Walk_4.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 77
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 77
+					},
+					"frame": {
+						"x": 0,
+						"y": 231,
+						"w": 64,
+						"h": 77
+					}
+				},
+				{
+					"filename": "Walk_5.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 77
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 77
+					},
+					"frame": {
+						"x": 0,
+						"y": 308,
+						"w": 64,
+						"h": 77
+					}
+				},
+				{
+					"filename": "Walk_6.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 77
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 77
+					},
+					"frame": {
+						"x": 0,
+						"y": 385,
+						"w": 64,
+						"h": 77
+					}
+				},
+				{
+					"filename": "Walk_7.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 77
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 77
+					},
+					"frame": {
+						"x": 0,
+						"y": 462,
+						"w": 64,
+						"h": 77
+					}
+				},
+				{
+					"filename": "Walk_8.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 77
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 77
+					},
+					"frame": {
+						"x": 0,
+						"y": 539,
+						"w": 64,
+						"h": 77
+					}
+				},
+				{
+					"filename": "Walk_9.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 77
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 77
+					},
+					"frame": {
+						"x": 0,
+						"y": 616,
+						"w": 64,
+						"h": 77
+					}
+				},
+				{
+					"filename": "Walk_10.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 77
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 77
+					},
+					"frame": {
+						"x": 0,
+						"y": 693,
+						"w": 64,
+						"h": 77
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:b9e33c8288665ed820f2b296d1d6c8a6:a4fde091673b8860c45901ab5da0ca11:2e3d44e77c3330f5fb6d4053febe1141$"
+	}
+}

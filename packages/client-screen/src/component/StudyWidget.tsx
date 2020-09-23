@@ -23,9 +23,10 @@ class StudyWidget extends React.Component<
 	StudyWidgetProp,
 	SpaceAvailabilityState
 > {
+	nonStLuciaLibraries: number[];
 	constructor(props: StudyWidgetProp) {
 		super(props);
-
+		this.nonStLuciaLibraries = [5, 6, 8, 9];
 		this.state = {
 			spaceAvailability: [],
 		};
@@ -100,6 +101,58 @@ class StudyWidget extends React.Component<
 	};
 	/* ########################################################*/
 
+	private renderTimings() {
+		if (this.state.spaceAvailability.length === 0) {
+			return (
+				<div>
+					<div className="library">
+						<span>{`Arch Music`}</span>
+						<span>{` (0%)`}</span>
+					</div>
+					<div className="library">
+						<span>{`Biol Sci`}</span>
+						<span>{` (0%)`}</span>
+					</div>
+					<div className="library">
+						<span>{`Central`}</span>
+						<span>{` (0%)`}</span>
+					</div>
+					<div className="library">
+						<span>{`DHEngSci`}</span>
+						<span>{` (0%)`}</span>
+					</div>
+					<div className="library">
+						<span>{`DuhigStudy`}</span>
+						<span>{` (0%)`}</span>
+					</div>
+					<div className="library">
+						<span>{`Law Library`}</span>
+						<span>{` (0%)`}</span>
+					</div>
+				</div>
+			);
+		} else {
+			return (
+				<div>
+					{Object.keys(this.state.spaceAvailability).map(
+						(key: any, index: number) => (
+							<div className="library">
+								{!this.nonStLuciaLibraries.includes(index) ? (
+									<div>
+										<span>{`${key} `}</span>
+										<span>{`(${this.state.spaceAvailability[key]}%)`}</span>
+									</div>
+								) : (
+									''
+								)}
+							</div>
+						),
+					)}
+				</div>
+			);
+		}
+	}
+
 	public render() {
 		return (
 			<section id={this.props.id} className="widget study">
@@ -108,12 +161,13 @@ class StudyWidget extends React.Component<
 					<figure></figure>
 				</div>
 				<div className="content">
-					{Object.keys(this.state.spaceAvailability).map((key: any) => (
+					{this.renderTimings()}
+					{/* {Object.keys(this.state.spaceAvailability).map((key: any) => (
 						<div className="library">
 							<span>{`${key} `}</span>
 							<span>{`(${this.state.spaceAvailability[key]}%)`}</span>
 						</div>
-					))}
+					))} */}
 				</div>
 			</section>
 		);

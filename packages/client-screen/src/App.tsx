@@ -13,7 +13,7 @@ function App() {
 	return (
 		<>
 			<ClockWidget id="widget_clock" name="Clock" />
-			<WeatherWidget id="widget_weather" name="Weather Widget PoC" />
+			{/* <WeatherWidget id="widget_weather" name="Weather Widget PoC" /> */}
 			<BusWidget id="widget_bus_uq_lake" name="UQ Lakes" />
 			<BusWidget id="widget_bus_uq_chancellor" name="UQ Chancellor's Place" />
 			<RssWidget id="widget_rss" />
@@ -21,6 +21,7 @@ function App() {
 			<QRCodeWidget id="widget_qr"/>
 			<PollWidget id="widget_poll"/>
 			<GameWidget id="widget_game"/>
+			<div id="phaser-game"></div>
 		</>
 	);
 }

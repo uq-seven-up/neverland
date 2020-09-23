@@ -80,6 +80,21 @@ body {
 	grid-row-end: 3;
 }
 #widget_game {
+	position: relative;
+	top: 0;
+	left: 0;
+	z-index: 2;
+	grid-column-start: 2;
+	grid-column-end: 4;
+	grid-row-start: 3;
+	grid-row-end: 3;
+}
+
+#phaser-game {
+	position: relative;
+	top: 0;
+	left: 0;
+	z-index: 1;
 	grid-column-start: 2;
 	grid-column-end: 4;
 	grid-row-start: 3;

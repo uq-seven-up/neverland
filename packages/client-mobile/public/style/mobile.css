@@ -5,9 +5,11 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Varta:wght@300;500;600&display=swap');
 
-body, h2, .content{
+body, h2, h1, .content{
 	font-family: 'Varta', sans-serif;
 	font-weight: 500;
+	color: white;
+	text-align: center;
 }
 
 body
@@ -19,15 +21,60 @@ body
 	background: linear-gradient(347deg, rgba(147,124,179,1) 0%, rgba(81,44,123,1) 59%);
 }
 
-#root
-{
+
+.section1 {
 	display: flex;
-	width:100vw;
-	height:100vh;
-	box-sizing: border-box;	
-	justify-content: center;
-	align-items: center;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-content: center;
+	flex-wrap: nowrap;
+	background-color: #502984;
+	height: 80vh;
 }
+
+.section1 h1 {
+	text-shadow: -3px 0 #896EAA, 0 3px #896EAA, 3px 0 #896EAA, 0 -3px #896EAA;
+	line-height: 0.9;
+	text-transform: uppercase;
+}
+
+
+.section1 .box1 {
+	height: 50vh;
+	font-size: 15vw;
+	margin-top: 50px;
+}
+
+
+.section2 {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-content: center;
+	flex-wrap: nowrap;
+	position: absolute; bottom: 0;
+	background-color: white;
+	z-index: 1;
+}
+
+.section2 .box4 figure {
+	height: 20vh;
+	width: 50vw;
+	background-image: url('../gfx/pollicon.png');
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.section2 .box5 figure {
+	height: 20vh;
+	width: 50vw;
+	background-image: url('../gfx/gameicon.png');
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
 
 h2
 {
@@ -37,18 +84,96 @@ h2
 	color:white;
 }
 
-section
-{
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;	
-}
-
 section button{
-	font-family: 'Varta', sans-serif;
-	height:35px;
 	font-weight:500;
 	font-size:15px;
 	margin-bottom:15px;
 	box-sizing: border-box;
+	width: 60vw;
 }
+
+
+#chevron1 {
+	position: relative;
+	text-align: center;
+	height: 30px;
+	width: 100vw;
+	
+  }
+  #chevron1:before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 50%;
+	background:#3C1F63;
+	transform: skew(0deg, 35deg);
+  }
+  #chevron1:after {
+	content: '';
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 100%;
+	width: 50%;
+	background: #3C1F63 ;
+	transform: skew(0deg, -35deg);
+  }
+
+  #chevron2 {
+	position: relative;
+	text-align: center;
+	height: 30px;
+	width: 100vw;
+	
+  }
+  #chevron2:before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 50%;
+	background:#634C82;
+	transform: skew(0deg, 35deg);
+  }
+  #chevron2:after {
+	content: '';
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 100%;
+	width: 50%;
+	background: #634C82;
+	transform: skew(0deg, -35deg);
+  }
+
+
+  #chevron3 {
+	position: relative;
+	text-align: center;
+	margin-bottom: 0px;
+	height: 20vh;
+	width: 100vw;
+  }
+  #chevron3:before {
+	content: '';
+	position: absolute;
+	left: 0;
+	height: 150%;
+	width: 50%;
+	background: #82709B;
+	transform: skew(0deg, 35deg);
+  }
+
+  #chevron3:after {
+	content: '';
+	position: absolute;
+	right: 0;
+	height: 150%;
+	width: 50%;
+	background:#82709B;
+	transform: skew(0deg, -35deg);
+  }
+

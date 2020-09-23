@@ -5,318 +5,140 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Varta:wght@300;500;600&display=swap');
 
+html body main {
+	margin: 0;
+	padding: 0;
+}
+
 body,
 h2,
 .content {
-	font-family: 'Varta', sans-serif;
-	font-weight: 500;
+	font-family: 'Noto Sans KR', sans-serif;
 }
 
 body {
-	width: 100vw;
+	background: #8b5ffd;
+}
+
+main {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	height: 100vh;
+	width: 100vw;
 	box-sizing: border-box;
-	background: rgb(147, 124, 179);
-	background: linear-gradient(
-		347deg,
-		rgba(147, 124, 179, 1) 0%,
-		rgba(81, 44, 123, 1) 59%
-	);
 }
 
 #root {
 	display: grid;
-	grid-template-columns: 340px 300px 300px auto 300px;
-	grid-template-rows: 80px 200px 380px 300px auto;
+	grid-template-columns: 340px 300px minmax(0, 1fr);
+	grid-template-rows: 240px 380px minmax(0, 1fr);
+	grid-gap: 20px;
+	width: 100%;
+	max-width: 1400px;
 }
 
-#widget_clock {
+#g_cellbox_1 {
 	grid-column-start: 1;
-	grid-column-end: 1;
-	grid-row-start: 1;
-	grid-row-end: 1;
-}
-#widget_weather {
-	display: flex;
-	grid-column-start: 1;
-	grid-column-end: 1;
-	grid-row-start: 2;
-	grid-row-end: 2;
-}
-#widget_bus_uq_lake {
-	grid-column-start: 2;
 	grid-column-end: 2;
 	grid-row-start: 1;
-	grid-row-end: 3;
-}
-#widget_bus_uq_chancellor {
-	grid-column-start: 3;
-	grid-column-end: 3;
-	grid-row-start: 1;
-	grid-row-end: 3;
-}
-#widget_rss {
-	grid-column-start: 5;
-	grid-column-end: 5;
-	grid-row-start: 1;
-	grid-row-end: 3;
-}
-#widget_study {
-	grid-column-start: 4;
-	grid-column-end: 4;
-	grid-row-start: 1;
-	grid-row-end: 3;
-}
-#widget_qr {
-	grid-column-start: 1;
-	grid-column-end: 1;
-	grid-row-start: 3;
-	grid-row-end: 3;
-}
-#widget_poll {
-	grid-column-start: 5;
-	grid-column-end: 5;
-	grid-row-start: 3;
-	grid-row-end: 3;
-}
-#widget_game {
-	position: relative;
-	top: 0;
-	left: 0;
-	z-index: 2;
-	grid-column-start: 2;
-	grid-column-end: 4;
-	grid-row-start: 3;
-	grid-row-end: 3;
+	grid-row-end: 2;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
 }
 
-#phaser-game {
-	position: relative;
-	top: 0;
-	left: 0;
-	z-index: 1;
+#g_cellbox_2 {
+	grid-column-start: 2;
+	grid-column-end: 3;
+	grid-row-start: 1;
+	grid-row-end: 2;
+}
+
+#g_cellbox_3 {
+	grid-column-start: 3;
+	grid-column-end: 4;
+	grid-row-start: 1;
+	grid-row-end: 2;
+}
+
+#g_cellbox_4 {
+	grid-column-start: 1;
+	grid-column-end: 2;
+	grid-row-start: 2;
+	grid-row-end: 4;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+}
+
+#g_cellbox_5 {
 	grid-column-start: 2;
 	grid-column-end: 4;
-	grid-row-start: 3;
-	grid-row-end: 3;
+	grid-row-start: 2;
+	grid-row-end: 4;
+	background-color: white;
+	border: 1px solid white;
+}
+
+.g_cell {
+	display: block;
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+	padding: 20px;
+	box-sizing: border-box;
+	background-color: #7a44ee;
+	border: 1px solid #7a44ee;
+	border-radius: 20px;
 }
 
 /* ############################### */
 /* Standard widget styles. */
 .widget {
-	display: inline-block;
-	overflow: hidden;
-	width: 250px;
-	margin: 20px 40px 20px 20px;
-}
-
-.widget .heading {
-	display: flex;
-	background-color: white;
-	padding: 0px 10px;
-	height: 35px;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-	border: 1px solid white;
-	border-radius: 15px 15px 0px 0px;
-}
-
-.widget .heading h2 {
-	position: relative;
-	top: 3px;
-	left: 0; /* ensure content appears as vertically centered.*/
-	color: #59545d;
-	font-size: 1.3em;
-}
-
-.widget .heading figure {
-	height: 30px;
-	width: 30px;
-	background-image: url('../gfx/uq-logo-40x40.png');
-	background-size: contain;
-	background-repeat: no-repeat;
-}
-
-.widget .content {
-	min-height: 40px;
-	background-color: #b1a8b9;
-	border: 1px solid #b1a8b9;
-	border-radius: 0px 0px 15px 15px;
-	padding: 10px 10px 15px 10px;
-	color: #59545d;
-}
-
-.widget .content li {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	background-color: #59545d;
-	color: white;
-	margin: 2px 0;
-	padding: 2px 10px;
-	font-weight: 300;
-	font-size: 1em;
-}
-
-.widget .content li div {
-	margin-top: 2px;
-} /* ensure content appears as vertically centered.*/
-
-/* ############################### */
-/* Specific widget styles.*/
-
-/* ================================= */
-/* News Widget */
-.widget.news {
-	flex-grow: 1;
-}
-.widget.news .heading h2 {
-	color: #502984;
-}
-
-.widget.news li {
-	background-color: #502984;
-}
-/* ================================= */
-
-/* ================================= */
-/* Transit Widget */
-.widget.transit figure {
-	color: #502984;
-	background-image: url('../gfx/bus-icon-40x40.png');
-}
-/* ================================= */
-
-/* ================================= */
-/* Study Space Widget */
-.widget.study .content .library {
-	background-color: #502984;
-}
-/* ================================= */
-
-/* Placement of boxes: */
-/* ================================= */
-/* Clock Widget */
-.widget.clock {
-	width: 15vw;
-	color: #fff;
-	font-size: 90px;
-	font-weight: 900;
-	margin-left: 40px;
-}
-
-.widget.clock p {
-	text-align: center;
-	font-size: 50px;
-	font-weight: bold;
-}
-
-/* ================================= */
-/* Placeholder image */
-.Interactivity.widget {
-	flex-grow: 2;
+	width: 100%;
+	height: 100%;
 	box-sizing: border-box;
-	min-height: 250px;
 }
 
-.Interactivity.widget .content {
+/* QR Code Widget */
+.widget.qrcode img {
+	width: 100%;
+	border: 1px solid white;
 	border-radius: 10px;
 }
 
-.Interactivity.widget .placeholder {
-	background-image: url('../gfx/Placeholder-image.png');
-	background-size: contain;
-	background-repeat: no-repeat;
-	padding: 50px;
-	min-height: 400px;
-	background-position: center;
+/* Clock Widget */
+.widget.clock {
+	height: 75px;
 }
 
-/* ================================= */
-/*Weather widget */
-
-/* ================================= */
-/*News widget */
-
-/* ================================= */
-/* QR Code Widget */
-.widget.qrcode {
-	width: 300px;
-	text-align: center;
-}
-
-.widget.qrcode .content {
-	text-align: center;
-}
-
-.widget.qrcode img {
-	width: 100%;
-}
-/* ================================= */
-
-/* ================================= */
-/* Poll Widget */
-.widget.poll {
-	width: 300px;
-}
-
-.widget.poll .content h2 {
-	font-size: 20px;
-	color: black;
-	text-align: center;
-	margin-bottom: 10px;
-}
-
-.widget.poll table {
-	width: 100%;
-}
-
-.widget.poll td {
-	color: #0e0e0e;
-	padding: 4px;
-}
-
-.widget.poll tr:nth-child(odd) td {
-	background-color: #59545d;
+.widget.clock h2 {
 	color: white;
-}
-
-.widget.poll td:last-child {
-	font-size: 20px;
-	color: black;
+	font-size: 40px;
+	font-weight: 400;
 	text-align: center;
 }
-/* ================================= */
 
-/* ================================= */
 /* Weather Widget */
-.widget.weather .content {
-	border: none;
-	background-color: inherit;
-	padding: 0;
-	margin: 0;
-	max-width: 400px;
-}
-
-.location-box .date {
-	color: #fff;
-	font-size: 35px;
-	font-weight: 500;
+.widget.weather .date {
 	text-align: center;
-	text-shadow: 1px 1px rgba(203, 203, 238, 0.5);
+	font-size: 20px;
+	color: white;
+	margin-bottom: 15px;
 }
 
 .weather-box {
 	display: flex;
 	justify-content: center;
-	margin: 5px 15px;
-
-	border-radius: 16px;
+	flex-grow: 2;
 }
 
-.weather-box .sunny-icon {
-	background-image: url('../gfx/Sunny-icon.png');
+.weather-box .sunny-icon,
+.weather-box .rainy-icon,
+.weather-box .cloudy-icon {
 	background-size: contain;
 	background-repeat: no-repeat;
 	margin: 5px 2px;
@@ -324,41 +146,25 @@ body {
 	filter: drop-shadow(2px 2px 2px #555555);
 }
 
+.weather-box .sunny-icon {
+	background-image: url('../gfx/Sunny-icon.png');
+}
+
 .weather-box .rainy-icon {
 	background-image: url('../gfx/Rainy-icon.png');
-	background-size: contain;
-	background-repeat: no-repeat;
-	margin: 5px 2px;
-	padding: 40px 40px;
 	filter: drop-shadow(3px 3px 3px #555555);
 }
 
 .weather-box .cloudy-icon {
 	background-image: url('../gfx/Cloudy-icon.png');
-	background-size: contain;
-	background-repeat: no-repeat;
-	margin: 5px 2px;
-	padding: 40px 40px;
 	filter: drop-shadow(2px 2px 2px #555555);
 }
 
 .weather-box .temp {
 	padding: 25px 25px;
 	color: #fff;
+	font-family: 'Noto Sans KR', sans-serif;
 	font-size: 45px;
-	font-weight: 900;
+	font-weight: 400;
 	text-shadow: 1px 1px rgba(203, 203, 238, 0.5);
-}
-
-/* ================================= */
-
-.weatherTime {
-	display: flex;
-	flex-direction: column;
-}
-
-.pollContainer {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
 }

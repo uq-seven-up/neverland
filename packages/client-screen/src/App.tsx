@@ -1,27 +1,35 @@
 import React from 'react';
 
 import WeatherWidget from './component/WeatherWidget';
-import RssWidget from './component/RssWidget';
+
 import ClockWidget from './component/ClockWidget';
 import QRCodeWidget from './component/QRCodeWidget';
 import PollWidget from './component/PollWidget';
 import BusWidget from './component/BusWidget';
 import StudyWidget from './component/StudyWidget';
-import GameWidget from './component/GameWidget';
 
 function App() {
 	return (
 		<>
-			<ClockWidget id="widget_clock" name="Clock" />
-			<WeatherWidget id="widget_weather" name="Weather Widget PoC" />
-			<BusWidget id="widget_bus_uq_lake" name="UQ Lakes" />
-			<BusWidget id="widget_bus_uq_chancellor" name="UQ Chancellor's Place" />
-			<RssWidget id="widget_rss" />
-			<StudyWidget id="widget_study" />
-			<QRCodeWidget id="widget_qr"/>
-			<PollWidget id="widget_poll"/>
-			<GameWidget id="widget_game"/>
-			<div id="phaser-game"></div>
+			<div id="g_cellbox_1" className="g_cell">
+				<ClockWidget id="widget_clock" name="Clock" />
+				<WeatherWidget id="widget_weather" name="Weather Widget PoC" />
+			</div>
+			<div id="g_cellbox_2" className="g_cell">
+				<BusWidget id="widget_bus_uq" name="UQ Lakes" />							
+			</div>
+			<div id="g_cellbox_3" className="g_cell">			
+				<StudyWidget id="widget_study" />
+			</div>
+			
+			<div id="g_cellbox_4" className="g_cell">
+				<PollWidget id="widget_poll"/>
+				<QRCodeWidget id="widget_qr"/>			
+			</div>
+
+			<div id="g_cellbox_5" className="g_cell">
+				<div id="phaser-game"></div>
+			</div>
 		</>
 	);
 }

@@ -145,23 +145,13 @@ class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetStat
     }
     
     return (
-      <section id={this.props.id} className="widget weather">
-		<div className="content">
-		
-			<div>
-				<div className="location-box">
-					<div className="date">{this.dateBuilder(new Date())}</div>
-				</div>
-          <div className="weather-box">
-            <div className={iconName}></div>  
-            <div className="temp">
-        
+      <section id={this.props.id} className="widget weather">						
+		<div className="date">{this.dateBuilder(new Date())}</div>				
+        <div className="weather-box">
+    		<div className={iconName}></div>  
+            <div className="temp">        
               {Math.round(this.state.weather.temp)}°c 
-            </div>				
-
-				</div>
-			</div>
-		 
+            </div>
 		</div>
 	</section>
     )

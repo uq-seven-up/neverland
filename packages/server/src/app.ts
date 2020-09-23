@@ -9,6 +9,7 @@ import gameRoutes = require('./routes/game');
 import pollRoutes = require('./routes/poll');
 import screenRoutes = require('./routes/screen');
 import StudySpaceRoutes = require('./routes/study-space');
+import weatherRoutes = require('./routes/weather');
 import {CompassHeading} from '@7up/common-types';
 
 import {Game} from './lib/Game';
@@ -43,6 +44,7 @@ app.use('/api/poll', pollRoutes);
 app.use('/api/screen', screenRoutes);
 app.use('/api/bus', busRoutes);
 app.use('/api/studyspace', StudySpaceRoutes);
+app.use('/api/weather', weatherRoutes);
 
 const server = app.listen(PORT, function () {
 	console.log(`Express is listening on port ${PORT}`);

@@ -49,9 +49,7 @@ class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetStat
   /* ########################################################*/
   /* React life-cycle event.*/
   public componentDidMount(): void {
-    console.log('Component Did Mount Weather');
 		this.callAPI('', 'GET', '/weather/weather');
-	
   }
   /* ########################################################*/
 /* ########################################################*/
@@ -90,9 +88,7 @@ class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetStat
 					alert('Server Error: 500');
 	
 				} else {
-					alert(response.data.msg.displayTxt);
-					
-					
+					alert(response.data.msg.displayTxt);	
 				}
 			},
 			data,

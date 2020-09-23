@@ -38,7 +38,7 @@ router.get('/weather', async (req: Request, res: Response) => {
 			}
 		}else
 		{
-			weatherData = new DB.Models.Weather({_id:WEATHER_ID});
+			weatherData = await new DB.Models.Weather({_id:WEATHER_ID});
 		}						
 	} catch(error)
 	{
@@ -51,12 +51,13 @@ router.get('/weather', async (req: Request, res: Response) => {
 		await fetch(API_URL)
 			.then((res:any) => res.json())
 			.then((result:any) => {
+				console.log(weatherData,result);
 				weatherData!.temp = result.main.temp as number;
 				weatherData!.status = result.weather[0].main as string;
 			});
 	} catch (error) {
-		console.log('Some error occured fetching data from the Weather API.',error)
-		res.status(500).send({ success: false, 'msg': 'Error fetching Weather data.',error})
+		console.log('Some error occured fetching data from the Weather API.',error);
+		res.status(500).send({ success: false, 'msg': 'Error fetching Weather data.'})
 		
 	}
 

@@ -43,20 +43,19 @@ router.get('/weather', async (req: Request, res: Response) => {
 	} catch(error)
 	{
 		console.log('Error fetching WEATHER cache.');
-		res.status(500).send({success:false,'msg':'Error fetching WEATHER cache.',error:error})
+		res.status(500).send({success:false,'msg':'Error fetching WEATHER cache.'})
 	}
 
 
 	try {
 		await fetch(API_URL)
 			.then((res:any) => res.json())
-			.then((result:any) => {
-				console.log(weatherData,result);
+			.then((result:any) => {				
 				weatherData!.temp = result.main.temp as number;
 				weatherData!.status = result.weather[0].main as string;
 			});
 	} catch (error) {
-		console.log('Some error occured fetching data from the Weather API.',error);
+		console.log('Some error occured fetching data from the Weather API.');
 		res.status(500).send({ success: false, 'msg': 'Error fetching Weather data.'})
 		
 	}

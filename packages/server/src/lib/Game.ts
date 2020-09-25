@@ -4,8 +4,9 @@ import {Ship} from '@7up/common-utils';
 
 export class Game 
 {
+	public screen_socket_id:string;
 	constructor() {
-		
+		this.screen_socket_id = '';
 	}
 
 	readonly ROWS = 10;
@@ -81,6 +82,27 @@ export class Game
 		ship.move(heading,distance);
 		this.validateShipMovement(ship);		
 	}
+
+
+	public broadCast(ws:any,data:any):void
+	{					
+		ws.clients.forEach(function each(client:any) {
+			if (client.readyState === WebSocket.OPEN) {			
+				client.send(JSON.stringify(data));
+			}
+		});
+	}
+
+	public sendToScreen(ws:any,data:string):void
+	{	
+						
+		ws.clients.forEach(function each(client:any) {
+			if (client.uuid === 'GAME_SCREEN' && client.readyState === WebSocket.OPEN) {			
+				client.send(data);
+			}
+		});
+	}
+
 
 	public broadCastGameMap(ws:any):any
 	{

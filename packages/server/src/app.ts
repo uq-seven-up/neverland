@@ -59,21 +59,31 @@ const server = app.listen(PORT, function () {
 app.locals.ws = new WebSocket.Server({noServer:true,clientTracking:true}) as WebSocket.Server;
 app.locals.ws.on('connection', (socket : GameWebSocket, req:Request) => {
 	socket.uuid = req.url.replace('/?uuid=', '');
-	if(socket.uuid !== '' && socket.uuid !== '/' && socket.uuid !== 'POLL_WIDGET')
+	console.log(socket.uuid)
+	
+	if(socket.uuid !== '' && socket.uuid !== 'POLL_WIDGET' && socket.uuid !== 'GAME_SCREEN')
 	{
 		console.log('adding player',socket.uuid);
 		app.locals.game.addPlayer(socket.uuid);
+		
 	}
 	app.locals.game.broadCastGameMap(app.locals.ws);
 	
 	socket.on('close', (code:number,reason:string) => {
 		console.log('Closing',socket.uuid);
-		app.locals.game.removePlayer(socket.uuid);
-		app.locals.game.broadCastGameMap(app.locals.ws);
+		app.locals.game.sendToScreen(app.locals.ws,`g|x|${socket.uuid}`);	
 	});
 
 	socket.on('message', message => {
+		/* Route game controller messages directly to the screen. */
+		if(message.toString().startsWith('g|'))
+		{
+			app.locals.game.sendToScreen(app.locals.ws,message);
+			return;
+		}
+		
 		const data = JSON.parse(message.toString());
+				
 		if(data.widget)
 		{
 			switch(data.widget)
@@ -82,7 +92,7 @@ app.locals.ws.on('connection', (socket : GameWebSocket, req:Request) => {
 					let shipId = socket.uuid;
 					switch(data.action)
 					{
-						case 'move':
+						case 'old_move':
 							let heading = CompassHeading.North
 							switch(data.heading)
 							{
@@ -110,6 +120,12 @@ app.locals.ws.on('connection', (socket : GameWebSocket, req:Request) => {
 						case 'drive':
 							app.locals.game.driveShip(shipId);
 							app.locals.game.broadCastGameMap(app.locals.ws);							
+							break;
+						case 'join':
+							app.locals.game.broadCast(app.locals.ws,{type:'game',action:'add_player',player:data.player});
+							break;
+						case 'move':
+							app.locals.game.broadCast(app.locals.ws,{type:'game',action:'move',player:data.player});
 							break;
 						default:
 							console.log(message);

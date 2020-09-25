@@ -9,9 +9,9 @@ const tileSheetImg = require('./assets/my-sprite-sheet.png')
 const spikeImg = require('./assets/spike.png')
 const tileMapJson = require('./assets/level1.json')
 
-
 export default class HelloWorldScene extends Phaser.Scene
 {
+	private environment = 'develop';
 	private MAX_PLAYERS = 8;
 	private cursors!:any;
 	private player:Player[];
@@ -25,6 +25,7 @@ export default class HelloWorldScene extends Phaser.Scene
 	{
 		super('OurGame');
 		this.player = [];	
+		console.log(process.env.NODE_ENV);
 	}
 
 	private addPlayer(id:string)
@@ -93,7 +94,13 @@ export default class HelloWorldScene extends Phaser.Scene
 	}
 
 	private openWebSocket():void{
-		this.ws = new WebSocket('ws://localhost:3080/?uuid=GAME_SCREEN');
+		if(this.environment === 'DEVELOP')
+		{
+			this.ws = new WebSocket('ws://localhost:3080/?uuid=GAME_SCREEN');
+		}else{
+			this.ws = new WebSocket('ws://neverland.scherzer.com.au:3080/?uuid=GAME_SCREEN');
+		}
+
 		this.ws.onopen = () => {
 			console.log('Scene connected to socket server.')
 		}
@@ -145,8 +152,10 @@ export default class HelloWorldScene extends Phaser.Scene
 	}
 
 	preload() {		
-		// this.load.setBaseURL('/client-screen/game');
-
+		if(this.environment !== 'DEVELOP')
+		{
+			this.load.setBaseURL('/client-screen/game');
+		}
 		this.load.tilemapTiledJSON('map', tileMapJson);
 		this.load.image('tiles',tileSheetImg);
 		this.load.image('spike',spikeImg);

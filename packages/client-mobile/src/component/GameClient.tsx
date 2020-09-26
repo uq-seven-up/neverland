@@ -63,16 +63,43 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		}		
 	}
 
+	private handleTouchStart = (e:React.TouchEvent<HTMLElement>) =>
+	{
+		e.preventDefault && e.preventDefault();
+      	e.stopPropagation && e.stopPropagation();
+      	let heading = e.currentTarget.dataset.heading;
+		
+		if(this.ws.readyState === this.ws.OPEN){			
+			this.ws.send(`g|${heading}|${this.state.playerId}`);
+		}		
+	}
+
+	private handleTouchEnd = (e:React.TouchEvent<HTMLElement>) =>
+	{
+		e.preventDefault();
+		let heading = e.currentTarget.dataset.heading;
+		
+		if(this.ws.readyState === this.ws.OPEN){			
+			this.ws.send(`g|h|${this.state.playerId}`);
+		}		
+	}
+
+
 	/* ########################################################*/
     /* UI Rendering */
 	public render() {		
 		return(
 		<section>
-        	<h1>Game client</h1>		
-			<button data-heading="n" onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>North</button>
-			<button data-heading="e" onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>East</button>
-			<button data-heading="s" onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>South</button>
-			<button data-heading="w" onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>West</button>			
+        	<div className="gamePad">
+				<div data-heading="n" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8593;</div>
+				<div data-heading="ne" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8599;</div>
+				<div data-heading="e" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8594;</div>
+				<div data-heading="se" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8600;</div>
+				<div data-heading="s" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8595;</div>
+				<div data-heading="sw" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8601;</div>
+				<div data-heading="w" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8592;</div>
+				<div data-heading="nw" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8598;</div>			
+			</div>
 		</section>
         )
     }

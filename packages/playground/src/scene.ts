@@ -40,7 +40,7 @@ export default class HelloWorldScene extends Phaser.Scene
 
 	private collissionDetected(src:any,trg:any)
 	{
-		console.log("sluuuts");
+		console.log("boom");
 	}
 
 	private playerMove(id:string,heading:string)
@@ -226,8 +226,8 @@ export default class HelloWorldScene extends Phaser.Scene
 		{
 			this.player[i].update();
 			//this.physics.overlap(this.player[i].sprite,this.obstacle,() => {console.log('fuck')});
-			this.physics.collide(this.player[i].sprite,this.obstacle,() => {console.log('fuck')});
-			this.physics.collide(this.obstacle,this.obstacle,() => {console.log('fuck')});			
+			this.physics.collide(this.player[i].sprite,this.obstacle,() => {console.log('player collided')});
+			this.physics.collide(this.obstacle,this.obstacle,() => {console.log('obstacles collided')});			
 		}						
 	}
 }

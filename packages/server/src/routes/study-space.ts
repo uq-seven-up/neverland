@@ -26,6 +26,7 @@ router.get('/availability-data/', async (req: Request, res: Response) => {
 
 	try {
 		const page = await browser.newPage();
+		await page.setDefaultNavigationTimeout(0);
 		const librarySpaceAvailability: LibrarySpaceObject = {};
 
 		await page.goto(link);

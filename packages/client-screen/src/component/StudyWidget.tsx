@@ -2,7 +2,8 @@ import React from 'react';
 
 import { API } from '@7up/common-utils';
 import { AxiosResponse } from 'axios';
-import ProgressBar from './ProgressBar';
+import ProgressBarComponent from './ProgressBar';
+
 interface SpaceAvailability {
 	[key: string]: string;
 }
@@ -24,9 +25,22 @@ class StudyWidget extends React.Component<
 	SpaceAvailabilityState
 > {
 	nonStLuciaLibraries: number[];
+	colorsList: string[];
+	libraryVisibilityToggle: boolean;
 	constructor(props: StudyWidgetProp) {
 		super(props);
 		this.nonStLuciaLibraries = [5, 6, 8, 9];
+		this.colorsList = [
+			'#7EFAFA',
+			'#FCB1FC',
+			'#BCFA7E',
+			'#FBB03B',
+			'#EDE57E',
+			'#00D6CA',
+			'#7A44EE',
+			'#00D6CA',
+		];
+		this.libraryVisibilityToggle = true;
 		this.state = {
 			spaceAvailability: [],
 		};
@@ -36,8 +50,8 @@ class StudyWidget extends React.Component<
 	/* React life-cycle event.*/
 	public componentDidMount(): void {
 		console.log('Component Did Mount');
-		// var stop_value = this.props.name === 'UQ Lakes' ? 'uqlakes' : 'chancellor';
 		this.callAPI('', 'GET', '/studyspace/availability-data');
+		this.callTimeInterval();
 	}
 	/* ########################################################*/
 
@@ -80,6 +94,31 @@ class StudyWidget extends React.Component<
 	};
 	/* ########################################################*/
 
+	private callTimeInterval() {
+		// console.log('reached interval');
+
+		setInterval(() => {
+			const libraryElements = document.querySelectorAll('.library');
+			libraryElements.forEach((library: any, index: number) => {
+				if (this.libraryVisibilityToggle) {
+					if (index < 3) {
+						library.classList.add('hide');
+					} else {
+						library.classList.remove('hide');
+					}
+				} else {
+					if (index < 3) {
+						library.classList.remove('hide');
+					} else {
+						library.classList.add('hide');
+					}
+				}
+			});
+			this.libraryVisibilityToggle = !this.libraryVisibilityToggle;
+			console.log(libraryElements);
+		}, 3000);
+		// console.log(x);
+	}
 	/* ########################################################*/
 	/* Event Handlers. */
 	/**
@@ -106,28 +145,28 @@ class StudyWidget extends React.Component<
 			return (
 				<div>
 					<div className="library">
+						<ProgressBarComponent key={0} color="#7EFAFA" filled={100} />
 						<span>{`Arch Music`}</span>
-						<span>{` (0%)`}</span>
 					</div>
 					<div className="library">
+						<ProgressBarComponent key={1} color="#FCB1FC" filled={100} />
 						<span>{`Biol Sci`}</span>
-						<span>{` (0%)`}</span>
 					</div>
 					<div className="library">
+						<ProgressBarComponent key={2} color="#BCFA7E" filled={100} />
 						<span>{`Central`}</span>
-						<span>{` (0%)`}</span>
 					</div>
-					<div className="library">
+					<div className="library hide">
+						<ProgressBarComponent key={3} color="#FBB03B" filled={100} />
 						<span>{`DHEngSci`}</span>
-						<span>{` (0%)`}</span>
 					</div>
-					<div className="library">
+					<div className="library hide">
+						<ProgressBarComponent key={4} color="#EDE57E" filled={100} />
 						<span>{`DuhigStudy`}</span>
-						<span>{` (0%)`}</span>
 					</div>
-					<div className="library">
+					<div className="library hide">
+						<ProgressBarComponent key={5} color="#00D6CA" filled={100} />
 						<span>{`Law Library`}</span>
-						<span>{` (0%)`}</span>
 					</div>
 				</div>
 			);
@@ -139,8 +178,11 @@ class StudyWidget extends React.Component<
 							<div className="library">
 								{!this.nonStLuciaLibraries.includes(index) ? (
 									<div>
+										<ProgressBarComponent
+											color={this.colorsList[index]}
+											filled={this.state.spaceAvailability[key]}
+										/>
 										<span>{`${key} `}</span>
-										<span>{`(${this.state.spaceAvailability[key]}%)`}</span>
 									</div>
 								) : (
 									''
@@ -160,10 +202,7 @@ class StudyWidget extends React.Component<
 					<h2>UQ Study Spaces</h2>
 					<figure></figure>
 				</div>
-				<div className="content">
-					{this.renderTimings()}
-					<ProgressBar />
-				</div>
+				<div className="content">{this.renderTimings()}</div>
 			</section>
 		);
 	}

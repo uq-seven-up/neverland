@@ -168,3 +168,37 @@ main {
 	font-weight: 400;
 	text-shadow: 1px 1px rgba(203, 203, 238, 0.5);
 }
+
+/* Study Widget */
+
+.widget.study {
+	text-align: center;
+}
+
+.widget.study {
+	color: white;
+}
+
+.widget.study h2 {
+	font-size: 1.5rem;
+}
+
+.widget.study .library {
+	display: inline-block;
+	opacity: 1;
+	transition: opacity 1s linear;
+	transform: translate(0);
+}
+
+.widget.study .library.hide {
+	position: absolute;
+	transform: translate(9999px);
+	opacity: 0;
+}
+
+.progress-bar {
+	margin: 20px;
+	width: 100px;
+	height: 100px;
+	position: relative;
+}

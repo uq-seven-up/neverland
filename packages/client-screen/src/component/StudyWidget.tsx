@@ -94,9 +94,13 @@ class StudyWidget extends React.Component<
 	};
 	/* ########################################################*/
 
+	/* ########################################################*/
+	/* Toggle ProgressBar Visibility*/
+	/**
+	 * Toggles visibility of the first 3 and the last 3 libraries
+	 * in intervals by toggling their class
+	 */
 	private callTimeInterval() {
-		// console.log('reached interval');
-
 		setInterval(() => {
 			const libraryElements = document.querySelectorAll('.library');
 			libraryElements.forEach((library: any, index: number) => {
@@ -117,8 +121,9 @@ class StudyWidget extends React.Component<
 			this.libraryVisibilityToggle = !this.libraryVisibilityToggle;
 			console.log(libraryElements);
 		}, 3000);
-		// console.log(x);
 	}
+	/* ########################################################*/
+
 	/* ########################################################*/
 	/* Event Handlers. */
 	/**
@@ -140,6 +145,15 @@ class StudyWidget extends React.Component<
 	};
 	/* ########################################################*/
 
+	/* ########################################################*/
+	/* UI Rendering*/
+	/**
+	 * Render the progress bars depending on whether the API call
+	 * has been made or not. Split up from the main render method
+	 * to keep the code modular.
+	 *
+	 * @returns JSX element
+	 */
 	private renderTimings() {
 		if (this.state.spaceAvailability.length === 0) {
 			return (

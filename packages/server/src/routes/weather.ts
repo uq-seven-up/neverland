@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import {DB} from '../controller/db'
 import { IWeather } from '../models/weather';
 import fetch from "node-fetch";
-
+//const fetch = require('node-fetch');
 
 
 /**
@@ -38,25 +38,25 @@ router.get('/weather', async (req: Request, res: Response) => {
 			}
 		}else
 		{
-			weatherData = new DB.Models.Weather({_id:WEATHER_ID});
+			weatherData = await new DB.Models.Weather({_id:WEATHER_ID});
 		}						
 	} catch(error)
 	{
 		console.log('Error fetching WEATHER cache.');
-		res.status(500).send({success:false,'msg':'Error fetching WEATHER cache.',error:error})
+		res.status(500).send({success:false,'msg':'Error fetching WEATHER cache.'})
 	}
 
 
 	try {
 		await fetch(API_URL)
-			.then(res => res.json())
-			.then(result => {
+			.then((res:any) => res.json())
+			.then((result:any) => {				
 				weatherData!.temp = result.main.temp as number;
 				weatherData!.status = result.weather[0].main as string;
 			});
 	} catch (error) {
-		console.log('Some error occured fetching data from the Weather API.')
-		res.status(500).send({ success: false, 'msg': 'Error fetching Weather data.' })
+		console.log('Some error occured fetching data from the Weather API.');
+		res.status(500).send({ success: false, 'msg': 'Error fetching Weather data.'})
 		
 	}
 

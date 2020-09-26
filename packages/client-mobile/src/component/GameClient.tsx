@@ -3,7 +3,7 @@ import {CFKitUtil} from '@7up/common-utils';
 
 interface GameClientProp {}
 interface GameClientState {
-	dataFromServer:any
+	playerId:string
 }
 
 
@@ -20,22 +20,22 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		https://github.com/facebook/react/issues/12856#issuecomment-613145789
 		*/
 		this.state = {
-			dataFromServer:'none'	
+			playerId:CFKitUtil.createGUID()	
         }
     }
 
     /* ########################################################*/
     /* React life-cycle methods.*/
     public componentDidMount(): void {
-		this.ws = new WebSocket(process.env.REACT_APP_SOCKET_SERVER as string + '?uuid=' + CFKitUtil.createGUID());
+		this.ws = new WebSocket(process.env.REACT_APP_SOCKET_SERVER as string + '?uuid=' + this.state.playerId);
 		this.ws.onopen = () => {
+			this.ws.send(`g|j|${this.state.playerId}`);
 			console.log('Game client connected to server.')
 		}
 
 		this.ws.onmessage = (evt:any) => {
 			// listen to data sent from the websocket server
-			const message = JSON.parse(evt.data)
-			this.setState({dataFromServer: message})			
+			// const message = JSON.parse(evt.data)		
 		}
 
 		this.ws.onclose = () => {
@@ -50,41 +50,16 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		e.preventDefault();
 		let heading = e.currentTarget.dataset.heading;
 		
-		if(this.ws.readyState === this.ws.OPEN){
-			let data = {
-				widget:"game",
-				action:"move",
-				heading:heading
-			}
-			this.ws.send(JSON.stringify(data));
+		if(this.ws.readyState === this.ws.OPEN){			
+			this.ws.send(`g|${heading}|${this.state.playerId}`);
 		}		
 	}
 
-	private handleClickDrive = (e:React.MouseEvent<HTMLElement>) =>
+	private handleClickStop = (e:React.MouseEvent<HTMLElement>) =>
 	{
-		e.preventDefault();
-		if(this.ws.readyState === this.ws.OPEN){
-			let data = {
-				widget:"game",
-				action:"drive"
-			}
-			this.ws.send(JSON.stringify(data));
-			console.log('Data Sent',data)
-		}		
-	}
-
-	private handleClickTurn = (e:React.MouseEvent<HTMLElement>) =>
-	{
-		e.preventDefault();
-		let direction = e.currentTarget.dataset.direction;
-		
-		if(this.ws.readyState === this.ws.OPEN){
-			let data = {
-				widget:"game",
-				action:"turn",
-				direction:direction
-			}
-			this.ws.send(JSON.stringify(data));		
+		e.preventDefault();		
+		if(this.ws.readyState === this.ws.OPEN){			
+			this.ws.send(`g|h|${this.state.playerId}`);
 		}		
 	}
 
@@ -94,13 +69,10 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		return(
 		<section>
         	<h1>Game client</h1>		
-			<button data-heading="N" onClick={this.handleClickMove}>North</button>
-			<button data-heading="E" onClick={this.handleClickMove}>East</button>
-			<button data-heading="S" onClick={this.handleClickMove}>South</button>
-			<button data-heading="W" onClick={this.handleClickMove}>West</button>
-			<button onClick={this.handleClickDrive}>Drive</button>
-			<button data-direction="left" onClick={this.handleClickTurn}>Left</button>
-			<button data-direction="right" onClick={this.handleClickTurn}>Right</button>
+			<button data-heading="n" onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>North</button>
+			<button data-heading="e" onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>East</button>
+			<button data-heading="s" onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>South</button>
+			<button data-heading="w" onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>West</button>			
 		</section>
         )
     }

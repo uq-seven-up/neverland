@@ -1,20 +1,21 @@
 import * as Phaser from "phaser";
 import Player from "./lib/Player"
 
-const tigerImg = require('./assets/Happy_Tiger.gif')
 const playerAtlas = require('./assets/my-knight.json')
 const playerSheetImg = require('./assets/my-knight-0.png')
 const particleImg = require('./assets/muzzleflash3.png')
 const tileSheetImg = require('./assets/my-sprite-sheet.png')
-const spikeImg = require('./assets/spike.png')
+const donutImg = require('./assets/donut.png')
 const tileMapJson = require('./assets/level1.json')
 
 export default class HelloWorldScene extends Phaser.Scene
 {
-	private environment = 'develop';
+	private environment = 'DEVELOP';
 	private MAX_PLAYERS = 8;
 	private cursors!:any;
 	private player:Player[];
+	private obstacle:Phaser.Physics.Arcade.Sprite[];
+	private boom!:any;
 	private ws!:WebSocket;
 	private map!:Phaser.Tilemaps.Tilemap;
 	private layer:any = null;
@@ -23,8 +24,9 @@ export default class HelloWorldScene extends Phaser.Scene
 	private walkAnim!:any;
 	constructor()
 	{
-		super('OurGame');
+		super({key:'MyScene',active:true});
 		this.player = [];	
+		this.obstacle = [];
 		console.log(process.env.NODE_ENV);
 	}
 
@@ -32,10 +34,13 @@ export default class HelloWorldScene extends Phaser.Scene
 	{
 		if(this.player.length >= this.MAX_PLAYERS) return;
 
-		let player = new Player(id);
-		player.sprite = this.add.sprite(50,200,'player');
-		player.sprite.play("walk");
-		this.player.push(player);
+		let player = new Player(id,this);
+		this.player.push(player);		
+	}
+
+	private collissionDetected(src:any,trg:any)
+	{
+		console.log("sluuuts");
 	}
 
 	private playerMove(id:string,heading:string)
@@ -158,10 +163,8 @@ export default class HelloWorldScene extends Phaser.Scene
 		}
 		this.load.tilemapTiledJSON('map', tileMapJson);
 		this.load.image('tiles',tileSheetImg);
-		this.load.image('spike',spikeImg);
-		this.load.atlas('player',playerSheetImg,playerAtlas);
-	
-		this.load.image("tiger", tigerImg);
+		this.load.image('donut',donutImg);
+		this.load.atlas('player',playerSheetImg,playerAtlas);			
 		this.load.image("red", particleImg);
 		
 		this.openWebSocket();	
@@ -171,28 +174,28 @@ export default class HelloWorldScene extends Phaser.Scene
 		/* Listen to cursor key events (arrow keys) */
 		this.cursors = this.input.keyboard.createCursorKeys();
 		
+		this.physics.world.setBoundsCollision(true,true,true,true);
+
 		/* Load tiles from a tile map. */
 		this.map = this.make.tilemap({ key: 'map' });
 		const tileset = this.map.addTilesetImage('my_simple_game','tiles');		
 		const groundLayer = this.map.createStaticLayer('MyGround', tileset, 0, 0);
 		
-		/* Add player texture atlas. */
+		this.obstacle.push(this.physics.add.sprite(450,300,'donut'));
+		this.obstacle[0].setCollideWorldBounds(true);
+		this.obstacle[0].setBounce(0.3,0.3);
+		this.obstacle[0].body.isCircle = true;
+
+		this.obstacle.push(this.physics.add.sprite(250,100,'donut'));
+		this.obstacle[1].setCollideWorldBounds(true);
+		this.obstacle[1].setBounce(0.3,0.3);
+		this.obstacle[1].body.isCircle = true;
 		
-		// this.player = this.physics.add.sprite(50, 300, 'player');
+		this.obstacle.push(this.physics.add.sprite(850,90,'donut'));
+		this.obstacle[2].setCollideWorldBounds(true);
+		this.obstacle[2].setBounce(0.3,0.3);
+		this.obstacle[2].body.isCircle = true;
 		
-		/* Attach animation to player. */
-		this.walkAnim = this.anims.create({
-			key: "walk",
-			frameRate: 7,
-			frames: this.anims.generateFrameNames("player", {
-				prefix: "Walk_",
-				suffix: ".png",
-				start: 1,
-				end: 10,
-				zeroPad: 1
-			}),
-			repeat: -1
-		});
 		
 		
 		
@@ -221,7 +224,10 @@ export default class HelloWorldScene extends Phaser.Scene
 	update(){		
 		for(var i=0;i<this.player.length;i++)
 		{
-			this.player[i].update();			
-		}
+			this.player[i].update();
+			//this.physics.overlap(this.player[i].sprite,this.obstacle,() => {console.log('fuck')});
+			this.physics.collide(this.player[i].sprite,this.obstacle,() => {console.log('fuck')});
+			this.physics.collide(this.obstacle,this.obstacle,() => {console.log('fuck')});			
+		}						
 	}
 }

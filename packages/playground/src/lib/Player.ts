@@ -4,6 +4,7 @@ export default class Player{
 
 	private _id:string;
 	private _sprite!:Phaser.GameObjects.Sprite;
+	private _speed:number = 1.5;
 	private _speed_x:number;
 	private _speed_y:number;
 
@@ -35,35 +36,35 @@ export default class Player{
 		{
 			case 'n':
 				this._speed_x = 0;
-				this._speed_y = -1;
+				this._speed_y = -1 * this._speed;
 				break;
 			case 'ne':
-				this._speed_x = 1;
-				this._speed_y = -1;
+				this._speed_x = 1 * this._speed;
+				this._speed_y = -1 * this._speed;
 				break;
 			case 'e':
-				this._speed_x = 1;
+				this._speed_x = 1 * this._speed;
 				this._speed_y = 0;
 				break;
 			case 'se':
-				this._speed_x = 1;
-				this._speed_y = 1;
+				this._speed_x = 1 * this._speed;
+				this._speed_y = 1 * this._speed;
 				break;
 			case 's':
 				this._speed_x = 0;
-				this._speed_y = 1;
+				this._speed_y = 1 * this._speed;
 				break;
 			case 'sw':
-				this._speed_x = -1;
-				this._speed_y = 1;
+				this._speed_x = -1 * this._speed;
+				this._speed_y = 1 * this._speed;
 				break;
 			case 'w':
-				this._speed_x = -1;
+				this._speed_x = -1 * this._speed;
 				this._speed_y = 0;
 				break;
 			case 'nw':
-				this._speed_x = -1;
-				this._speed_y = -1;
+				this._speed_x = -1 * this._speed;
+				this._speed_y = -1 * this._speed;
 				break;
 			default:
 				this._speed_x = 0;

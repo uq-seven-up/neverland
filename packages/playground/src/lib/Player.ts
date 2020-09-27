@@ -7,12 +7,14 @@ export default class Player{
 	private _speed:number = 120;
 	private _speed_x:number;
 	private _speed_y:number;
+	private _score:number;
 
 	constructor(id:string,scene:Phaser.Scene)
 	{
 		this._id = id;
 		this._speed_x = 0;
 		this._speed_y = 0;
+		this._score = 0;
 
 		scene.anims.create({
 			key: "walk",
@@ -28,6 +30,7 @@ export default class Player{
 		});
 
 		this._sprite = scene.physics.add.sprite(50,200,'player');		
+		this._sprite.setName(this._id);
 		this._sprite.setCollideWorldBounds(true);
 		this._sprite.play("walk");
 	}
@@ -46,6 +49,14 @@ export default class Player{
 
 	public set sprite(value:Phaser.Physics.Arcade.Sprite) {
 		this._sprite = value;
+	}
+
+	public set score(value:number) {
+		this._score = value;
+	}
+
+	public get score() {
+		return this._score;
 	}
 
 	public move(heading:string){

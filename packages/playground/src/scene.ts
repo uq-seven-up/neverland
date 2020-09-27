@@ -171,6 +171,7 @@ export default class HelloWorldScene extends Phaser.Scene
 		{
 			this.load.setBaseURL('/client-screen/game');
 		}
+		
 		this.load.tilemapTiledJSON('map', tileMapJson);
 		this.load.image('tiles',tilesImg);
 		this.load.image('cookie',cookieImg);

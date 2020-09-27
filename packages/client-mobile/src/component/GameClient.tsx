@@ -1,9 +1,5 @@
 import React from "react"
-import useSound from 'use-sound';
 import {CFKitUtil} from '@7up/common-utils';
-import boopSfx from '../sound/chime.mp3'
-// require soundfile from '../sound/chime.wav'
-
 
 interface GameClientProp {}
 interface GameClientState {
@@ -39,9 +35,23 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 
 		this.ws.onmessage = (evt:any) => {
 			// listen to data sent from the websocket server
-			// const message = JSON.parse(evt.data)	
-			new Audio('/client-mobile/sound/chime.mp3').play();
-			console.log(evt.data)	
+			let message = evt.data as string;
+			if(message.startsWith('c|'))
+			{
+				let data = message.split('|');
+				if(data[1] === 'v')
+				{
+					switch(data[3])
+					{
+						case '200':
+							new Audio('/client-mobile/sound/chime.mp3').play();
+							console.log('hello')
+							break;
+						default:
+					}
+					
+				}	
+			}
 		}
 
 		this.ws.onclose = () => {

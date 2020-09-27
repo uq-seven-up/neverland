@@ -79,7 +79,7 @@ app.locals.ws.on('connection', (socket : GameWebSocket, req:Request) => {
 
 	socket.on('close', (code:number,reason:string) => {
 		console.log('Closing',socket.uuid);
-		app.locals.socketUtil.sendToScreen(app.locals.ws,`g|x|${socket.uuid}`);	
+		app.locals.socketUtil.sendToGameScreen(app.locals.ws,`g|x|${socket.uuid}`);	
 	});
 });
 

@@ -4,9 +4,12 @@ import Player from "./lib/Player"
 const playerAtlas = require('./assets/my-knight.json')
 const playerSheetImg = require('./assets/my-knight-0.png')
 const particleImg = require('./assets/muzzleflash3.png')
-const tileSheetImg = require('./assets/my-sprite-sheet.png')
+const tileSheetImg = require('./assets/tiles.png')
+const muffinImg = require('./assets/muffin.png')
+const lollyImg = require('./assets/lolly.png')
+const cookieImg = require('./assets/cookie.png')
 const donutImg = require('./assets/donut.png')
-const tileMapJson = require('./assets/level1.json')
+const tileMapJson = require('./assets/level2.json')
 
 export default class HelloWorldScene extends Phaser.Scene
 {
@@ -22,6 +25,7 @@ export default class HelloWorldScene extends Phaser.Scene
 	private safetile = 14;
 	private dots:any = null;
 	private walkAnim!:any;
+	private candyGroup!:Phaser.Physics.Arcade.Group;
 	constructor()
 	{
 		super({key:'MyScene',active:true});
@@ -163,10 +167,12 @@ export default class HelloWorldScene extends Phaser.Scene
 		}
 		this.load.tilemapTiledJSON('map', tileMapJson);
 		this.load.image('tiles',tileSheetImg);
+		this.load.image('muffin',muffinImg);
+		this.load.image('lolly',lollyImg);
+		this.load.image('cookie',cookieImg);
 		this.load.image('donut',donutImg);
 		this.load.atlas('player',playerSheetImg,playerAtlas);			
 		this.load.image("red", particleImg);
-		
 		this.openWebSocket();	
 	}
 
@@ -179,14 +185,14 @@ export default class HelloWorldScene extends Phaser.Scene
 		/* Load tiles from a tile map. */
 		this.map = this.make.tilemap({ key: 'map' });
 		const tileset = this.map.addTilesetImage('my_simple_game','tiles');		
-		const groundLayer = this.map.createStaticLayer('MyGround', tileset, 0, 0);
+		const groundLayer = this.map.createStaticLayer('ground', tileset, 0, 0);
 		
-		this.obstacle.push(this.physics.add.sprite(450,300,'donut'));
+		this.obstacle.push(this.physics.add.sprite(150,90,'donut'));
 		this.obstacle[0].setCollideWorldBounds(true);
 		this.obstacle[0].setBounce(0.3,0.3);
 		this.obstacle[0].body.isCircle = true;
 
-		this.obstacle.push(this.physics.add.sprite(250,100,'donut'));
+		this.obstacle.push(this.physics.add.sprite(700,100,'donut'));
 		this.obstacle[1].setCollideWorldBounds(true);
 		this.obstacle[1].setBounce(0.3,0.3);
 		this.obstacle[1].body.isCircle = true;
@@ -196,7 +202,16 @@ export default class HelloWorldScene extends Phaser.Scene
 		this.obstacle[2].setBounce(0.3,0.3);
 		this.obstacle[2].body.isCircle = true;
 		
-		
+		this.candyGroup = this.physics.add.group({
+			allowGravity: false,
+			immovable: true
+		  });
+
+		const candyObjects = this.map.getObjectLayer('candy')['objects'];
+		candyObjects.forEach(candyObject => {
+			// Add new spikes to our sprite group, change the start y position to meet the platform						
+			const candy = this.candyGroup.create(candyObject.x!, candyObject.y! + 200 - candyObject.height!, candyObject.type).setOrigin(0, 0);
+		  });
 		
 		
 		
@@ -227,7 +242,10 @@ export default class HelloWorldScene extends Phaser.Scene
 			this.player[i].update();
 			//this.physics.overlap(this.player[i].sprite,this.obstacle,() => {console.log('fuck')});
 			this.physics.collide(this.player[i].sprite,this.obstacle,() => {console.log('player collided')});
-			this.physics.collide(this.obstacle,this.obstacle,() => {console.log('obstacles collided')});			
+			this.physics.collide(this.obstacle,this.obstacle,() => {console.log('obstacles collided')});
+			this.physics.collide(this.obstacle,this.candyGroup,() => {console.log('candy collided')});
+			
+			
 		}						
 	}
 }

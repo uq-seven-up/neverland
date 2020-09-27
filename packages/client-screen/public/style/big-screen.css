@@ -1,43 +1,44 @@
-@import url("global.css") screen;
-@import url("game.css") screen;
+@import url('global.css') screen;
+@import url('game.css') screen;
 /* big-screen.css */
 /* Styles definitions for content shown on the large public display. */
 
 @import url('https://fonts.googleapis.com/css2?family=Varta:wght@300;500;600&display=swap');
 
-html body main{
-	margin:0;
-	padding:0;
+html body main {
+	margin: 0;
+	padding: 0;
 }
 
-body, h2, .content{
+body,
+h2,
+.content {
 	font-family: 'Noto Sans KR', sans-serif;
 }
 
-body
-{	
-	background:#8B5FFD;
+body {
+	background: #8b5ffd;
 }
 
-main{
+main {
 	display: flex;
 	justify-content: center;
-	align-items: center;	
-	height:100vh;
-	width:100vw;
+	align-items: center;
+	height: 100vh;
+	width: 100vw;
 	box-sizing: border-box;
 }
 
-#root{
-	display: grid;		
+#root {
+	display: grid;
 	grid-template-columns: 340px 300px minmax(0, 1fr);
-	grid-template-rows: 240px 380px minmax(0, 1fr);	
-	grid-gap: 20px;	
+	grid-template-rows: 240px 380px minmax(0, 1fr);
+	grid-gap: 20px;
 	width: 100%;
-	max-width:1761px;
+	max-width: 1761px;
 }
 
-#g_cellbox_1{	
+#g_cellbox_1 {
 	grid-column-start: 1;
 	grid-column-end: 2;
 	grid-row-start: 1;
@@ -48,21 +49,21 @@ main{
 	align-items: center;
 }
 
-#g_cellbox_2{
+#g_cellbox_2 {
 	grid-column-start: 2;
 	grid-column-end: 3;
 	grid-row-start: 1;
 	grid-row-end: 2;
 }
 
-#g_cellbox_3{
+#g_cellbox_3 {
 	grid-column-start: 3;
 	grid-column-end: 4;
 	grid-row-start: 1;
 	grid-row-end: 2;
 }
 
-#g_cellbox_4{
+#g_cellbox_4 {
 	grid-column-start: 1;
 	grid-column-end: 2;
 	grid-row-start: 2;
@@ -73,101 +74,130 @@ main{
 	align-items: center;
 }
 
-#g_cellbox_5{
+#g_cellbox_5 {
 	grid-column-start: 2;
 	grid-column-end: 4;
 	grid-row-start: 2;
 	grid-row-end: 4;
-	padding:0;	
+	padding: 0;
 }
 
-.g_cell
-{
-	display: block;	
+.g_cell {
+	display: block;
 	overflow: hidden;
 	width: 100%;
 	height: 100%;
-	padding:20px;
-	box-sizing: border-box;	
-	background-color:#7A44EE;
-	border:1px solid #7A44EE;
+	padding: 20px;
+	box-sizing: border-box;
+	background-color: #7a44ee;
+	border: 1px solid #7a44ee;
 	border-radius: 20px;
 }
 
 /* ############################### */
 /* Standard widget styles. */
-.widget
-{
+.widget {
 	width: 100%;
 	height: 100%;
 	box-sizing: border-box;
 }
 
 /* QR Code Widget */
-.widget.qrcode img
-{
-	width:100%;
-	border:1px solid white;
+.widget.qrcode img {
+	width: 100%;
+	border: 1px solid white;
 	border-radius: 10px;
 }
 
-
 /* Clock Widget */
-.widget.clock
-{
-	height:75px;	
+.widget.clock {
+	height: 75px;
 }
 
-.widget.clock h2
-{
-	color:white;
-	font-size:40px;
+.widget.clock h2 {
+	color: white;
+	font-size: 40px;
 	font-weight: 400;
 	text-align: center;
 }
 
 /* Weather Widget */
-.widget.weather .date{
+.widget.weather .date {
 	text-align: center;
-	font-size:20px;
-	color:white;
-	margin-bottom:15px;
+	font-size: 20px;
+	color: white;
+	margin-bottom: 15px;
 }
 
-.weather-box {	
-	display:flex;
+.weather-box {
+	display: flex;
 	justify-content: center;
 	flex-grow: 2;
 }
 
-.weather-box .sunny-icon,  .weather-box .rainy-icon, .weather-box .cloudy-icon
-{
+.weather-box .sunny-icon,
+.weather-box .rainy-icon,
+.weather-box .cloudy-icon {
 	background-size: contain;
 	background-repeat: no-repeat;
-    margin: 5px 2px;
+	margin: 5px 2px;
 	padding: 40px 40px;
-	filter: drop-shadow(2px 2px 2px #555555); 
+	filter: drop-shadow(2px 2px 2px #555555);
 }
 
 .weather-box .sunny-icon {
-	background-image: url('../gfx/Sunny-icon.png');	
+	background-image: url('../gfx/Sunny-icon.png');
 }
 
 .weather-box .rainy-icon {
 	background-image: url('../gfx/Rainy-icon.png');
-	filter: drop-shadow(3px 3px 3px #555555); 
+	filter: drop-shadow(3px 3px 3px #555555);
 }
 
 .weather-box .cloudy-icon {
 	background-image: url('../gfx/Cloudy-icon.png');
-	filter: drop-shadow(2px 2px 2px #555555); 
+	filter: drop-shadow(2px 2px 2px #555555);
 }
 
 .weather-box .temp {
-    padding: 25px 25px;
-	color: #FFF;
+	padding: 25px 25px;
+	color: #fff;
 	font-family: 'Noto Sans KR', sans-serif;
-    font-size: 45px;
-    font-weight: 400;
+	font-size: 45px;
+	font-weight: 400;
 	text-shadow: 1px 1px rgba(203, 203, 238, 0.5);
+}
+
+/* Study Widget */
+
+.widget.study {
+	text-align: center;
+}
+
+.widget.study {
+	color: white;
+}
+
+.widget.study h2 {
+	font-size: 1.5rem;
+}
+
+.widget.study .library {
+	display: inline-block;
+	opacity: 1;
+	transition: opacity 1s linear;
+	transform: translate(0);
+}
+
+.widget.study .library.hide {
+	position: absolute;
+	transform: translate(9999px);
+	opacity: 0;
+}
+
+.progress-bar {
+	margin: 20px;
+	width: 100px;
+	height: 100px;
+	position: relative;
 }

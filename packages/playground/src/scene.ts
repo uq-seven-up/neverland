@@ -15,7 +15,7 @@ const tilesImg = require('./assets/tiles.png')
 
 const tileMapJson = require('./assets/level2.json')
 
-export default class HelloWorldScene extends Phaser.Scene
+export default class MainWorldScene extends Phaser.Scene
 {
 	private MAX_PLAYERS = 8;
 	private cursors!:any;
@@ -276,6 +276,9 @@ export default class HelloWorldScene extends Phaser.Scene
 			
 			this.scoreText[0].text = 'Team 1: ' + player.score;
 			candyObj.destroy();	
+			if (this.ws.readyState === WebSocket.OPEN) {
+				this.ws.send(`c|v|${player.id}|200|`);
+			}
 		}				
 	}
 

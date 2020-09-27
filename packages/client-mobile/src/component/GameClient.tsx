@@ -35,7 +35,8 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 
 		this.ws.onmessage = (evt:any) => {
 			// listen to data sent from the websocket server
-			// const message = JSON.parse(evt.data)		
+			// const message = JSON.parse(evt.data)	
+			console.log(evt.data)	
 		}
 
 		this.ws.onclose = () => {
@@ -77,8 +78,7 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 	private handleTouchEnd = (e:React.TouchEvent<HTMLElement>) =>
 	{
 		e.preventDefault();
-		let heading = e.currentTarget.dataset.heading;
-		
+
 		if(this.ws.readyState === this.ws.OPEN){			
 			this.ws.send(`g|h|${this.state.playerId}`);
 		}		

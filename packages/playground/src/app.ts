@@ -1,5 +1,5 @@
 import * as Phaser from "phaser";
-import HelloWorldScene from "./scene";
+import MainWorldScene from "./scene";
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
@@ -14,9 +14,7 @@ const config: Phaser.Types.Core.GameConfig = {
 	},
 	parent: 'phaser-game',
 	transparent:false,
-	scene: [HelloWorldScene]
+	scene: [MainWorldScene]
 }
-
-console.log('Hello World')
 
 export default new Phaser.Game(config)

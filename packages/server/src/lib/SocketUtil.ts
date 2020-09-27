@@ -25,7 +25,7 @@ Position:
 	sw: Move player south west.
 	w : Move player west.
 	nw: Move player north west.
-	h : Move player north.
+	h : Stop player.
 	x : Exit game.
 	v: Game event.
 2 = Identifier for the websocket. When connecting the identifier is passed as the url
@@ -42,10 +42,10 @@ g|n|WER12334PSK
 
 Notify the controller used by player on socket uuid WER12334PSK that the player picker up a candy.
 
-c|ev|WER12334PSK|200
+c|v|WER12334PSK|200
 
 Notify all game controllers that the game is over.
-b|ea||100
+b|v||100
 
 */
 export class SocketUtil 
@@ -72,9 +72,10 @@ export class SocketUtil
 	public routeGameMessage(ws:any,message:string):void
 	{						
 		let data = message.split('|');
+		
 		ws.clients.forEach(function each(client:GameWebSocket) {
 			if (client.uuid === data[2] && client.readyState === WebSocket.OPEN) {			
-				client.send(data);
+				client.send(message);
 			}
 		});
 	}

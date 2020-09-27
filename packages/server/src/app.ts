@@ -14,6 +14,14 @@ import screenRoutes = require('./routes/screen');
 import StudySpaceRoutes = require('./routes/study-space');
 import weatherRoutes = require('./routes/weather');
 
+/* 
+This is the entry point for the server application which 
+manages a Restful API as well as a Websockets Server.
+
+The server mediates communication between clients and the big screen as
+well as managing data storage within a Mongo DB as well as aquiring data from 
+third party sources.
+*/
 const app: express.Application = express();
 const PORT = 3080;
 
@@ -44,13 +52,13 @@ const server = app.listen(PORT, function () {
 	console.log(`Express is listening on port ${PORT}`);
 });
 
-
 /* Configure the Websocket Server. (A reference to the web sockets server is
 	 attached to the locals scope allowing the ws server to be accessible within routes.) 
 */
 app.locals.ws = new WebSocket.Server({noServer:true,clientTracking:true}) as WebSocket.Server;
 app.locals.ws.on('connection', (socket : GameWebSocket, req:Request) => {
 	socket.uuid = req.url.replace('/?uuid=', '');
+	console.log('new connection',socket.uuid);
 
 	/* Identify and process incoming web socket messages. */
 	socket.on('message', message => {
@@ -75,7 +83,8 @@ app.locals.ws.on('connection', (socket : GameWebSocket, req:Request) => {
 
 	/* Handle clients disconnecting. */
 	socket.on('close', (code:number,reason:string) => {
-		console.log('Closing',socket.uuid);
+		console.log('closing',socket.uuid);
+		/* Notify the game that the disconnected player should be removed from the game. */
 		app.locals.socketUtil.sendToGameScreen(app.locals.ws,`g|x|${socket.uuid}`);	
 	});
 });

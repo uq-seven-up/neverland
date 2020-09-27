@@ -1,5 +1,7 @@
 import { Schema, model, Document, Model } from 'mongoose';
 
+/* Define the mongo db schema for storing a Example Document.*/
+
 declare interface IExample extends Document{
     name: string
     email: string
@@ -10,6 +12,11 @@ declare interface IExample extends Document{
 
 export interface ExampleModel extends Model<IExample> {};
 
+/**
+ * Example, is a reference implementation that we built as a first
+ * proof of concept for storing / retrieving data from mongo db
+ * using node.
+ */
 export class Example {
     private _model: Model<IExample>;
 

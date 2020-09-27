@@ -1,5 +1,9 @@
 import React from "react"
+import useSound from 'use-sound';
 import {CFKitUtil} from '@7up/common-utils';
+import boopSfx from '../sound/chime.mp3'
+// require soundfile from '../sound/chime.wav'
+
 
 interface GameClientProp {}
 interface GameClientState {
@@ -36,6 +40,7 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		this.ws.onmessage = (evt:any) => {
 			// listen to data sent from the websocket server
 			// const message = JSON.parse(evt.data)	
+			new Audio('/client-mobile/sound/chime.mp3').play();
 			console.log(evt.data)	
 		}
 
@@ -53,7 +58,7 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		
 		if(this.ws.readyState === this.ws.OPEN){			
 			this.ws.send(`g|${heading}|${this.state.playerId}`);
-		}		
+		}								
 	}
 
 	private handleClickStop = (e:React.MouseEvent<HTMLElement>) =>

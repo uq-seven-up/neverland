@@ -72,7 +72,7 @@ app.locals.ws.on('connection', (socket : GameWebSocket, req:Request) => {
 		}
 		if(message.toString().startsWith('b|'))
 		{
-			app.locals.socketUtil.routeMessage(app.locals.ws,message);
+			app.locals.socketUtil.broadCastGameMessage(app.locals.ws,message);
 			return;
 		}								
 	});

@@ -4,16 +4,18 @@ import WebSocket from 'ws';
 import dotenv from "dotenv";
 import {DB} from '../controller/db'
 import {IPoll, IPollOption} from '../models/poll';
+import {SocketUtil} from '../lib/SocketUtil';
 import {CFKitUtil} from '@7up/common-utils'
 
 /**
- * Defines routes which are intended to be used to provide 
- * data to the display screen.
+ * Defines the REST API that is used to manage user polls.
  */
 const router = express.Router();
 dotenv.config();
 
-
+/**
+ * Create a new poll.
+ */
 router.post('/create',async(req:Request,res:Response) => {	
 	let poll = new DB.Models.Poll();
 	poll._id = CFKitUtil.createGUID();
@@ -38,6 +40,9 @@ router.post('/create',async(req:Request,res:Response) => {
 });
 
 
+/**
+ * Retrieve the currently active poll.
+ */
 router.get('/active',async(req:Request,res:Response) => {	
 	const pollid = 'd7abfc00-cff1-4c08-9282-2d50dad17d31';	
 	try{
@@ -56,6 +61,9 @@ router.get('/active',async(req:Request,res:Response) => {
 	}
 });
 
+/**
+ * Retrieve a poll based on a poll identifier.
+ */
 router.get('/:pollid',async(req:Request,res:Response) => {
 	const {pollid} = req.params;	
 	try{
@@ -74,12 +82,15 @@ router.get('/:pollid',async(req:Request,res:Response) => {
 	}		
 });
 
-
+/**
+ * Cast a vote in the poll with the specified poll identifier.
+ */
 router.post('/:pollid/vote',async(req:Request,res:Response) => {
 	const {pollid} = req.params;	
 	let {key} = req.body
 	let poll:IPoll | null;
 
+	/* Retrieve poll from mongo db.*/
 	try{
 		poll =  await DB.Models.Poll.findById(pollid);
 		if(!poll)
@@ -92,6 +103,7 @@ router.post('/:pollid/vote',async(req:Request,res:Response) => {
 		res.status(500).send({success:false,'msg':'Error updating votes.'})
 	}
 	
+	/* Find the answer key corresponding to the user vote and count the vote.*/
 	poll!.answer.some((pollOption:IPollOption)=>{
 		if(pollOption.key === key)
 		{
@@ -100,6 +112,7 @@ router.post('/:pollid/vote',async(req:Request,res:Response) => {
 		}
 	});
 	
+	/* Save the update poll information.*/
 	await poll!.save((error:any,object:IPoll) => {		
 		if(error){
 			console.log('Error updating votes.',error);
@@ -107,15 +120,8 @@ router.post('/:pollid/vote',async(req:Request,res:Response) => {
 			return;
 		}
 
-		let data = {poll:'refresh'}
-		
-		req.app.locals.ws.clients.forEach(function each(client:any) {
-			if (client.readyState === WebSocket.OPEN && client.uuid === 'POLL_WIDGET') {			
-				client.send(JSON.stringify(data));
-				return;
-			}
-		});
-
+		/* Use a websocket to notify the screen that poll data needs to be refreshed.*/
+		req.app.locals.socketUtil.sendMessage(req.app.locals.ws,'POLL_WIDGET',{"widget":"poll",action:'refresh'});
 		res.send({success:true,data:{poll:poll}})
 	});
 });

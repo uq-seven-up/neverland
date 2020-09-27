@@ -1,18 +1,10 @@
 { "compressionlevel":-1,
- "editorsettings":
-    {
-     "export":
-        {
-         "format":"json",
-         "target":"level2.json"
-        }
-    },
  "height":11,
  "infinite":false,
  "layers":[
         {
          "compression":"",
-         "data":"AQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAADAAAAAwAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAwAAAAMAAAABAAAAAQAAAAIAAAACAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAMAAAADAAAAAQAAAAEAAAABAAAAAgAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAADAAAAAwAAAAEAAAABAAAAAQAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAwAAAAMAAAABAAAAAQAAAAEAAAABAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAMAAAADAAAAAQAAAAEAAAABAAAAAQAAAAEAAAACAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAADAAAAAwAAAAEAAAABAAAAAQAAAAEAAAABAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAwAAAAMAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAgAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAMAAAADAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAgAAAAIAAAACAAAAAgAAAAIAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAADAAAAAwAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAwAAAAMAAAA=",
+         "data":"AQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAMAAAAFAAAABAAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAIAAAACAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAABAAAAAMAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAACAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAYAAAAFAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAgAAAAIAAAACAAAAAgAAAAIAAAABAAAAAQAAAAEAAAABAAAABgAAAAUAAAAEAAAAAwAAAAIAAAACAAAAAgAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAIAAAACAAAAAgAAAAIAAAACAAAAAQAAAAEAAAABAAAAAQAAAAMAAAAEAAAABQAAAAYAAAABAAAAAQAAAAIAAAABAAAAAQAAAAEAAAACAAAAAgAAAAIAAAACAAAAAgAAAAEAAAACAAAAAgAAAAIAAAACAAAAAgAAAAEAAAABAAAAAwAAAAYAAAAFAAAAAQAAAAEAAAACAAAAAQAAAAEAAAABAAAAAgAAAAEAAAABAAAAAgAAAAIAAAACAAAAAgAAAAIAAAABAAAAAQAAAAEAAAABAAAAAQAAAAQAAAADAAAABgAAAAEAAAABAAAAAgAAAAEAAAABAAAAAQAAAAIAAAABAAAAAQAAAAIAAAACAAAAAgAAAAIAAAACAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAABQAAAAYAAAABAAAAAQAAAAIAAAABAAAAAQAAAAEAAAACAAAAAQAAAAEAAAABAAAAAQAAAAEAAAACAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAMAAAAEAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAEAAAABAAAAAQAAAAEAAAABAAAAAgAAAAEAAAABAAAAAQAAAAEAAAABAAAAAwAAAAQAAAAFAAAABgAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAIAAAABAAAAAQAAAAEAAAABAAAAAQAAAAMAAAAEAAAABQAAAAYAAAA=",
          "encoding":"base64",
          "height":11,
          "id":1,
@@ -30,112 +22,148 @@
          "name":"candy",
          "objects":[
                 {
-                 "gid":10,
+                 "gid":8,
                  "height":64,
                  "id":1,
                  "name":"",
                  "rotation":0,
-                 "type":"muffin",
+                 "type":"swirl",
                  "visible":true,
                  "width":64,
-                 "x":447.233069147169,
-                 "y":128.405486213279
+                 "x":125.467,
+                 "y":319.639
                 }, 
                 {
-                 "gid":11,
+                 "gid":8,
                  "height":64,
                  "id":2,
                  "name":"",
                  "rotation":0,
-                 "type":"cookie",
+                 "type":"swirl",
                  "visible":true,
                  "width":64,
-                 "x":897.125338142471,
-                 "y":321.216458639837
+                 "x":1024.08,
+                 "y":382.626
                 }, 
                 {
-                 "gid":11,
+                 "gid":9,
                  "height":64,
                  "id":3,
                  "name":"",
                  "rotation":0,
-                 "type":"cookie",
+                 "type":"lolly",
                  "visible":true,
                  "width":64,
-                 "x":1024.26880546723,
-                 "y":192.675810355465
+                 "x":1280.22,
+                 "y":703.859
                 }, 
                 {
-                 "gid":11,
+                 "gid":9,
+                 "height":64,
+                 "id":4,
+                 "name":"",
+                 "rotation":0,
+                 "type":"lolly",
+                 "visible":true,
+                 "width":64,
+                 "x":513.885,
+                 "y":638.772
+                }, 
+                {
+                 "gid":7,
                  "height":64,
                  "id":5,
                  "name":"",
                  "rotation":0,
-                 "type":"cookie",
+                 "type":"donut",
                  "visible":true,
                  "width":64,
-                 "x":1087.1419486498,
-                 "y":448.359925964596
+                 "x":1217.24,
+                 "y":63.4934
                 }, 
                 {
-                 "gid":9,
+                 "gid":7,
                  "height":64,
                  "id":6,
                  "name":"",
                  "rotation":0,
-                 "type":"lolly",
+                 "type":"donut",
                  "visible":true,
                  "width":64,
-                 "x":767.187508898486,
-                 "y":384.08960182241
+                 "x":383.712,
+                 "y":191.566
                 }, 
                 {
-                 "gid":9,
+                 "gid":10,
                  "height":64,
                  "id":7,
                  "name":"",
                  "rotation":0,
-                 "type":"lolly",
+                 "type":"muffin",
                  "visible":true,
                  "width":64,
-                 "x":959.998481325044,
-                 "y":511.233069147169
+                 "x":1.59293,
+                 "y":510.699
                 }, 
                 {
-                 "gid":9,
+                 "gid":10,
                  "height":64,
                  "id":8,
                  "name":"",
                  "rotation":0,
-                 "type":"lolly",
+                 "type":"muffin",
                  "visible":true,
                  "width":64,
-                 "x":448.630250106782,
-                 "y":639.773717431541
+                 "x":704.945,
+                 "y":384.726
                 }, 
                 {
-                 "gid":10,
+                 "gid":11,
                  "height":64,
                  "id":9,
                  "name":"",
                  "rotation":0,
-                 "type":"muffin",
+                 "type":"cookie",
                  "visible":true,
                  "width":64,
-                 "x":1087.1419486498,
-                 "y":639.773717431541
+                 "x":958.991,
+                 "y":640.872
                 }, 
                 {
-                 "gid":10,
+                 "gid":11,
                  "height":64,
                  "id":10,
                  "name":"",
                  "rotation":0,
-                 "type":"muffin",
+                 "type":"cookie",
                  "visible":true,
                  "width":64,
-                 "x":1217.07977789379,
-                 "y":256.946134497651
+                 "x":1343.21,
+                 "y":256.653
+                }, 
+                {
+                 "gid":12,
+                 "height":64,
+                 "id":11,
+                 "name":"",
+                 "rotation":0,
+                 "type":"icecream",
+                 "visible":true,
+                 "width":64,
+                 "x":60.3805,
+                 "y":130.679
+                }, 
+                {
+                 "gid":12,
+                 "height":64,
+                 "id":12,
+                 "name":"",
+                 "rotation":0,
+                 "type":"icrecream",
+                 "visible":true,
+                 "width":64,
+                 "x":958.991,
+                 "y":128.58
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -144,24 +172,15 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":11,
+ "nextobjectid":13,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.4.2",
  "tileheight":64,
  "tilesets":[
         {
-         "columns":6,
          "firstgid":1,
-         "image":"tiles.png",
-         "imageheight":128,
-         "imagewidth":384,
-         "margin":0,
-         "name":"my_simple_game",
-         "spacing":0,
-         "tilecount":12,
-         "tileheight":64,
-         "tilewidth":64
+         "source":"..\/..\/..\/..\/..\/..\/..\/Desktop\/Design Computing Studio 3 Build\/Game\/Game Design Tiles.tsx"
         }],
  "tilewidth":64,
  "type":"map",

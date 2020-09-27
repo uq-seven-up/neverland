@@ -115,8 +115,6 @@ class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetStat
 		result: any,
 	): void => {
 		this.setState({ weather: result.data });
-		
-		
 	};
 /* ########################################################*/
 
@@ -133,10 +131,8 @@ class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetStat
    
 	public render() {
 
-		let iconName = ''
-		
-		let temperature = 0;
-		if (this.state.weather.status ==	"Clouds") {
+		let iconName = ''				
+		if (this.state.weather.status === "Clouds") {
       iconName = 'cloudy-icon'	
     } else if (this.state.weather.status === 'Clear') {
       iconName = 'sunny-icon'

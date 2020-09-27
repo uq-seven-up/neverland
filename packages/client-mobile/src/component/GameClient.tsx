@@ -36,6 +36,8 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		this.ws.onmessage = (evt:any) => {
 			// listen to data sent from the websocket server
 			let message = evt.data as string;
+			
+			console.log(message)
 			if(message.startsWith('c|'))
 			{
 				let data = message.split('|');

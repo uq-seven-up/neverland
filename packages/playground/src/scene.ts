@@ -17,6 +17,8 @@ const tileMapJson = require('./assets/level2.json')
 
 export default class MainWorldScene extends Phaser.Scene
 {
+	private BASE_URL = '/client-screen/game';
+	private SOCKET_URL = 'ws://neverland.scherzer.com.au:3080/?uuid=GAME_SCREEN';
 	private MAX_PLAYERS = 8;
 	private cursors!:any;
 	private player:Player[];
@@ -36,7 +38,12 @@ export default class MainWorldScene extends Phaser.Scene
 		this.player = [];	
 		this.obstacle = [];
 		this.scoreText = [];
-		console.log(process.env.NODE_ENV);
+		if(process.env.NODE_ENV === 'development')
+		{
+			this.BASE_URL = '';
+			this.SOCKET_URL = 'ws://localhost:3080/?uuid=GAME_SCREEN';
+		}
+		console.log(process.env.NODE_ENV,this.BASE_URL,this.SOCKET_URL);
 	}
 
 	private addPlayer(id:string)
@@ -108,7 +115,7 @@ export default class MainWorldScene extends Phaser.Scene
 	}
 
 	private openWebSocket():void{
-		this.ws = new WebSocket('ws://localhost:3080/?uuid=GAME_SCREEN');
+		this.ws = new WebSocket(this.SOCKET_URL);
 		// this.ws = new WebSocket('ws://neverland.scherzer.com.au:3080/?uuid=GAME_SCREEN');	
 
 		this.ws.onopen = () => {
@@ -162,7 +169,7 @@ export default class MainWorldScene extends Phaser.Scene
 	}
 
 	preload() {		
-		//this.load.setBaseURL('/client-screen/game');
+		this.load.setBaseURL(this.BASE_URL);
 		
 		this.load.tilemapTiledJSON('map', tileMapJson);
 		this.load.image('tiles',tilesImg);

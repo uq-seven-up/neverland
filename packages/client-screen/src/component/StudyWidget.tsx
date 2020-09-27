@@ -119,7 +119,6 @@ class StudyWidget extends React.Component<
 				}
 			});
 			this.libraryVisibilityToggle = !this.libraryVisibilityToggle;
-			console.log(libraryElements);
 		}, 3000);
 	}
 	/* ########################################################*/

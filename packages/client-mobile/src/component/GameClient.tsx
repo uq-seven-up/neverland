@@ -35,7 +35,25 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 
 		this.ws.onmessage = (evt:any) => {
 			// listen to data sent from the websocket server
-			// const message = JSON.parse(evt.data)		
+			let message = evt.data as string;
+			
+			console.log(message)
+			if(message.startsWith('c|'))
+			{
+				let data = message.split('|');
+				if(data[1] === 'v')
+				{
+					switch(data[3])
+					{
+						case '200':
+							new Audio('/client-mobile/sound/chime.mp3').play();
+							console.log('hello')
+							break;
+						default:
+					}
+					
+				}	
+			}
 		}
 
 		this.ws.onclose = () => {
@@ -52,7 +70,7 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		
 		if(this.ws.readyState === this.ws.OPEN){			
 			this.ws.send(`g|${heading}|${this.state.playerId}`);
-		}		
+		}								
 	}
 
 	private handleClickStop = (e:React.MouseEvent<HTMLElement>) =>
@@ -77,8 +95,7 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 	private handleTouchEnd = (e:React.TouchEvent<HTMLElement>) =>
 	{
 		e.preventDefault();
-		let heading = e.currentTarget.dataset.heading;
-		
+
 		if(this.ws.readyState === this.ws.OPEN){			
 			this.ws.send(`g|h|${this.state.playerId}`);
 		}		

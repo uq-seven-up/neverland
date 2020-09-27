@@ -179,8 +179,17 @@
  "tileheight":64,
  "tilesets":[
         {
+         "columns":6,
          "firstgid":1,
-         "source":"..\/..\/..\/..\/..\/..\/..\/Desktop\/Design Computing Studio 3 Build\/Game\/Game Design Tiles.tsx"
+         "image":"..\/..\/..\/..\/..\/..\/..\/Desktop\/Design Computing Studio 3 Build\/Game\/tiles.png",
+         "imageheight":128,
+         "imagewidth":384,
+         "margin":0,
+         "name":"my_simple_game",
+         "spacing":0,
+         "tilecount":12,
+         "tileheight":64,
+         "tilewidth":64
         }],
  "tilewidth":64,
  "type":"map",

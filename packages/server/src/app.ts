@@ -13,15 +13,12 @@ import StudySpaceRoutes = require('./routes/study-space');
 import weatherRoutes = require('./routes/weather');
 
 
-import {SocketUtil} from './lib/SocketUtil';
+import {SocketUtil,GameWebSocket} from './lib/SocketUtil';
 
 const app: express.Application = express();
 const PORT = 3080;
 
-interface GameWebSocket extends WebSocket
-{
-	uuid:string
-}
+
 
 /* Establish a connection to MongoDb. (By instantiating an arbitratry DB model.) */
 new DB.Models.RssFeed();
@@ -59,13 +56,23 @@ const server = app.listen(PORT, function () {
 app.locals.ws = new WebSocket.Server({noServer:true,clientTracking:true}) as WebSocket.Server;
 app.locals.ws.on('connection', (socket : GameWebSocket, req:Request) => {
 	socket.uuid = req.url.replace('/?uuid=', '');
-	console.log('new conncetion',req.url,socket.uuid)
+	console.log('new connection',req.url,socket.uuid)
 
 	socket.on('message', message => {
 		/* Route game controller messages directly to the screen. */
 		if(message.toString().startsWith('g|'))
 		{
-			app.locals.socketUtil.sendToScreen(app.locals.ws,message);
+			app.locals.socketUtil.sendToGameScreen(app.locals.ws,message);
+			return;
+		}
+		if(message.toString().startsWith('c|'))
+		{
+			app.locals.socketUtil.routeGameMessage(app.locals.ws,message);
+			return;
+		}
+		if(message.toString().startsWith('b|'))
+		{
+			app.locals.socketUtil.routeMessage(app.locals.ws,message);
 			return;
 		}								
 	});

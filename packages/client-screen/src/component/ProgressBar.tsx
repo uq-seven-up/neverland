@@ -11,10 +11,6 @@ interface ProgressBarProps {
 /* React life-cycle event.*/
 class ProgressBarComponent extends React.Component<ProgressBarProps> {
 	ed: any;
-	// constructor(props: any) {
-	// 	super(props);
-	// }
-
 	public componentDidMount(): void {
 		const progressBarColor = this.props.color;
 		const progressBarFilled = this.props.filled;

@@ -184,15 +184,27 @@ main {
 
 .widget.study .library {
 	display: inline-block;
-	opacity: 1;
-	transition: opacity 2s linear;
-	transform: translate(0);
+	animation-name: visibility;
+	animation-duration: 4s;
 }
 
 .widget.study .library.hide {
-	position: absolute;
-	transform: translate(9999px);
-	opacity: 0;
+	display: none;
+}
+
+@keyframes visibility {
+	0% {
+		opacity: 0;
+	}
+	25% {
+		opacity: 1;
+	}
+	75% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
 }
 
 .progress-bar {

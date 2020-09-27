@@ -24,20 +24,18 @@ class StudyWidget extends React.Component<
 	StudyWidgetProp,
 	SpaceAvailabilityState
 > {
-	nonStLuciaLibraries: number[];
+	nonStLuciaLibraries: string[];
 	colorsList: string[];
 	libraryVisibilityToggle: boolean;
 	constructor(props: StudyWidgetProp) {
 		super(props);
-		this.nonStLuciaLibraries = [5, 6, 8, 9];
+		this.nonStLuciaLibraries = ['Gatton', 'Herston', 'PACE', 'Whitty'];
 		this.colorsList = [
 			'#7EFAFA',
 			'#FCB1FC',
 			'#BCFA7E',
 			'#FBB03B',
 			'#EDE57E',
-			'#00D6CA',
-			'#7A44EE',
 			'#00D6CA',
 		];
 		this.libraryVisibilityToggle = true;
@@ -49,7 +47,7 @@ class StudyWidget extends React.Component<
 	/* ########################################################*/
 	/* React life-cycle event.*/
 	public componentDidMount(): void {
-		console.log('Component Did Mount');
+		console.log('Study Widget Component Did Mount');
 		this.callAPI('', 'GET', '/studyspace/availability-data');
 		this.callTimeInterval();
 	}
@@ -140,6 +138,10 @@ class StudyWidget extends React.Component<
 		endpoint: string,
 		result: any,
 	): void => {
+		this.nonStLuciaLibraries.forEach((library: any) => {
+			delete result.data[library];
+		});
+
 		this.setState({ spaceAvailability: result.data });
 	};
 	/* ########################################################*/
@@ -188,19 +190,15 @@ class StudyWidget extends React.Component<
 				<div>
 					{Object.keys(this.state.spaceAvailability).map(
 						(key: any, index: number) => (
-							<div className="library">
-								{!this.nonStLuciaLibraries.includes(index) ? (
-									<div>
-										<ProgressBarComponent
-											key={index}
-											color={this.colorsList[index]}
-											filled={this.state.spaceAvailability[key]}
-										/>
-										<span>{`${key} `}</span>
-									</div>
-								) : (
-									''
-								)}
+							<div className={index < 3 ? 'library' : 'library hide'}>
+								<div>
+									<ProgressBarComponent
+										key={index}
+										color={this.colorsList[index]}
+										filled={this.state.spaceAvailability[key]}
+									/>
+									<span>{`${key} `}</span>
+								</div>
 							</div>
 						),
 					)}

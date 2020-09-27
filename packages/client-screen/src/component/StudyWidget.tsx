@@ -119,7 +119,7 @@ class StudyWidget extends React.Component<
 				}
 			});
 			this.libraryVisibilityToggle = !this.libraryVisibilityToggle;
-		}, 3000);
+		}, 4000);
 	}
 	/* ########################################################*/
 
@@ -192,6 +192,7 @@ class StudyWidget extends React.Component<
 								{!this.nonStLuciaLibraries.includes(index) ? (
 									<div>
 										<ProgressBarComponent
+											key={index}
 											color={this.colorsList[index]}
 											filled={this.state.spaceAvailability[key]}
 										/>

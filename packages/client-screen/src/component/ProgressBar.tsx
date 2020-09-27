@@ -4,16 +4,16 @@ const ProgressBar = require('progressbar.js');
 interface ProgressBarProps {
 	key: number;
 	color: string;
-	filled: number;
+	filled: any;
 }
 
 /* ########################################################*/
 /* React life-cycle event.*/
 class ProgressBarComponent extends React.Component<ProgressBarProps> {
 	ed: any;
-	constructor(props: any) {
-		super(props);
-	}
+	// constructor(props: any) {
+	// 	super(props);
+	// }
 
 	public componentDidMount(): void {
 		const progressBarColor = this.props.color;

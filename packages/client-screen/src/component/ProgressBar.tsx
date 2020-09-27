@@ -7,6 +7,8 @@ interface ProgressBarProps {
 	filled: number;
 }
 
+/* ########################################################*/
+/* React life-cycle event.*/
 class ProgressBarComponent extends React.Component<ProgressBarProps> {
 	ed: any;
 	constructor(props: any) {

@@ -243,7 +243,7 @@ export default class HelloWorldScene extends Phaser.Scene
 			//this.physics.overlap(this.player[i].sprite,this.obstacle,() => {console.log('fuck')});
 			this.physics.collide(this.player[i].sprite,this.obstacle,() => {console.log('player collided')});
 			this.physics.collide(this.obstacle,this.obstacle,() => {console.log('obstacles collided')});
-			this.physics.collide(this.obstacle,this.candyGroup,() => {console.log('candy collided')});
+			this.physics.collide(this.player[i].sprite,this.candyGroup,() => {console.log('candy collided')});
 			
 			
 		}						

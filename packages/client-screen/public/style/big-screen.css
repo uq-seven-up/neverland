@@ -35,7 +35,7 @@ main {
 	grid-template-rows: 240px 380px minmax(0, 1fr);
 	grid-gap: 20px;
 	width: 100%;
-	max-width: 1400px;
+	max-width: 1761px;
 }
 
 #g_cellbox_1 {
@@ -79,8 +79,7 @@ main {
 	grid-column-end: 4;
 	grid-row-start: 2;
 	grid-row-end: 4;
-	background-color: white;
-	border: 1px solid white;
+	padding: 0;
 }
 
 .g_cell {

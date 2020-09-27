@@ -1,30 +1,41 @@
 import * as Phaser from "phaser";
 import Player from "./lib/Player"
 
-const tigerImg = require('./assets/Happy_Tiger.gif')
 const playerAtlas = require('./assets/my-knight.json')
 const playerSheetImg = require('./assets/my-knight-0.png')
 const particleImg = require('./assets/muzzleflash3.png')
-const tileSheetImg = require('./assets/my-sprite-sheet.png')
-const spikeImg = require('./assets/spike.png')
-const tileMapJson = require('./assets/level1.json')
+
+const cookieImg = require('./assets/cookie.png')
+const donutImg = require('./assets/donut.png')
+const icecreamImg = require('./assets/icecream.png')
+const lollyImg = require('./assets/lolly.png')
+const muffinImg = require('./assets/muffin.png')
+const swirlImg = require('./assets/swirl.png')
+const tilesImg = require('./assets/tiles.png')
+
+const tileMapJson = require('./assets/level2.json')
 
 export default class HelloWorldScene extends Phaser.Scene
 {
-	private environment = 'develop';
 	private MAX_PLAYERS = 8;
 	private cursors!:any;
 	private player:Player[];
+	private scoreText:Phaser.GameObjects.Text[];
+	private obstacle:Phaser.Physics.Arcade.Sprite[];
+	private boom!:any;
 	private ws!:WebSocket;
 	private map!:Phaser.Tilemaps.Tilemap;
 	private layer:any = null;
 	private safetile = 14;
 	private dots:any = null;
 	private walkAnim!:any;
+	private candyGroup!:Phaser.Physics.Arcade.Group;
 	constructor()
 	{
-		super('OurGame');
+		super({key:'MyScene',active:true});
 		this.player = [];	
+		this.obstacle = [];
+		this.scoreText = [];
 		console.log(process.env.NODE_ENV);
 	}
 
@@ -32,10 +43,13 @@ export default class HelloWorldScene extends Phaser.Scene
 	{
 		if(this.player.length >= this.MAX_PLAYERS) return;
 
-		let player = new Player(id);
-		player.sprite = this.add.sprite(50,200,'player');
-		player.sprite.play("walk");
-		this.player.push(player);
+		let player = new Player(id,this);
+		this.player.push(player);		
+	}
+
+	private collissionDetected(src:any,trg:any)
+	{
+		console.log("boom");
 	}
 
 	private playerMove(id:string,heading:string)
@@ -67,7 +81,7 @@ export default class HelloWorldScene extends Phaser.Scene
 		}
 	}
 
-	private getPlayerById(id:string):Player|null
+	private getPlayerById = (id:string):Player|null =>
 	{
 		let player = null;
 		this.player.forEach((p:Player)=> {									
@@ -94,12 +108,8 @@ export default class HelloWorldScene extends Phaser.Scene
 	}
 
 	private openWebSocket():void{
-		if(this.environment === 'DEVELOP')
-		{
-			this.ws = new WebSocket('ws://localhost:3080/?uuid=GAME_SCREEN');
-		}else{
-			this.ws = new WebSocket('ws://neverland.scherzer.com.au:3080/?uuid=GAME_SCREEN');
-		}
+		this.ws = new WebSocket('ws://localhost:3080/?uuid=GAME_SCREEN');
+		// this.ws = new WebSocket('ws://neverland.scherzer.com.au:3080/?uuid=GAME_SCREEN');	
 
 		this.ws.onopen = () => {
 			console.log('Scene connected to socket server.')
@@ -152,18 +162,20 @@ export default class HelloWorldScene extends Phaser.Scene
 	}
 
 	preload() {		
-		if(this.environment !== 'DEVELOP')
-		{
-			this.load.setBaseURL('/client-screen/game');
-		}
-		this.load.tilemapTiledJSON('map', tileMapJson);
-		this.load.image('tiles',tileSheetImg);
-		this.load.image('spike',spikeImg);
-		this.load.atlas('player',playerSheetImg,playerAtlas);
-	
-		this.load.image("tiger", tigerImg);
-		this.load.image("red", particleImg);
+		this.load.setBaseURL('/client-screen/game');
 		
+		this.load.tilemapTiledJSON('map', tileMapJson);
+		this.load.image('tiles',tilesImg);
+		this.load.image('cookie',cookieImg);
+		this.load.image('donut',donutImg);
+		this.load.image('icecream',icecreamImg);
+		this.load.image('lolly',lollyImg);
+		this.load.image('muffin',muffinImg);
+		this.load.image('swirl',swirlImg);
+
+		this.load.atlas('player',playerSheetImg,playerAtlas);			
+		this.load.image("red", particleImg);
+
 		this.openWebSocket();	
 	}
 
@@ -171,29 +183,42 @@ export default class HelloWorldScene extends Phaser.Scene
 		/* Listen to cursor key events (arrow keys) */
 		this.cursors = this.input.keyboard.createCursorKeys();
 		
+		this.physics.world.setBoundsCollision(true,true,true,true);
+
 		/* Load tiles from a tile map. */
 		this.map = this.make.tilemap({ key: 'map' });
 		const tileset = this.map.addTilesetImage('my_simple_game','tiles');		
-		const groundLayer = this.map.createStaticLayer('MyGround', tileset, 0, 0);
+		const groundLayer = this.map.createStaticLayer('ground', tileset, 0, 0);
 		
-		/* Add player texture atlas. */
+		this.obstacle.push(this.physics.add.sprite(250,90,'donut'));
+		this.obstacle[0].setCollideWorldBounds(true);
+		this.obstacle[0].setBounce(0.3,0.3);
+		this.obstacle[0].body.isCircle = true;
+
+		this.obstacle.push(this.physics.add.sprite(700,100,'donut'));
+		this.obstacle[1].setCollideWorldBounds(true);
+		this.obstacle[1].setBounce(0.3,0.3);
+		this.obstacle[1].body.isCircle = true;
 		
-		// this.player = this.physics.add.sprite(50, 300, 'player');
+		this.obstacle.push(this.physics.add.sprite(850,90,'donut'));
+		this.obstacle[2].setCollideWorldBounds(true);
+		this.obstacle[2].setBounce(0.3,0.3);
+		this.obstacle[2].body.isCircle = true;
 		
-		/* Attach animation to player. */
-		this.walkAnim = this.anims.create({
-			key: "walk",
-			frameRate: 7,
-			frames: this.anims.generateFrameNames("player", {
-				prefix: "Walk_",
-				suffix: ".png",
-				start: 1,
-				end: 10,
-				zeroPad: 1
-			}),
-			repeat: -1
-		});
-		
+		this.physics.world.on('tileoverlap', () => {console.log('listener')});
+
+		this.candyGroup = this.physics.add.group({
+			allowGravity: false,
+			immovable: true
+		  });
+
+		const candyObjects = this.map.getObjectLayer('candy')['objects'];
+		candyObjects.forEach(candyObject => {
+			const candy = this.candyGroup.create(candyObject.x!, candyObject.y! - candyObject.height!,candyObject.type).setOrigin(0,0);
+		  });
+
+		  this.scoreText[0] = this.add.text(10, 10, 'Team 1: 0', {fontSize: '20px', fill: '#000'});
+		  this.scoreText[1] = this.add.text(10, 40, 'Team 2: 0', {fontSize: '20px', fill: '#000'});
 		
 		
 		
@@ -218,10 +243,50 @@ export default class HelloWorldScene extends Phaser.Scene
 //		});
 	  }
 
+	private handlePlayerOverlapsCandy(playerObj:Phaser.Types.Physics.Arcade.GameObjectWithBody,candyObj:Phaser.Types.Physics.Arcade.GameObjectWithBody){
+		let player = this.getPlayerById(playerObj.name);
+		if(player)
+		{
+			let points = 0
+			let candySprite = candyObj as Phaser.Physics.Arcade.Sprite;
+			
+			switch(candySprite.texture.key)
+			{
+				case 'cookie':
+					points = 25
+					break
+				case 'donut':
+					points = 50
+					break
+				case 'icecream':
+					points = 50
+					break
+				case 'lolly':
+					points = 10
+					break
+				case 'muffin':
+					points = 5
+					break 
+				case 'swirl':
+					points = 10
+					break;
+			}
+			
+			player.score += points;
+			
+			this.scoreText[0].text = 'Team 1: ' + player.score;
+			candyObj.destroy();	
+		}				
+	}
+
 	update(){		
 		for(var i=0;i<this.player.length;i++)
 		{
-			this.player[i].update();			
-		}
+			this.player[i].update();
+			this.physics.collide(this.player[i].sprite,this.obstacle,() => {console.log('player collided')});
+			this.physics.collide(this.obstacle,this.obstacle,() => {console.log('obstacles collided')});
+			this.physics.collide(this.obstacle,this.candyGroup,() => {console.log('obstacles with candy')});
+			this.physics.overlap(this.player[i].sprite,this.candyGroup,this.handlePlayerOverlapsCandy,undefined,this);			
+		}						
 	}
 }

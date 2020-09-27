@@ -160,27 +160,27 @@ class StudyWidget extends React.Component<
 			return (
 				<div>
 					<div className="library">
-						<ProgressBarComponent key={0} color="#7EFAFA" filled={100} />
+						<ProgressBarComponent key={0} color="#7EFAFA" filled={48} />
 						<span>{`Arch Music`}</span>
 					</div>
 					<div className="library">
-						<ProgressBarComponent key={1} color="#FCB1FC" filled={100} />
+						<ProgressBarComponent key={1} color="#FCB1FC" filled={44} />
 						<span>{`Biol Sci`}</span>
 					</div>
 					<div className="library">
-						<ProgressBarComponent key={2} color="#BCFA7E" filled={100} />
+						<ProgressBarComponent key={2} color="#BCFA7E" filled={36} />
 						<span>{`Central`}</span>
 					</div>
 					<div className="library hide">
-						<ProgressBarComponent key={3} color="#FBB03B" filled={100} />
+						<ProgressBarComponent key={3} color="#FBB03B" filled={49} />
 						<span>{`DHEngSci`}</span>
 					</div>
 					<div className="library hide">
-						<ProgressBarComponent key={4} color="#EDE57E" filled={100} />
+						<ProgressBarComponent key={4} color="#EDE57E" filled={45} />
 						<span>{`DuhigStudy`}</span>
 					</div>
 					<div className="library hide">
-						<ProgressBarComponent key={5} color="#00D6CA" filled={100} />
+						<ProgressBarComponent key={5} color="#00D6CA" filled={32} />
 						<span>{`Law Library`}</span>
 					</div>
 				</div>

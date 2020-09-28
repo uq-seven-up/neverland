@@ -18,7 +18,7 @@ const tileMapJson = require('./assets/level2.json')
 export default class MainWorldScene extends Phaser.Scene
 {
 	private BASE_URL = '/client-screen/game';
-	private SOCKET_URL = 'ws://neverland.scherzer.com.au:3080/?uuid=GAME_SCREEN';
+	private SOCKET_URL = 'ws://' + window.location.hostname + ':3080/?uuid=GAME_SCREEN';
 	private MAX_PLAYERS = 8;
 	private cursors!:any;
 	private player:Player[];
@@ -40,8 +40,7 @@ export default class MainWorldScene extends Phaser.Scene
 		this.scoreText = [];
 		if(process.env.NODE_ENV === 'development')
 		{
-			this.BASE_URL = '';
-			this.SOCKET_URL = 'ws://localhost:3080/?uuid=GAME_SCREEN';
+			this.BASE_URL = '';			
 		}
 		console.log(process.env.NODE_ENV,this.BASE_URL,this.SOCKET_URL);
 	}

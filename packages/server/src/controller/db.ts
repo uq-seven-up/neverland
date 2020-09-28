@@ -6,6 +6,7 @@ import { RssFeed, RssFeedModel } from '../models/rss';
 import { BusTime, BusTimeModel } from '../models/bus-time';
 import { Weather, WeatherModel } from '../models/weather';
 
+/* Retrieve mongo db credentials from environment variables. */
 const _env = dotenv.config()
 const MONGO_SERVER = process.env.mongoserver as string;
 const MONGO_USERNAME = process.env.mongousername as string;
@@ -13,6 +14,7 @@ const MONGO_PASSWORD = process.env.mongopassword as string;
 const MONGO_DBNAME = process.env.mongodbname as string;
 const MONG_URL = `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_SERVER}/${MONGO_DBNAME}?retryWrites=true&w=majority`
 
+/* Interface for valid mongoose data models. */
 declare interface IModels {
 	Example: ExampleModel,
 	RssFeed:RssFeedModel,
@@ -21,6 +23,10 @@ declare interface IModels {
     Weather: WeatherModel
 }
 
+/**
+ * The Db class manages mongo db connections. 
+ * DB is implemented as a singleton.
+ */
 export class DB {
     private static instance: DB;
     private _db: Connection; 
@@ -32,8 +38,8 @@ export class DB {
         this._db.on('open', this.connected);
         this._db.on('error', this.error);
 
+		// Register defined data model definitions.
         this._models = {
-			// This is where we initialise all models.
 			Example: new Example().model,
 			Poll: new Poll().model,
 			RssFeed: new RssFeed().model,
@@ -42,17 +48,26 @@ export class DB {
 		}
     }
 
-    public static get Models() {
+	/**
+	 * Implement singleton pattern.
+	 */
+	public static get Models() {
         if (!DB.instance) {
             DB.instance = new DB();
         }
         return DB.instance._models;
     }
 
+	/**
+	 * life-cycle event, called when a connection to mongo db is established.
+	 */
     private connected() {
         console.log('Mongoose has connected');
     }
 
+	/**
+	 * life-cycle event, called when a mongo db connection error occurs.
+	 */
     private error(error:any) {
         console.log('Mongoose has errored', error);
     }

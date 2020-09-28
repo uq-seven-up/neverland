@@ -7,7 +7,6 @@ import QRCodeWidget from './component/QRCodeWidget';
 import PollWidget from './component/PollWidget';
 import BusWidget from './component/BusWidget';
 import StudyWidget from './component/StudyWidget';
-
 function App() {
 	return (
 		<>
@@ -16,15 +15,15 @@ function App() {
 				<WeatherWidget id="widget_weather" name="Weather Widget PoC" />
 			</div>
 			<div id="g_cellbox_2" className="g_cell">
-				<BusWidget id="widget_bus_uq" name="UQ Lakes" />							
+				<BusWidget id="widget_bus_uq" name="UQ Lakes" />
 			</div>
-			<div id="g_cellbox_3" className="g_cell">			
+			<div id="g_cellbox_3" className="g_cell">
 				<StudyWidget id="widget_study" />
 			</div>
-			
+
 			<div id="g_cellbox_4" className="g_cell">
-				<PollWidget id="widget_poll"/>
-				<QRCodeWidget id="widget_qr"/>			
+				<PollWidget id="widget_poll" />
+				<QRCodeWidget id="widget_qr" />
 			</div>
 
 			<div id="g_cellbox_5" className="g_cell">

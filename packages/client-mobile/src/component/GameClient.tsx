@@ -14,6 +14,7 @@ interface GameClientState {
  */
 class GameClient extends React.Component<GameClientProp, GameClientState> {    			
 	private ws:any;
+	private music?:HTMLAudioElement;
 	private chimeSound?:HTMLAudioElement;
 	
 	constructor(props: GameClientProp) {
@@ -74,7 +75,23 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
     /* ########################################################*/
 	
 	private toggleSound = () => {
-		this.chimeSound = new Audio('/client-mobile/sound/chime.mp3');
+		if(!this.chimeSound)
+		{
+			this.chimeSound = new Audio('/client-mobile/sound/chime.mp3');
+		}
+		if(!this.music)
+		{
+			this.music = new Audio('/client-mobile/sound/423350__sieuamthanh__rung-sang-sac.mp3');
+			this.music.loop = true;
+		}
+		/* 	Remember we are toggling the sound BEFORE we set the correct value for the 
+			enableSound state.*/
+		if(this.state.enableSound){
+			this.music.pause();
+		} else {
+			this.music.play();
+			this.music.volume = 0.5;
+		}
 		this.setState({enableSound:!this.state.enableSound});
 	}
 

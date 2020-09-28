@@ -47,7 +47,7 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 					{
 						case '200':
 							new Audio('/client-mobile/sound/chime.mp3').play();
-							console.log('hello')
+							window.navigator.vibrate([100,30]);
 							break;
 						default:
 					}

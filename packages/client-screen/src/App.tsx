@@ -8,6 +8,10 @@ import PollWidget from './component/PollWidget';
 import BusWidget from './component/BusWidget';
 import StudyWidget from './component/StudyWidget';
 function App() {
+	let mobilePort =  process.env.NODE_ENV === 'development' ? ':3010' : '';
+	let mobileSiteURL = 'http://' + window.location.hostname + mobilePort;
+	mobileSiteURL = mobileSiteURL + '/client-mobile';
+	
 	return (
 		<>
 			<div id="g_cellbox_1" className="g_cell">
@@ -23,7 +27,7 @@ function App() {
 
 			<div id="g_cellbox_4" className="g_cell">
 				<PollWidget id="widget_poll" />
-				<QRCodeWidget id="widget_qr" />
+				<QRCodeWidget id="widget_qr" qrCodeUrl={mobileSiteURL} />
 			</div>
 
 			<div id="g_cellbox_5" className="g_cell">

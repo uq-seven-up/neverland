@@ -3,7 +3,8 @@ import {CFKitUtil} from '@7up/common-utils';
 
 interface GameClientProp {}
 interface GameClientState {
-	playerId:string
+	playerId:string,
+	enableSound:boolean
 }
 
 
@@ -13,6 +14,9 @@ interface GameClientState {
  */
 class GameClient extends React.Component<GameClientProp, GameClientState> {    			
 	private ws:any;
+	private music?:HTMLAudioElement;
+	private chimeSound?:HTMLAudioElement;
+	
 	constructor(props: GameClientProp) {
         super(props)
 		/* 
@@ -20,6 +24,7 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		https://github.com/facebook/react/issues/12856#issuecomment-613145789
 		*/
 		this.state = {
+			enableSound:false,
 			playerId:CFKitUtil.createGUID()	
         }
     }
@@ -27,7 +32,8 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
     /* ########################################################*/
     /* React life-cycle methods.*/
     public componentDidMount(): void {
-		this.ws = new WebSocket(process.env.REACT_APP_SOCKET_SERVER as string + '?uuid=' + this.state.playerId);
+		let socketServerHost = 'ws://' + window.location.hostname + ':3080'
+		this.ws = new WebSocket(socketServerHost + '?uuid=' + this.state.playerId);
 		this.ws.onopen = () => {
 			this.ws.send(`g|j|${this.state.playerId}`);
 			console.log('Game client connected to server.')
@@ -46,8 +52,14 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 					switch(data[3])
 					{
 						case '200':
-							new Audio('/client-mobile/sound/chime.mp3').play();
-							window.navigator.vibrate([100,30]);
+							if(window.navigator.vibrate)
+							{
+								window.navigator.vibrate([30]);
+							}
+							if(this.state.enableSound)
+							{
+								this.chimeSound!.play()
+							}																					
 							break;
 						default:
 					}
@@ -62,6 +74,26 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
     }
     /* ########################################################*/
 	
+	private toggleSound = () => {
+		if(!this.chimeSound)
+		{
+			this.chimeSound = new Audio('/client-mobile/sound/chime.mp3');
+		}
+		if(!this.music)
+		{
+			this.music = new Audio('/client-mobile/sound/423350__sieuamthanh__rung-sang-sac.mp3');
+			this.music.loop = true;
+		}
+		/* 	Remember we are toggling the sound BEFORE we set the correct value for the 
+			enableSound state.*/
+		if(this.state.enableSound){
+			this.music.pause();
+		} else {
+			this.music.play();
+			this.music.volume = 0.5;
+		}
+		this.setState({enableSound:!this.state.enableSound});
+	}
 
 	private handleClickMove = (e:React.MouseEvent<HTMLElement>) =>
 	{
@@ -101,7 +133,6 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		}		
 	}
 
-
 	/* ########################################################*/
     /* UI Rendering */
 	public render() {		
@@ -115,8 +146,9 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 				<div data-heading="s" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8595;</div>
 				<div data-heading="sw" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8601;</div>
 				<div data-heading="w" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8592;</div>
-				<div data-heading="nw" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8598;</div>			
+				<div data-heading="nw" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8598;</div>				
 			</div>
+		<button onClick={this.toggleSound}>{this.state.enableSound ? 'Disable Sound' : 'Enable Sound'}</button>
 		</section>
         )
     }

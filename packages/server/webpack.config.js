@@ -23,5 +23,5 @@ module.exports = {
 			]
 		}]
 	},
-	externals: [ nodeExternals(),'bufferutil', 'utf-8-validate','express','mongoose']
+	externals: [ nodeExternals(),'bufferutil', 'utf-8-validate']
 }

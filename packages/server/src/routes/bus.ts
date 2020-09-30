@@ -75,8 +75,14 @@ router.get('/translink-times/', async (req: Request, res: Response) => {
 	}
 	
 	const FILTER = {
-		trip_id: get_filter(day),
-		stop_id: { $in: get_stop_ids(stop) },
+		$and: [
+			{ trip_id: get_filter(day)},
+			{ stop_id: { $in: get_stop_ids(stop) }},
+			{ $or: [ 
+				{departure_time: {$regex: new RegExp(`^${today.getHours().toFixed(2)}`)}}, 
+				{departure_time: {$regex: new RegExp(`^${(today.getHours() + 1).toFixed(2)}`)}}
+			]}
+		]
 	};
 
 	var timeout = -1;
@@ -86,12 +92,9 @@ router.get('/translink-times/', async (req: Request, res: Response) => {
 		await DB.Models.BusTime.find(FILTER, (err, results) => {
 			if (err) throw err;
 			var counter = 0;
-			res.send("shortcircuit");
-			return;
 			console.log("Found " + results.length);
 			for (var i = 0; i < results.length; i++) {
 				var row: any = results[i];
-				console.log(row.departure_time + " | " + row.trip_id + " | " + row.route_id);
 				var splitTime: string[] = row.departure_time.split(':');
 				var parsedDate: Date = new Date(
 					today.getFullYear(),
@@ -111,6 +114,7 @@ router.get('/translink-times/', async (req: Request, res: Response) => {
 						hour: '2-digit',
 						minute: '2-digit',
 					});
+
 					var bus_time: BusTime = {
 						id: bus_times.length,
 						stop_id: row.stop_id,
@@ -169,6 +173,10 @@ function get_filter(day: any) {
 	} else {
 		return /.*Sunday./;
 	}
+}
+
+function getTimeFilter(today: Date) {
+	//return [/today.getHours(), today.getHours() + 1];
 }
 
 function getTimeInt(departure_time: string, isHours: boolean) {

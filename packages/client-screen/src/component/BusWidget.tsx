@@ -90,7 +90,7 @@ class BusWidget extends React.Component<BusWidgetProp, BusWidgetState> {
      */
     private handleApiCallSuccess = (name:string,method:string,endpoint:string,result:any):void =>
     {
-        this.setState({status: 'off', busTimes:result.data, timeout:result.next});
+        this.setState({status: 'on', busTimes:result.data, timeout:result.next});
     }
     /* ########################################################*/
 
@@ -126,27 +126,41 @@ class BusWidget extends React.Component<BusWidgetProp, BusWidgetState> {
         } 
         else {
             // Get the next bus time and remount component at time
-            if(this.state.timeout != -1) {
+            if(this.state.timeout !== -1) {
                 setTimeout(function(comp: BusWidget){
                     comp.componentDidMount();
                 }, this.state.timeout, this);
             }
+            else {
+                // Try again in an hour
+                setTimeout(function(comp: BusWidget){
+                    comp.componentDidMount();
+                }, 3600000, this);
+            }
 
-            return (
-                <ul>
-                    {this.state.busTimes.map((item: BusTime) => (
-                        <li key={item.id}>
-                            <div>
-                                {item.route_id}
-                            </div>
-                            <div></div>
-                            <div>
-                                {item.departure_time}
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-            );    
+            if(this.state.busTimes.length !== 0) {
+                return (
+                    <ul>
+                        {this.state.busTimes.map((item: BusTime) => (
+                            <li key={item.id}>
+                                <div>
+                                    {item.route_id}
+                                </div>
+                                <div></div>
+                                <div>
+                                    {item.departure_time}
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                );    
+            }
+            else {
+                return (
+                    <p>No more buses...</p>
+                );
+            }
+            
         }
     }
 

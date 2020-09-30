@@ -4,6 +4,7 @@ import {API} from "@7up/common-utils"
 import {AxiosResponse } from 'axios';
 
 interface BusTime{
+    id: number;
     route_id: string;
     trip_id: string;
     departure_time: string;
@@ -89,7 +90,7 @@ class BusWidget extends React.Component<BusWidgetProp, BusWidgetState> {
      */
     private handleApiCallSuccess = (name:string,method:string,endpoint:string,result:any):void =>
     {
-        this.setState({status: 'on', busTimes:result.data, timeout:result.next});
+        this.setState({status: 'off', busTimes:result.data, timeout:result.next});
     }
     /* ########################################################*/
 
@@ -105,38 +106,21 @@ class BusWidget extends React.Component<BusWidgetProp, BusWidgetState> {
      */
     private renderBusTimes() {
         if (this.state.status === 'off' || this.state.busTimes.length === 0){
+            const items = []
+            
+            for(var i = 0; i < 6; i++) {
+                items.push( 
+                    <li key={i}>
+                        <div>{i%2*100 + 66}</div>
+                        <div></div>
+                        <div>08:0{i} AM</div>
+                    </li>
+                );
+            }
+
             return (
                 <ul>
-                    <li>
-                        <div>66</div>
-                        <div>RBWH Station</div>
-                        <div>08:00 AM</div>
-                    </li>
-                    <li>
-                        <div>66</div>
-                        <div>RBWH Station</div>
-                        <div>08:00 AM</div>
-                    </li>
-                    <li>
-                        <div>66</div>
-                        <div>RBWH Station</div>
-                        <div>08:00 AM</div>
-                    </li>
-                    <li>
-                        <div>66</div>
-                        <div>RBWH Station</div>
-                        <div>08:00 AM</div>
-                    </li>
-                    <li>
-                        <div>66</div>
-                        <div>RBWH Station</div>
-                        <div>08:00 AM</div>
-                    </li>
-                    <li>
-                        <div>66</div>
-                        <div>RBWH Station</div>
-                        <div>08:00 AM</div>
-                    </li>
+                    {items}
                 </ul>
             );
         } 
@@ -151,13 +135,11 @@ class BusWidget extends React.Component<BusWidgetProp, BusWidgetState> {
             return (
                 <ul>
                     {this.state.busTimes.map((item: BusTime) => (
-                        <li>
+                        <li key={item.id}>
                             <div>
                                 {item.route_id}
                             </div>
-                            <div>
-                                {item.trip_headsign}
-                            </div>
+                            <div></div>
                             <div>
                                 {item.departure_time}
                             </div>

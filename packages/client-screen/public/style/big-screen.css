@@ -1,5 +1,7 @@
 @import url('global.css') screen;
 @import url('game.css') screen;
+@import url('bus.css') screen;
+
 /* big-screen.css */
 /* Styles definitions for content shown on the large public display. */
 
@@ -50,6 +52,13 @@ main {
 }
 
 #g_cellbox_2 {
+	grid-column-start: 2;
+	grid-column-end: 3;
+	grid-row-start: 1;
+	grid-row-end: 2;
+}
+
+#g_cellbox_2_swap {
 	grid-column-start: 2;
 	grid-column-end: 3;
 	grid-row-start: 1;

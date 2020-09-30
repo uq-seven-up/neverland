@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { DB } from '../controller/db';
 
 interface BusTime {
+	id: number;
 	stop_id: number;
 	route_id: number;
 	trip_id: string;
@@ -57,16 +58,27 @@ router.get('/get-bus-times/', async (req: Request, res: Response) => {
 	);
 });
 
+router.get('/test', async (req: Request, res: Response)=>{
+	console.log('hello!');
+	res.send("Heya!");
+});
+
 router.get('/translink-times/', async (req: Request, res: Response) => {
+	console.log("new connection BUS WIDGET");
 	var stop = req.query.stop;
 	var day = req.query.day;
 	var bus_times: BusTime[] = [];
 	var today: Date = new Date();
-	today.setTime(today.getTime() + 10 * 60 * 60 * 1000);
+	// Add ten hours if the local time on machine is not UTC
+	if(today.getTimezoneOffset() === 0) {
+		today.setTime(today.getTime() + 10 * 60 * 60 * 1000);
+	}
+	
 	const FILTER = {
 		trip_id: get_filter(day),
 		stop_id: { $in: get_stop_ids(stop) },
 	};
+
 	var timeout = -1;
 	var gotTimeout = false;
 
@@ -74,15 +86,19 @@ router.get('/translink-times/', async (req: Request, res: Response) => {
 		await DB.Models.BusTime.find(FILTER, (err, results) => {
 			if (err) throw err;
 			var counter = 0;
+			res.send("shortcircuit");
+			return;
+			console.log("Found " + results.length);
 			for (var i = 0; i < results.length; i++) {
 				var row: any = results[i];
+				console.log(row.departure_time + " | " + row.trip_id + " | " + row.route_id);
 				var splitTime: string[] = row.departure_time.split(':');
 				var parsedDate: Date = new Date(
 					today.getFullYear(),
 					today.getMonth(),
 					today.getDate(),
-					parseInt(splitTime[0]),
-					parseInt(splitTime[1]),
+					getTimeInt(row.departure_time, true),
+					getTimeInt(row.departure_time, false)
 				);
 
 				if (parsedDate >= today) {
@@ -96,6 +112,7 @@ router.get('/translink-times/', async (req: Request, res: Response) => {
 						minute: '2-digit',
 					});
 					var bus_time: BusTime = {
+						id: bus_times.length,
 						stop_id: row.stop_id,
 						route_id: row.route_id.split('-')[0],
 						departure_time: dateString,
@@ -152,6 +169,19 @@ function get_filter(day: any) {
 	} else {
 		return /.*Sunday./;
 	}
+}
+
+function getTimeInt(departure_time: string, isHours: boolean) {
+	var index: number = isHours? 0: 1;
+
+	var timeValue: number = parseInt(departure_time.split(":")[index]);
+	var amPm: string = departure_time.split(" ")[1];
+
+	if(isHours && amPm === "PM") {
+		timeValue += 12
+	}
+
+	return timeValue;
 }
 
 export = router;

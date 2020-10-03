@@ -28,7 +28,6 @@ interface PollWidgetState {
  */
 class PollWidget extends React.Component<PollWidgetProp, PollWidgetState> {  
 	private ws:any;
-	private interval:any;
 	
 	constructor(props: PollWidgetState) {
         super(props as any)
@@ -60,7 +59,7 @@ class PollWidget extends React.Component<PollWidgetProp, PollWidgetState> {
 		this.ws.onmessage = (evt:any) => {
 			// listen to data sent from the websocket server
 			const data = JSON.parse(evt.data)
-			if(data.poll)
+			if(data.action && data.action === 'refresh')
 			{
 				this.callAPI('fetchActivePoll','GET','/poll/active');
 			}

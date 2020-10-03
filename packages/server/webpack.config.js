@@ -23,5 +23,5 @@ module.exports = {
 			]
 		}]
 	},
-	externals: [ nodeExternals() ]
+	externals: [ nodeExternals(),'bufferutil', 'utf-8-validate']
 }

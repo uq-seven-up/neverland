@@ -2,14 +2,41 @@ import * as express from 'express';
 import { Request, Response } from "express";
 import RSSParser = require('rss-parser');
 import dotenv from "dotenv";
+import QRCode  from "qrcode"
 import {DB} from '../controller/db'
 import { IRssFeed} from '../models/rss';
+import { queryByPlaceholderText } from '@testing-library/dom';
 /**
  * Defines routes which are intended to be used to provide 
  * data to the display screen.
  */
 const router = express.Router();
 dotenv.config();
+
+
+/**
+ * Create a qrcode for the passed in URL.
+ * 
+ * Expects a JSON string in the format: {"url":"url to encode"}
+ */
+router.post('/qrcode',async(req:Request,res:Response) => {
+	const {url} = req.body;
+	try{
+		let qrData =  await QRCode.toDataURL(url);
+		if(qrData)
+		{			
+			res.send({success:true,data:qrData})
+			return;			
+		}else{
+			res.send({success:false,data:qrData})
+		}						
+	} catch(error)
+	{
+		console.log('Error creating QR Code.');
+		res.status(500).send({success:false,'msg':'Error creating the QR code.',error:error})
+	}
+});
+
 
 /**
  * Fetch and parse the RSS news feed published by UQ.

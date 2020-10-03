@@ -1,122 +1,91 @@
 import express = require('express');
 import { Request, Response } from 'express';
+import cors from 'cors';
 import WebSocket from 'ws';
 
 import {DB} from './controller/db';
+import {GameServer,GameWebSocket} from './lib/GameServer';
+
 import busRoutes = require('./routes/bus');
 import exampleRoutes = require('./routes/example');
-import gameRoutes = require('./routes/game');
 import pollRoutes = require('./routes/poll');
 import screenRoutes = require('./routes/screen');
 import StudySpaceRoutes = require('./routes/study-space');
-import {CompassHeading} from '@7up/common-types';
+import weatherRoutes = require('./routes/weather');
 
-import {Game} from './lib/Game';
+/* 
+This is the entry point for the server application which 
+manages a Restful API as well as a Websockets Server.
 
+The server mediates communication between clients and the big screen as
+well as managing data storage within a Mongo DB as well as aquiring data from 
+third party sources.
+*/
 const app: express.Application = express();
 const PORT = 3080;
-
-interface GameWebSocket extends WebSocket
-{
-	uuid:string
-}
 
 /* Establish a connection to MongoDb. (By instantiating an arbitratry DB model.) */
 new DB.Models.RssFeed();
 
-app.locals.game = new Game();
-
 /* Set headers to allows cross origin resource sharing (CORS) for the exposed REST API. */
-app.all('*', function (req: Request, res: Response, next: any) {
-	res.header('Access-Control-Allow-Origin', '*');
-	res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-	res.header('Access-Control-Allow-Headers', 'Content-Type,authorization');
-	next();
-});
+app.use(cors());
+
+/* Enable sending JSON for Rest API as well as parsing URL parameters. */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 /* Register REST routes. */
 app.use('/api/example', exampleRoutes);
-app.use('/api/game', gameRoutes);
 app.use('/api/poll', pollRoutes);
 app.use('/api/screen', screenRoutes);
 app.use('/api/bus', busRoutes);
 app.use('/api/studyspace', StudySpaceRoutes);
+app.use('/api/weather', weatherRoutes);
 
+/* Spin up REST Server. */
 const server = app.listen(PORT, function () {
 	console.log(`Express is listening on port ${PORT}`);
 });
 
-
-
-/* Configure websocket server. (attached to local scope, to make the ws serve accessible within routes.) */
+/* Configure the Websocket Server. (A reference to the web sockets server is
+	 attached to the locals scope allowing the ws server to be accessible within routes.) 
+*/
+app.locals.game = new GameServer();
 app.locals.ws = new WebSocket.Server({noServer:true,clientTracking:true}) as WebSocket.Server;
 app.locals.ws.on('connection', (socket : GameWebSocket, req:Request) => {
 	socket.uuid = req.url.replace('/?uuid=', '');
-	if(socket.uuid !== '' && socket.uuid !== '/' && socket.uuid !== 'POLL_WIDGET')
-	{
-		console.log('adding player',socket.uuid);
-		app.locals.game.addPlayer(socket.uuid);
-	}
-	app.locals.game.broadCastGameMap(app.locals.ws);
-	
-	socket.on('close', (code:number,reason:string) => {
-		console.log('Closing',socket.uuid);
-		app.locals.game.removePlayer(socket.uuid);
-		app.locals.game.broadCastGameMap(app.locals.ws);
+	console.log('new connection',socket.uuid);
+
+	/* Identify and process incoming web socket messages. */
+	socket.on('message', message => {
+		if(message.toString().startsWith('g|'))
+		{
+			app.locals.game.sendToGameScreen(app.locals.ws,message,socket.uuid);
+			return;
+		}
+
+		if(message.toString().startsWith('c|'))
+		{
+			app.locals.game.routeGameMessage(app.locals.ws,message);
+			return;
+		}
+		
+		if(message.toString().startsWith('b|'))
+		{
+			app.locals.game.broadCastGameMessage(app.locals.ws,message);
+			return;
+		} 
 	});
 
-	socket.on('message', message => {
-		const data = JSON.parse(message.toString());
-		if(data.widget)
-		{
-			switch(data.widget)
-			{
-				case 'game':
-					let shipId = socket.uuid;
-					switch(data.action)
-					{
-						case 'move':
-							let heading = CompassHeading.North
-							switch(data.heading)
-							{
-								case 'N':
-									heading = CompassHeading.North
-									break;
-								case 'E':
-									heading = CompassHeading.East
-									break;
-								case 'S':
-									heading = CompassHeading.South
-									break;
-								case 'W':
-									heading = CompassHeading.West
-									break;
-							}
-							app.locals.game.moveShip(shipId,heading,1);
-							app.locals.game.broadCastGameMap(app.locals.ws);							
-							break;
-						case 'turn':
-							let direction = data.direction === 'left' ? 'left' : 'right';							
-							app.locals.game.turnShip(shipId,direction);
-							app.locals.game.broadCastGameMap(app.locals.ws);							
-							break;
-						case 'drive':
-							app.locals.game.driveShip(shipId);
-							app.locals.game.broadCastGameMap(app.locals.ws);							
-							break;
-						default:
-							console.log(message);
-					}
-					break;
-				default:
-					console.log(message);
-			}
-		}				
+	/* Handle clients disconnecting. */
+	socket.on('close', (code:number,reason:string) => {
+		console.log('closing',socket.uuid);
+		/* Notify the game that the disconnected player should be removed from the game. */
+		app.locals.game.sendToGameScreen(app.locals.ws,`g|x|${socket.uuid}`);	
 	});
 });
 
+/* Handle request upgrade to a web socket connection. */
 server.on('upgrade', (request, socket, head) => {
 	app.locals.ws.handleUpgrade(request, socket, head, (socket:any) => {
 		app.locals.ws.emit('connection', socket, request);

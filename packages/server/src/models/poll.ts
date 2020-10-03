@@ -1,5 +1,7 @@
 import { Schema, model, Document, Model } from 'mongoose';
 
+/* Define the mongo db schema for storing a Poll Document.*/
+
 export declare interface IPollOption{
     key: string
     response: string
@@ -17,6 +19,10 @@ export declare interface IPoll extends Document{
 
 export interface PollModel extends Model<IPoll> {};
 
+/**
+ * Defines the mongo db model for storing a poll as well as the poll
+ * results.
+ */
 export class Poll {
     private _model: Model<IPoll>;
 

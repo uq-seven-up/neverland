@@ -1,5 +1,7 @@
 import { Schema, model, Document, Model } from 'mongoose';
 
+/* Define the mongo db schema for caching a RSS Feed.*/
+
 declare interface IRssItem{
 	creator: string
     title: string
@@ -17,6 +19,10 @@ export declare interface IRssFeed extends Document{
     fetch_date: Date
 }
 
+/**
+ * RssFeedModel, defines the schema for caching retrieved RSS feeds
+ * inside of mongo db. Specifically the UQ rss feed.
+ */
 export interface RssFeedModel extends Model<IRssFeed> {};
 
 export class RssFeed {

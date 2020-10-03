@@ -2,34 +2,35 @@ import React from "react"
 import { API } from '@7up/common-utils';
 import { AxiosResponse } from 'axios';
 
+interface WeatherInfo {
+	temp: number;
+	status: string;
+}
+
+
 interface WeatherWidgetProp {
   name: string,
   id?:string
 }
 
 interface WeatherWidgetState {
-  weather: WeatherData
+	weather: WeatherInfo;
 }
 
-interface WeatherData {
-  main: { temp: number,}
-  weather: [{ main: string}]
-}
 /**
  * This widget is a proof of concept implementation of a 
  * react component using a class.
  */
 class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetState> {
     
-  constructor(props: any) {
+  constructor(props: WeatherWidgetProp) {
     super(props)
 
     this.state = {
-      weather: {
-     
-        main: { temp: 25} ,
-        weather: [{ main: "cloud"}],
-      }
+			weather: {
+				temp: 0,
+				status: " "
+		 },
     }
   }
   private dateBuilder = (d: Date) => {
@@ -48,9 +49,7 @@ class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetStat
   /* ########################################################*/
   /* React life-cycle event.*/
   public componentDidMount(): void {
-    console.log('Component Did Mount');
-    // var stop_value = this.props.name === 'UQ Lakes' ? 'uqlakes' : 'chancellor';
-    this.callAPI('', 'GET', '/weather/weather-data');
+		this.callAPI('', 'GET', '/weather/weather');
   }
   /* ########################################################*/
 /* ########################################################*/
@@ -68,6 +67,7 @@ class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetStat
 	 * @returns void
 	 */
 	private callAPI = (
+		
 		name: string,
 		method: 'GET' | 'POST' | 'PUT' | 'DELETE',
 		endpoint: string,
@@ -82,11 +82,13 @@ class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetStat
 				if (response.status === 200) {
 					if (this.handleApiCallSuccess) {
 						this.handleApiCallSuccess(name, method, endpoint, response.data);
+						
 					}
 				} else if (response.status === 500) {
 					alert('Server Error: 500');
+	
 				} else {
-					alert(response.data.msg.displayTxt);
+					alert(response.data.msg.displayTxt);	
 				}
 			},
 			data,
@@ -127,34 +129,25 @@ class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetStat
    * @returns JSX element
    */
    
-  public render() {
-    let iconName = ''
-    if (this.state.weather.weather[0].main === 'Clouds') {
-      iconName = 'cloudy-icon'
-    } else if (this.state.weather.weather[0].main === 'Clear') {
+	public render() {
+
+		let iconName = ''				
+		if (this.state.weather.status === "Clouds") {
+      iconName = 'cloudy-icon'	
+    } else if (this.state.weather.status === 'Clear') {
       iconName = 'sunny-icon'
     } else {
       iconName = 'rainy-icon'
     }
     
     return (
-      <section id={this.props.id} className="widget weather">
-		<div className="content">
-		
-			<div>
-				<div className="location-box">
-					<div className="date">{this.dateBuilder(new Date())}</div>
-				</div>
-          <div className="weather-box">
-            <div className={iconName}></div>  
-            <div className="temp">
-            
-              {Math.round(this.state.weather.main.temp)}°c 
-            </div>				
-
-				</div>
-			</div>
-		 
+      <section id={this.props.id} className="widget weather">						
+		<div className="date">{this.dateBuilder(new Date())}</div>				
+        <div className="weather-box">
+    		<div className={iconName}></div>  
+            <div className="temp">        
+              {Math.round(this.state.weather.temp)}°c 
+            </div>
 		</div>
 	</section>
     )

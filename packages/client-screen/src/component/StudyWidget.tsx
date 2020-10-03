@@ -2,12 +2,15 @@ import React from 'react';
 
 import { API } from '@7up/common-utils';
 import { AxiosResponse } from 'axios';
+import ProgressBarComponent from './ProgressBar';
 
 interface SpaceAvailability {
 	[key: string]: string;
 }
 
-interface StudyWidgetProp {id?:string}
+interface StudyWidgetProp {
+	id?: string;
+}
 
 interface SpaceAvailabilityState {
 	spaceAvailability: SpaceAvailability[];
@@ -21,9 +24,21 @@ class StudyWidget extends React.Component<
 	StudyWidgetProp,
 	SpaceAvailabilityState
 > {
+	nonStLuciaLibraries: string[];
+	colorsList: string[];
+	libraryVisibilityToggle: boolean;
 	constructor(props: StudyWidgetProp) {
 		super(props);
-
+		this.nonStLuciaLibraries = ['Gatton', 'Herston', 'PACE', 'Whitty'];
+		this.colorsList = [
+			'#7EFAFA',
+			'#FCB1FC',
+			'#BCFA7E',
+			'#FBB03B',
+			'#EDE57E',
+			'#00D6CA',
+		];
+		this.libraryVisibilityToggle = true;
 		this.state = {
 			spaceAvailability: [],
 		};
@@ -32,9 +47,9 @@ class StudyWidget extends React.Component<
 	/* ########################################################*/
 	/* React life-cycle event.*/
 	public componentDidMount(): void {
-		console.log('Component Did Mount');
-		// var stop_value = this.props.name === 'UQ Lakes' ? 'uqlakes' : 'chancellor';
+		console.log('Study Widget Component Did Mount');
 		this.callAPI('', 'GET', '/studyspace/availability-data');
+		this.callTimeInterval();
 	}
 	/* ########################################################*/
 
@@ -78,6 +93,35 @@ class StudyWidget extends React.Component<
 	/* ########################################################*/
 
 	/* ########################################################*/
+	/* Toggle ProgressBar Visibility*/
+	/**
+	 * Toggles visibility of the first 3 and the last 3 libraries
+	 * in intervals by toggling their class
+	 */
+	private callTimeInterval() {
+		setInterval(() => {
+			const libraryElements = document.querySelectorAll('.library');
+			libraryElements.forEach((library: any, index: number) => {
+				if (this.libraryVisibilityToggle) {
+					if (index < 3) {
+						library.classList.add('hide');
+					} else {
+						library.classList.remove('hide');
+					}
+				} else {
+					if (index < 3) {
+						library.classList.remove('hide');
+					} else {
+						library.classList.add('hide');
+					}
+				}
+			});
+			this.libraryVisibilityToggle = !this.libraryVisibilityToggle;
+		}, 4000);
+	}
+	/* ########################################################*/
+
+	/* ########################################################*/
 	/* Event Handlers. */
 	/**
 	 * This method is called by callAPI() afer a successfull response has been received from the REST Server.
@@ -94,25 +138,83 @@ class StudyWidget extends React.Component<
 		endpoint: string,
 		result: any,
 	): void => {
+		this.nonStLuciaLibraries.forEach((library: any) => {
+			delete result.data[library];
+		});
+
 		this.setState({ spaceAvailability: result.data });
 	};
 	/* ########################################################*/
 
+	/* ########################################################*/
+	/* UI Rendering*/
+	/**
+	 * Render the progress bars depending on whether the API call
+	 * has been made or not. Split up from the main render method
+	 * to keep the code modular.
+	 *
+	 * @returns JSX element
+	 */
+	private renderTimings() {
+		if (this.state.spaceAvailability.length === 0) {
+			return (
+				<div>
+					<div className="library">
+						<ProgressBarComponent key={0} color="#7EFAFA" filled={48} />
+						<span>{`Arch Music`}</span>
+					</div>
+					<div className="library">
+						<ProgressBarComponent key={1} color="#FCB1FC" filled={44} />
+						<span>{`Biol Sci`}</span>
+					</div>
+					<div className="library">
+						<ProgressBarComponent key={2} color="#BCFA7E" filled={36} />
+						<span>{`Central`}</span>
+					</div>
+					<div className="library hide">
+						<ProgressBarComponent key={3} color="#FBB03B" filled={49} />
+						<span>{`DHEngSci`}</span>
+					</div>
+					<div className="library hide">
+						<ProgressBarComponent key={4} color="#EDE57E" filled={45} />
+						<span>{`DuhigStudy`}</span>
+					</div>
+					<div className="library hide">
+						<ProgressBarComponent key={5} color="#00D6CA" filled={32} />
+						<span>{`Law Library`}</span>
+					</div>
+				</div>
+			);
+		} else {
+			return (
+				<div>
+					{Object.keys(this.state.spaceAvailability).map(
+						(key: any, index: number) => (
+							<div className={index < 3 ? 'library' : 'library hide'}>
+								<div>
+									<ProgressBarComponent
+										key={index}
+										color={this.colorsList[index]}
+										filled={this.state.spaceAvailability[key]}
+									/>
+									<span>{`${key} `}</span>
+								</div>
+							</div>
+						),
+					)}
+				</div>
+			);
+		}
+	}
+
 	public render() {
 		return (
-			<section id={this.props.id} className="widget">
+			<section id={this.props.id} className="widget study">
 				<div className="heading">
 					<h2>UQ Study Spaces</h2>
 					<figure></figure>
 				</div>
-				<div className="content">
-					{Object.keys(this.state.spaceAvailability).map((key: any) => (
-						<div>
-							<span>{`${key} = `}</span>
-							<span>{` ${this.state.spaceAvailability[key]}% filled`}</span>
-						</div>
-					))}
-				</div>
+				<div className="content">{this.renderTimings()}</div>
 			</section>
 		);
 	}

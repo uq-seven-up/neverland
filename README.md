@@ -1,7 +1,5 @@
 # Neverland
 
-
-
 ## Preparing the development environment.
 ### Required software.
 
@@ -15,7 +13,6 @@ Note: You could also use the provided docker container as a build environment, i
 --- 
 
 ### Grab the source-code from Git Hub
-
 All shell commands should be run in the terminal appropriate for your operating system. i.e. Powershell (Windows) or Terminal/Console (Linux/Mac OS).
 
 Navigate to a place in the file system where you would like to store the project source code. Then
@@ -25,6 +22,9 @@ Navigate to a place in the file system where you would like to store the project
 Then switch to the "develop" branch.
 
 `git checkout develop`
+
+### Configure local environment files.
+In development mode 
 
 ### Building the project
 
@@ -59,6 +59,11 @@ In the console change to the ./packages/common-* folder.
 The following commands are available:  
 `yarn build`  
 Builds the server source code and runs all unit-tests. 
+
+## Local mongo database.
+For local development the project includes a mongo db stack. To start the stack run the start_mongo shell script.
+
+The shell script launches a development version of mongo db as well as a web interface for managing the mongo database. The web interface is available on http://localhost:8081
 
 ## Starting the REST API server
 As all the client applications rely on the REST API server, it is recommended to have the REST API running during all development.
@@ -104,6 +109,9 @@ React Application used by end users to interact with the Public Display (screen)
 
 **./packages/client-screen**  
 React Application which is shown on the Public Display (screen)
+
+**./packages/playground**  
+The interactive game that is integrated into the client screen.
 
 **./packages/server**  
 Node.js server which mediates between the mobile and screen application.

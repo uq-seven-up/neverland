@@ -222,3 +222,70 @@ main {
 	height: 100px;
 	position: relative;
 }
+
+/* Poll widget styles. */
+.widget.poll h2{
+	color:white;
+	font-size: 20px;
+	margin-bottom:15px;
+}
+
+.widget.poll div.bar
+{
+	margin-bottom:15px;
+}
+
+.widget.poll div.bar h3
+{
+	margin:8px 0px 15px 0px;
+	color:white;
+	font-weight: 300;
+	font-size: 14px;
+}
+
+.widget.poll div.bar .outer
+{
+	display: flex;
+	position:relative;
+	top:0px;
+	left:0px;
+	height:30px;
+	justify-content: center;
+	align-items: center;
+	border:1px solid #8B5FFD;
+	color:white;
+	font-weight: 300;
+	font-size: 11px;
+}
+
+.widget.poll div.inner
+{
+	display: flex;
+	position:absolute;
+	top:0px;
+	left:0px;
+	justify-content: flex-end;
+	align-items: center;
+	height:100%;
+	box-sizing: border-box;
+}
+
+.widget.poll div.bar:nth-child(1) .inner
+{
+	background-color: #7EFAFA;
+}
+
+.widget.poll div.bar:nth-child(2) .inner
+{
+	background-color: #FCB1FC;
+}
+
+.widget.poll div.bar:nth-child(3) .inner
+{
+	background-color: #BCFA7E;
+}
+
+.widget.poll div.bar:nth-child(4) .inner
+{
+	background-color: #EDE57E;
+}

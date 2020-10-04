@@ -12,6 +12,7 @@ const lollyImg = require('./assets/lolly.png')
 const muffinImg = require('./assets/muffin.png')
 const swirlImg = require('./assets/swirl.png')
 const tilesImg = require('./assets/tiles.png')
+const puckImg = require('./assets/puck.png')
 
 const tileMapJson = require('./assets/level2.json')
 
@@ -178,6 +179,9 @@ export default class MainWorldScene extends Phaser.Scene
 		this.load.image('lolly',lollyImg);
 		this.load.image('muffin',muffinImg);
 		this.load.image('swirl',swirlImg);
+		this.load.image('puck',puckImg);
+
+		
 
 		this.load.atlas('player',playerSheetImg,playerAtlas);			
 		this.load.image("red", particleImg);
@@ -196,17 +200,17 @@ export default class MainWorldScene extends Phaser.Scene
 		const tileset = this.map.addTilesetImage('my_simple_game','tiles');		
 		const groundLayer = this.map.createStaticLayer('ground', tileset, 0, 0);
 		
-		this.obstacle.push(this.physics.add.sprite(250,90,'donut'));
+		this.obstacle.push(this.physics.add.sprite(250,90,'puck'));
 		this.obstacle[0].setCollideWorldBounds(true);
 		this.obstacle[0].setBounce(0.3,0.3);
 		this.obstacle[0].body.isCircle = true;
 
-		this.obstacle.push(this.physics.add.sprite(700,100,'donut'));
+		this.obstacle.push(this.physics.add.sprite(700,100,'puck'));
 		this.obstacle[1].setCollideWorldBounds(true);
 		this.obstacle[1].setBounce(0.3,0.3);
 		this.obstacle[1].body.isCircle = true;
 		
-		this.obstacle.push(this.physics.add.sprite(850,90,'donut'));
+		this.obstacle.push(this.physics.add.sprite(850,90,'puck'));
 		this.obstacle[2].setCollideWorldBounds(true);
 		this.obstacle[2].setBounce(0.3,0.3);
 		this.obstacle[2].body.isCircle = true;

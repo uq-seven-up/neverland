@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="22" height="11" tilewidth="64" tileheight="64" infinite="0" nextlayerid="3" nextobjectid="27">
+ <tileset firstgid="1" name="my_simple_game_2" tilewidth="64" tileheight="64" tilecount="12" columns="6">
+  <image source="../../../../../../../Desktop/Design Computing Studio 3 Build/Game 2/tiles 2.png" width="384" height="128"/>
+ </tileset>
+ <layer id="1" name="ground" width="22" height="11">
+  <data encoding="base64">
+   AwAAAAMAAAADAAAAAwAAAAMAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAABAAAAAQAAAAIAAAACAAAAAwAAAAMAAAADAAAAAwAAAAMAAAADAAAAAwAAAAMAAAADAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAQAAAAEAAAACAAAAAgAAAAMAAAADAAAAAwAAAAMAAAADAAAAAwAAAAMAAAADAAAAAwAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAEAAAABAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAABAAAAAQAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAgAAAAIAAAACAAAAAgAAAAEAAAABAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAIAAAACAAAAAgAAAAIAAAABAAAAAQAAAAIAAAACAAAAAgAAAAMAAAADAAAAAwAAAAMAAAADAAAAAwAAAAIAAAACAAAAAgAAAAIAAAACAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAACAAAAAgAAAAIAAAADAAAAAwAAAAMAAAADAAAAAwAAAAMAAAACAAAAAgAAAAIAAAACAAAAAgAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAgAAAAIAAAACAAAAAwAAAAMAAAADAAAAAwAAAAMAAAADAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAA=
+  </data>
+ </layer>
+ <objectgroup id="2" name="candy">
+  <object id="1" type="tree" gid="4" x="-0.506632" y="573.686" width="64" height="64"/>
+  <object id="2" type="tree" gid="4" x="127.566" y="701.759" width="64" height="64"/>
+  <object id="3" type="tree" gid="4" x="127.566" y="638.772" width="64" height="64"/>
+  <object id="4" type="tree" gid="4" x="190.553" y="636.673" width="64" height="64"/>
+  <object id="5" type="tree" gid="4" x="-2.60619" y="250.354" width="64" height="64"/>
+  <object id="6" type="tree" gid="4" x="318.626" y="63.4934" width="64" height="64"/>
+  <object id="7" type="tree" gid="4" x="188.454" y="701.759" width="64" height="64"/>
+  <object id="8" type="tree" gid="4" x="896.005" y="699.659" width="64" height="64"/>
+  <object id="9" type="tree" gid="4" x="1341.11" y="443.513" width="64" height="64"/>
+  <object id="10" type="tree" gid="4" x="1343.21" y="699.659" width="64" height="64"/>
+  <object id="11" type="tree" gid="4" x="1082.87" y="124.381" width="64" height="64"/>
+  <object id="12" type="tree" gid="4" x="572.673" y="508.6" width="64" height="64"/>
+  <object id="14" type="tree" gid="4" x="828.819" y="187.367" width="64" height="64"/>
+  <object id="15" type="donut" gid="7" x="64.5797" y="510.699" width="64" height="64"/>
+  <object id="16" type="donut" gid="7" x="1024.08" y="382.626" width="64" height="64"/>
+  <object id="17" type="swirl" gid="8" x="190.553" y="65.5929" width="64" height="64"/>
+  <object id="18" type="swirl" gid="8" x="1215.14" y="701.759" width="64" height="64"/>
+  <object id="19" type="lolly" gid="9" x="1154.25" y="126.48" width="64" height="64"/>
+  <object id="20" type="lolly" gid="9" x="639.859" y="319.639" width="64" height="64"/>
+  <object id="21" type="muffin" gid="10" x="446.699" y="191.566" width="64" height="64"/>
+  <object id="22" type="muffin" gid="10" x="765.832" y="640.872" width="64" height="64"/>
+  <object id="23" type="cookie" gid="11" x="896.005" y="65.5929" width="64" height="64"/>
+  <object id="24" type="cookie" gid="11" x="511.785" y="701.759" width="64" height="64"/>
+  <object id="25" type="icecream" gid="12" x="-2.60619" y="703.859" width="64" height="64"/>
+  <object id="26" type="icecream" gid="12" x="1276.02" y="512.799" width="64" height="64"/>
+ </objectgroup>
+</map>

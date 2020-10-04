@@ -12,7 +12,8 @@ const MONGO_SERVER = process.env.mongoserver as string;
 const MONGO_USERNAME = process.env.mongousername as string;
 const MONGO_PASSWORD = process.env.mongopassword as string;
 const MONGO_DBNAME = process.env.mongodbname as string;
-const MONG_URL = `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_SERVER}/${MONGO_DBNAME}?retryWrites=true&w=majority`
+/* The connection string for localhost is different to connecting to mongo hosted on Atlas.*/
+const MONG_URL = MONGO_SERVER === 'localhost' ? `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_SERVER}/${MONGO_DBNAME}?authSource=admin` : `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_SERVER}/${MONGO_DBNAME}?retryWrites=true&w=majority`
 
 /* Interface for valid mongoose data models. */
 declare interface IModels {

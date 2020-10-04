@@ -15,27 +15,41 @@ dotenv.config();
 
 /**
  * Create a new poll.
+ * 
+ * Expects to receive a JSON object in the following format:
+ * {
+ *   "name":"q1",
+ *   "question":"How has your day been so far?",
+ *   "answer":[
+ *       {"key":"a","response":"Very good!","votes":0},
+ *       {"key":"b","response":"Worse day of my life!","votes":0},
+ *       {"key":"c","response":"Too many assignments!","votes":0},
+ *       {"key":"d","response":"I got this!","votes":0}
+ *   ]
+ * }
  */
 router.post('/create',async(req:Request,res:Response) => {	
 	let poll = new DB.Models.Poll();
 	poll._id = CFKitUtil.createGUID();
-	poll.name = 'TechPoll-1'
+	poll.name = req.body.name;
 	poll.published_date = new Date();
-	poll.question = "Your strongest tech prediction.";
+	poll.question = req.body.question;
 	poll.creation_date = new Date();
-	poll.answer.push({key:'a',response:'Chrome needs 128GB RAM to run.',votes:0})
-	poll.answer.push({key:'b',response:'Human on Mars',votes:0})
-	poll.answer.push({key:'c',response:'More than two people use Safari',votes:0})
-	poll.answer.push({key:'d',response:'Flying Cars',votes:0})
-
+	for(let i=0; i < req.body.answer.length;i++){
+		poll.answer.push({
+			key:req.body.answer[i].key,
+			response:req.body.answer[i].response,
+			votes:req.body.answer[i].votes
+		});
+	}
+	
 	await poll.save((error:any,object:IPoll) => {		
 		if(error){
-			console.log(error)
+			console.log(error)			
 			res.status(500).send({success:false,'msg':'Error creating poll.'})
 			return;
 		}
-
-		res.send({success:true,data:{poll:poll}})
+		res.send({success:true,data:{poll:object}})
 	});
 });
 
@@ -44,15 +58,14 @@ router.post('/create',async(req:Request,res:Response) => {
  * Retrieve the currently active poll.
  */
 router.get('/active',async(req:Request,res:Response) => {	
-	const pollid = 'd7abfc00-cff1-4c08-9282-2d50dad17d31';	
 	try{
-		let poll =  await DB.Models.Poll.findById(pollid);
-		if(poll)
+		let poll =  await DB.Models.Poll.find().sort({published_date:-1}).limit(1);
+		if(poll && poll.length > 0)
 		{
-			res.send({success:true,data:{poll:poll}});
+			res.send({success:true,data:{poll:poll[0]}});
 		}else
 		{
-			res.status(404).send({success:false,'msg':'Cannot find the poll witht the specified id.'})
+			res.status(404).send({success:false,'msg':'Did not find any active polls.'})
 		}
 	} catch(error)
 	{

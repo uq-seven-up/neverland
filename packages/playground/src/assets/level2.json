@@ -167,7 +167,7 @@
                  "id":12,
                  "name":"",
                  "rotation":0,
-                 "type":"icrecream",
+                 "type":"icecream",
                  "visible":true,
                  "width":64,
                  "x":958.991,
@@ -189,7 +189,7 @@
         {
          "columns":6,
          "firstgid":1,
-         "image":"..\/..\/..\/..\/..\/..\/..\/Desktop\/Design Computing Studio 3 Build\/Game\/tiles.png",
+         "image":"tiles.png",
          "imageheight":128,
          "imagewidth":384,
          "margin":0,

@@ -94,7 +94,7 @@ class PollWidget extends React.Component<PollWidgetProp, PollWidgetState> {
      * @returns void
      */
     private callAPI = (name:string,method:'GET'|'POST'|'PUT'|'DELETE',endpoint:string,data?:any,hideBusy?:boolean):void => {                      
-        let baseUrl = process.env.REACT_APP_NEVERMIND_API_BASE as any as string; 
+        let baseUrl = 'http://' + window.location.hostname  + ':3080/api';
         new API(baseUrl).call(method,endpoint,(response:AxiosResponse<any>) => 
         {
             if(response.status === 200)

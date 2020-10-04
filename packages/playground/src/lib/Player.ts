@@ -4,7 +4,7 @@ export default class Player{
 
 	private _id:string;
 	private _sprite!:Phaser.Physics.Arcade.Sprite;
-	private _speed:number = 120;
+	private _speed:number = 200;
 	private _speed_x:number;
 	private _speed_y:number;
 	private _score:number;
@@ -57,6 +57,14 @@ export default class Player{
 
 	public get score() {
 		return this._score;
+	}
+
+	public set speed(value:number) {
+		this._speed = value;
+	}
+
+	public get speed() {
+		return this._speed;
 	}
 
 	public move(heading:string){

@@ -127,6 +127,9 @@ class PollView extends React.Component<PollViewProp, PollViewState> {
 	{
 		return (
 			<>
+            <div className='pollhead'>
+                <figure></figure>
+            </div>
             <h1>Select your answer</h1>
 			{
 				this.state.poll.answer.map((answer:IPollOption) => (

@@ -17,8 +17,7 @@ body
 	width:100vw;
 	height:100vh;
 	box-sizing: border-box;	
-	background: rgb(147,124,179);
-	background: linear-gradient(347deg, rgba(147,124,179,1) 0%, rgba(81,44,123,1) 59%);
+	background: rgb(92,51,179);
 	
 	/* Disable the select, copy, define, menus from popping up on mobile devices on long touches. e.g. holding down a dirction button in the game controller. */
 	-webkit-touch-callout:none;
@@ -28,6 +27,8 @@ body
 	-ms-user-select:none;
 	user-select:none;
 	-webkit-tap-highlight-color:rgba(0,0,0,0);
+
+	
 }
 
 
@@ -37,8 +38,17 @@ body
 	justify-content: flex-start;
 	align-content: center;
 	flex-wrap: nowrap;
-	background-color: #502984;
+	background-color: #502d82;
 	height: 80vh;
+}
+
+.section1 figure {
+	height: 30vh;
+	width: 100vw;
+	background-image: url('../gfx/logo.png');
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
 }
 
 .section1 h1 {
@@ -116,7 +126,7 @@ section button{
 	left: 0;
 	height: 100%;
 	width: 50%;
-	background:#3C1F63;
+	background:#8a65f8;
 	transform: skew(0deg, 35deg);
   }
   #chevron1:after {
@@ -126,7 +136,7 @@ section button{
 	right: 0;
 	height: 100%;
 	width: 50%;
-	background: #3C1F63 ;
+	background:#8a65f8;
 	transform: skew(0deg, -35deg);
   }
 
@@ -144,7 +154,7 @@ section button{
 	left: 0;
 	height: 100%;
 	width: 50%;
-	background:#634C82;
+	background:#7a4cea;
 	transform: skew(0deg, 35deg);
   }
   #chevron2:after {
@@ -154,7 +164,7 @@ section button{
 	right: 0;
 	height: 100%;
 	width: 50%;
-	background: #634C82;
+	background:#7a4cea;
 	transform: skew(0deg, -35deg);
   }
 
@@ -172,7 +182,7 @@ section button{
 	left: 0;
 	height: 150%;
 	width: 50%;
-	background: #82709B;
+	background: #5c39b0;
 	transform: skew(0deg, 35deg);
   }
 
@@ -182,9 +192,35 @@ section button{
 	right: 0;
 	height: 150%;
 	width: 50%;
-	background:#82709B;
+	background: #5c39b0;
 	transform: skew(0deg, -35deg);
   }
+
+  /* Logo header for pollview and gameview pages */
+
+.pollhead {
+	width: 100vw;
+	height: 30vh;
+}
+ 
+.pollhead figure {
+	width: 100vw;
+	min-height: 30vh;
+	background-image: url('../gfx/quizhead.png');
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;	
+  }	
+
+ .gamehead figure {
+width: 100vw;
+height: 40vh;
+background-image: url('../gfx/gamehead.png');
+background-size: contain;
+background-repeat: no-repeat;
+background-position: center;	
+}	
+
 
 
 .gamePad

@@ -138,6 +138,9 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 	public render() {		
 		return(
 		<section>
+			<div className='gamehead'>
+                <figure></figure>
+            </div>
         	<div className="gamePad">
 				<div data-heading="n" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8593;</div>
 				<div data-heading="ne" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8599;</div>

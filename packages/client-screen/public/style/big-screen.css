@@ -230,15 +230,6 @@ main {
 	margin-bottom:15px;
 }
 
-.widget.poll poll-chart
-{
-	display:flex;
-	flex-direction: column;
-	justify-content: space-evenly;
-	align-items: center;
-	border:1px solid red;
-}
-
 .widget.poll div.bar
 {
 	margin-bottom:15px;
@@ -246,7 +237,7 @@ main {
 
 .widget.poll div.bar h3
 {
-	margin:5px 0px 10px 0px;
+	margin:8px 0px 15px 0px;
 	color:white;
 	font-weight: 300;
 	font-size: 14px;
@@ -258,7 +249,7 @@ main {
 	position:relative;
 	top:0px;
 	left:0px;
-	height:20px;
+	height:30px;
 	justify-content: center;
 	align-items: center;
 	border:1px solid #8B5FFD;

@@ -48,13 +48,16 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 			let message = evt.data as string;
 			
 			console.log(message)
-			if(message.startsWith('c|'))
+			if(message.startsWith('c|') || message.startsWith('b|'))
 			{
 				let data = message.split('|');
 				if(data[1] === 'v')
 				{
 					switch(data[3])
 					{
+						/* New Game.*/
+						case '90':
+							break;
 						/* Game is full.*/
 						case '110':
 							this.setState({gameIsFull:true})																				

@@ -277,6 +277,7 @@ export default class MainWorldScene extends Phaser.Scene
 //		  yoyo: true,
 //		  loop: -1
 //		});
+		this.ws.send('b|v||90');
 	  }
 
 	private handlePlayerOverlapsCandy(playerObj:Phaser.Types.Physics.Arcade.GameObjectWithBody,candyObj:Phaser.Types.Physics.Arcade.GameObjectWithBody){

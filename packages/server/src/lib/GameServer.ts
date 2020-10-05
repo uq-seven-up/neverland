@@ -27,8 +27,10 @@ Position:
 2 = Identifier for the websocket. When connecting the identifier is passed as the url
 	parameter 'uuid' when openeing the connection. (ignored for can be empty for broadcast messages.)
 3 = Event type.
+90:  New Game
 100: Game Ended
 110: Game Full
+120: Joined Game
 200: Collected an item
 
 
@@ -132,7 +134,11 @@ export class GameServer
                 this._queue.set(uuid,tmp);
             }
         }
-    }
+	}
+	
+	private handleGameEvent(eventCode:number){
+		console.log('event',eventCode)
+	}
 
     public join(uuid:string,name:string)
     {
@@ -150,8 +156,7 @@ export class GameServer
 
        /* The game is currently full. */
        if(this._field.length >= GameServer.MAX_PLAYERS){
-           	 console.log('Send game, full placed in queue.');
-			 if(player)
+           	 if(player)
 			 {
 				 this.sendEventToPlayer(player!,110);  
 			 }  
@@ -168,7 +173,7 @@ export class GameServer
 	public sendEventToPlayer(player:PlayerData,eventCode:number):void
 	{						
 		let message = 'c|v|' + player.uuid + '|' + eventCode.toString();
-		GameServer.routeGameMessage(this._ws,message)
+		this.routeGameMessage(message)
 	}
 
     /**
@@ -176,11 +181,11 @@ export class GameServer
 	 * @param ws Reference to the web socket server.
 	 * @param message (See game message protocol.)
 	 */
-	public static routeGameMessage(ws:any,message:string):void
+	public routeGameMessage(message:string):void
 	{						
         let data = message.split('|');
-		ws.clients.forEach(function each(client:GameWebSocket) {
-			if (client.uuid === data[2] && client.readyState === WebSocket.OPEN) {			
+		this._ws.clients.forEach(function each(client:WebSocket) {
+			if ((client as GameWebSocket).uuid === data[2] && client.readyState === WebSocket.OPEN) {			
 				client.send(message);
 			}
 		});
@@ -191,10 +196,16 @@ export class GameServer
 	 * @param ws Reference to the web socket server.
 	 * @param message (See game message protocol.)
 	 */
-	public static broadCastGameMessage(ws:any,message:string):void
+	public broadCastGameMessage(message:string):void
 	{						
-		ws.clients.forEach(function each(client:GameWebSocket) {
-			if (client.uuid !== 'GAME_SCREEN' && client.readyState === WebSocket.OPEN) {			
+		let data = message.split('|');
+		if(data[1] === 'v')
+		{
+			this.handleGameEvent(parseInt(data[3],10));
+		}
+		
+		this._ws.clients.forEach(function each(client:WebSocket) {
+			if ((client as GameWebSocket).uuid !== 'GAME_SCREEN' && client.readyState === WebSocket.OPEN) {			
 				client.send(message);
 			}
 		});

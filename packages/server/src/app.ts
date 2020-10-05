@@ -67,15 +67,15 @@ app.locals.ws.on('connection', (socket : GameWebSocket, req:Request) => {
 
 		if(message.toString().startsWith('c|'))
 		{
-			GameServer.routeGameMessage(app.locals.ws,msg);
+			app.locals.game.routeGameMessage(msg);
 			return;
 		}
 		
 		if(message.toString().startsWith('b|'))
 		{
-			GameServer.broadCastGameMessage(app.locals.ws,msg);
+			app.locals.game.broadCastGameMessage(msg);
 			return;
-		} 
+		}
 	});
 
 	/* Handle clients disconnecting. */

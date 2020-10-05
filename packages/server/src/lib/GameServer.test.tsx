@@ -1,15 +1,16 @@
+import WebSocket from 'ws';
 import {GameServer} from './GameServer';
-
+let ws =  new WebSocket.Server({noServer:true,clientTracking:true}) as WebSocket.Server;
 
 test('join a waiting game.', () => {
-    let gameServer = new GameServer();
+    let gameServer = new GameServer(ws);
     gameServer.join('PLAYER_ONE','Jack');
     gameServer.join('PLAYER_TWO','Heidrun');
     expect(gameServer.queue.size).toBe(2);
 });
 
 test('assign players to game', () => {
-    let gameServer = new GameServer();
+    let gameServer = new GameServer(ws);
     GameServer.MAX_PLAYERS = 4;
     
     /* Add some players to the queue.*/
@@ -52,7 +53,7 @@ test('assign players to game', () => {
 
 
 test('move first n player to back of queue', () => {
-    let gameServer = new GameServer();
+    let gameServer = new GameServer(ws);
     GameServer.MAX_PLAYERS = 4;
     
     /* Add some players to the queue.*/
@@ -93,7 +94,7 @@ test('move first n player to back of queue', () => {
 });
 
 test('rotate players for the next game', () => {
-    let gameServer = new GameServer();
+    let gameServer = new GameServer(ws);
     GameServer.MAX_PLAYERS = 4;
     
     /* Add some players to the queue.*/

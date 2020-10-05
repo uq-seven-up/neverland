@@ -218,6 +218,22 @@ export default class MainWorldScene extends Phaser.Scene
 		this.obstacle[2].setBounce(0.7,0.7);
 		this.obstacle[2].body.isCircle = true;
 		
+		this.obstacle.push(this.physics.add.sprite(500,90,'puck'));
+		this.obstacle[3].setCollideWorldBounds(true);
+		this.obstacle[3].setBounce(0.7,0.7);
+		this.obstacle[3].body.isCircle = true;
+
+		this.obstacle.push(this.physics.add.sprite(850,590,'puck'));
+		this.obstacle[4].setCollideWorldBounds(true);
+		this.obstacle[4].setBounce(0.1,0.1);
+		this.obstacle[4].body.isCircle = true;
+
+		this.obstacle.push(this.physics.add.sprite(350,190,'puck'));
+		this.obstacle[5].setCollideWorldBounds(true);
+		this.obstacle[5].setBounce(0.1,0.1);
+		this.obstacle[5].body.isCircle = true;
+
+
 		this.physics.world.on('tileoverlap', () => {console.log('listener')});
 
 		this.candyGroup = this.physics.add.group({
@@ -333,6 +349,7 @@ export default class MainWorldScene extends Phaser.Scene
 		{
 			this.adjustSpeedForTile(this.player[i]);
 			this.player[i].update();
+			this.physics.collide(this.player[i].sprite,this.player[i].sprite,() => {console.log('player collided')});
 			this.physics.collide(this.player[i].sprite,this.obstacle,() => {console.log('player collided')});
 			this.physics.collide(this.obstacle,this.obstacle,() => {console.log('obstacles collided')});
 			this.physics.collide(this.obstacle,this.candyGroup,() => {console.log('obstacles with candy')});

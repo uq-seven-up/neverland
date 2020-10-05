@@ -1,10 +1,16 @@
 import React from "react"
 import {CFKitUtil} from '@7up/common-utils';
 
+enum GameState {
+	WAITING,
+	PLAYING,
+	FULL
+}
+
 interface GameClientProp {}
 interface GameClientState {
+	game:GameState,
 	playerId:string,
-	gameIsFull:boolean,
 	enableMusic:boolean,
 	enableSound:boolean
 }
@@ -26,7 +32,7 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		https://github.com/facebook/react/issues/12856#issuecomment-613145789
 		*/
 		this.state = {
-			gameIsFull:false,
+			game:GameState.WAITING,
 			enableMusic:false,
 			enableSound:false,
 			playerId:CFKitUtil.createGUID()	
@@ -36,6 +42,12 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
     /* ########################################################*/
     /* React life-cycle methods.*/
     public componentDidMount(): void {
+		this.connect();
+    }
+	
+	/* ########################################################*/
+	private connect = () =>
+	{
 		let socketServerHost = 'ws://' + window.location.hostname + ':3080'
 		this.ws = new WebSocket(socketServerHost + '?uuid=' + this.state.playerId);
 		this.ws.onopen = () => {
@@ -55,16 +67,18 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 				{
 					switch(data[3])
 					{
-						/* New Game.*/
-						case '90':
+						/* Game Invite.*/
+						case '95':
+							console.log('accept invite');
+							this.ws.send(`g|j|${this.state.playerId}`);
 							break;
 						/* Game is full.*/
 						case '110':
-							this.setState({gameIsFull:true})																				
+							this.setState({game:GameState.FULL})																				
 							break;
 						/* Joined game.*/
 						case '120':
-							this.setState({gameIsFull:false})																				
+							this.setState({game:GameState.PLAYING})																				
 							break;
 						/* Collected and item. */
 						case '200':
@@ -85,11 +99,15 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		}
 
 		this.ws.onclose = () => {
-			console.log('Game client disconnected')			
+			let that = this;
+			console.log('Game client disconnected, retry reconnect in two seconds.')	
+			setTimeout(function() {
+			that.connect();
+			}, 2000);		
 		}
-    }
-    /* ########################################################*/
-	
+	}
+
+
 	private toggleSound = () => {
 		if(!this.chimeSound)
 		{
@@ -182,7 +200,7 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 
 	public render() {		
 		let content:JSX.Element;
-		if(this.state.gameIsFull)
+		if(this.state.game === GameState.FULL)
 		{
 			content = this.renderGameFull();
 		}else

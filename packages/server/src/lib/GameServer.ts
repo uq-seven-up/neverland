@@ -1,3 +1,4 @@
+import { createParameter } from 'typescript';
 import WebSocket from 'ws';
 
 /** 
@@ -26,8 +27,9 @@ Position:
 2 = Identifier for the websocket. When connecting the identifier is passed as the url
 	parameter 'uuid' when openeing the connection. (ignored for can be empty for broadcast messages.)
 3 = Event type.
-	100: Game Ended
-	200: Collected an item
+100: Game Ended
+110: Game Full
+200: Collected an item
 
 
 Example Message:
@@ -57,13 +59,15 @@ interface PlayerData {
 
 export class GameServer
 {
-    static MAX_PLAYERS = 4
-    private _queue:Map<string,PlayerData>
+    static MAX_PLAYERS = 1;
+	private _ws:WebSocket.Server;
+	private _queue:Map<string,PlayerData>
     private _field:PlayerData[]
     private _state:"running"|"waiting"|"unknown"
     
-    constructor() {
-        this._state = "unknown";
+    constructor(ws:WebSocket.Server) {
+		this._ws = ws;
+		this._state = "unknown";
         this._queue = new Map();
         this._field = []
     }
@@ -146,8 +150,12 @@ export class GameServer
 
        /* The game is currently full. */
        if(this._field.length >= GameServer.MAX_PLAYERS){
-           console.log('Send game, full placed in queue.');
-           return;
+           	 console.log('Send game, full placed in queue.');
+			 if(player)
+			 {
+				 this.sendEventToPlayer(player!,110);  
+			 }  
+		   return;
        }
 
        if(player)
@@ -155,14 +163,20 @@ export class GameServer
            this.addPlayerToField(player);
            console.log('Player added to the game.');
        }
-    }
+	}
+	
+	public sendEventToPlayer(player:PlayerData,eventCode:number):void
+	{						
+		let message = 'c|v|' + player.uuid + '|' + eventCode.toString();
+		GameServer.routeGameMessage(this._ws,message)
+	}
 
     /**
 	 * Re-route an incoming game message to a specific mobile client. 
 	 * @param ws Reference to the web socket server.
 	 * @param message (See game message protocol.)
 	 */
-	public routeGameMessage(ws:any,message:string):void
+	public static routeGameMessage(ws:any,message:string):void
 	{						
         let data = message.split('|');
 		ws.clients.forEach(function each(client:GameWebSocket) {
@@ -177,7 +191,7 @@ export class GameServer
 	 * @param ws Reference to the web socket server.
 	 * @param message (See game message protocol.)
 	 */
-	public broadCastGameMessage(ws:any,message:string):void
+	public static broadCastGameMessage(ws:any,message:string):void
 	{						
 		ws.clients.forEach(function each(client:GameWebSocket) {
 			if (client.uuid !== 'GAME_SCREEN' && client.readyState === WebSocket.OPEN) {			
@@ -191,9 +205,10 @@ export class GameServer
 	 * @param ws Reference to the web socket server.
 	 * @param message (See game message protocol.)
 	 */
-	public sendToGameScreen(ws:any,message:string,from:string):void
+	public sendToGameScreen(message:string,from:string):void
 	{						
-        let data = message.split('|');
+		console.log(message);
+		let data = message.split('|');
         if(data[1] === 'j')
         {
             this.join(from,'todo assign playername');
@@ -206,8 +221,8 @@ export class GameServer
         } 
 
         /* Note, in this context the client.uuid is the sending sockets uuid. */
-        ws.clients.forEach(function each(client:GameWebSocket) {
-            if (client.uuid === 'GAME_SCREEN' && client.readyState === WebSocket.OPEN) {			
+        this._ws.clients.forEach(function each(client:WebSocket) {
+            if ((client as GameWebSocket).uuid === 'GAME_SCREEN' && client.readyState === WebSocket.OPEN) {			
 				client.send(message);
 			}
 		});

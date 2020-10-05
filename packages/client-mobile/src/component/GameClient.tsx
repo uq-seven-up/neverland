@@ -82,14 +82,14 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		if(!this.music)
 		{
 			this.music = new Audio('/client-mobile/sound/423350__sieuamthanh__rung-sang-sac.mp3');
-			this.music.loop = true;
+			//this.music.loop = true;
 		}
 		/* 	Remember we are toggling the sound BEFORE we set the correct value for the 
 			enableSound state.*/
 		if(this.state.enableSound){
 			this.music.pause();
 		} else {
-			this.music.play();
+			// this.music.play();
 			this.music.volume = 0.5;
 		}
 		this.setState({enableSound:!this.state.enableSound});

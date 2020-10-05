@@ -61,7 +61,7 @@ interface PlayerData {
 
 export class GameServer
 {
-    static MAX_PLAYERS = 1;
+    static MAX_PLAYERS = 8;
 	private _ws:WebSocket.Server;
 	private _queue:Map<string,PlayerData>
     private _field:PlayerData[]

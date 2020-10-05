@@ -4,6 +4,7 @@ import {CFKitUtil} from '@7up/common-utils';
 interface GameClientProp {}
 interface GameClientState {
 	playerId:string,
+	gameIsFull:boolean,
 	enableMusic:boolean,
 	enableSound:boolean
 }
@@ -25,6 +26,7 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		https://github.com/facebook/react/issues/12856#issuecomment-613145789
 		*/
 		this.state = {
+			gameIsFull:false,
 			enableMusic:false,
 			enableSound:false,
 			playerId:CFKitUtil.createGUID()	
@@ -53,6 +55,15 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 				{
 					switch(data[3])
 					{
+						/* Game is full.*/
+						case '110':
+							this.setState({gameIsFull:true})																				
+							break;
+						/* Joined game.*/
+						case '120':
+							this.setState({gameIsFull:false})																				
+							break;
+						/* Collected and item. */
 						case '200':
 							if(window.navigator.vibrate)
 							{
@@ -140,25 +151,48 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 	}
 
 	/* ########################################################*/
-    /* UI Rendering */
+	/* UI Rendering */
+	private renderGameFull()
+	{
+		return(<h1>Game is full.</h1>)
+	}
+
+	private renderGameActive()
+	{
+		return(
+			<>
+				<div className="gamePad">
+					<div data-heading="n" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8593;</div>
+					<div data-heading="ne" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8599;</div>
+					<div data-heading="e" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8594;</div>
+					<div data-heading="se" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8600;</div>
+					<div data-heading="s" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8595;</div>
+					<div data-heading="sw" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8601;</div>
+					<div data-heading="w" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8592;</div>
+					<div data-heading="nw" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8598;</div>				
+				</div>
+				<button onClick={this.toggleSound}>{this.state.enableSound ? 'Disable Sound' : 'Enable Sound'}</button>
+				<button onClick={this.toggleMusic}>{this.state.enableMusic ? 'Disable Music' : 'Enable Music'}</button>
+			</>
+		)
+	}
+
 	public render() {		
+		let content:JSX.Element;
+		if(this.state.gameIsFull)
+		{
+			content = this.renderGameFull();
+		}else
+		{
+			content = this.renderGameActive();
+		}
+		
 		return(
 		<section>
 			<div className='gamehead'>
                 <figure></figure>
             </div>
-        	<div className="gamePad">
-				<div data-heading="n" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8593;</div>
-				<div data-heading="ne" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8599;</div>
-				<div data-heading="e" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8594;</div>
-				<div data-heading="se" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8600;</div>
-				<div data-heading="s" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8595;</div>
-				<div data-heading="sw" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8601;</div>
-				<div data-heading="w" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8592;</div>
-				<div data-heading="nw" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8598;</div>				
-			</div>
-		<button onClick={this.toggleSound}>{this.state.enableSound ? 'Disable Sound' : 'Enable Sound'}</button>
-		<button onClick={this.toggleMusic}>{this.state.enableMusic ? 'Disable Music' : 'Enable Music'}</button>
+			{content}
 		</section>
         )
     }

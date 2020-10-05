@@ -4,6 +4,7 @@ import {CFKitUtil} from '@7up/common-utils';
 interface GameClientProp {}
 interface GameClientState {
 	playerId:string,
+	enableMusic:boolean,
 	enableSound:boolean
 }
 
@@ -24,6 +25,7 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		https://github.com/facebook/react/issues/12856#issuecomment-613145789
 		*/
 		this.state = {
+			enableMusic:false,
 			enableSound:false,
 			playerId:CFKitUtil.createGUID()	
         }
@@ -79,20 +81,24 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		{
 			this.chimeSound = new Audio('/client-mobile/sound/chime.mp3');
 		}
+		this.setState({enableSound:!this.state.enableSound});
+	}
+
+	private toggleMusic = () => {
 		if(!this.music)
 		{
 			this.music = new Audio('/client-mobile/sound/423350__sieuamthanh__rung-sang-sac.mp3');
-			//this.music.loop = true;
+			this.music.loop = true;
 		}
-		/* 	Remember we are toggling the sound BEFORE we set the correct value for the 
-			enableSound state.*/
-		if(this.state.enableSound){
+		/* 	Remember we are toggling the music BEFORE we set the correct value for the 
+			enableMusic state.*/
+		if(this.state.enableMusic){
 			this.music.pause();
 		} else {
-			// this.music.play();
+			this.music.play();
 			this.music.volume = 0.5;
 		}
-		this.setState({enableSound:!this.state.enableSound});
+		this.setState({enableMusic:!this.state.enableMusic});
 	}
 
 	private handleClickMove = (e:React.MouseEvent<HTMLElement>) =>
@@ -152,6 +158,7 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 				<div data-heading="nw" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8598;</div>				
 			</div>
 		<button onClick={this.toggleSound}>{this.state.enableSound ? 'Disable Sound' : 'Enable Sound'}</button>
+		<button onClick={this.toggleMusic}>{this.state.enableMusic ? 'Disable Music' : 'Enable Music'}</button>
 		</section>
         )
     }

@@ -23,6 +23,13 @@ interface PollWidgetState {
   poll:IPoll
 }
 
+declare interface AnswerStat {
+	key:string,
+	label:string,
+	votes:number,
+	percentage:number
+}
+
 /**
  * This widget displays news articles retrieved by the REST Server from the UQ RSS news feed.
  */
@@ -87,7 +94,7 @@ class PollWidget extends React.Component<PollWidgetProp, PollWidgetState> {
      * @returns void
      */
     private callAPI = (name:string,method:'GET'|'POST'|'PUT'|'DELETE',endpoint:string,data?:any,hideBusy?:boolean):void => {                      
-        let baseUrl = process.env.REACT_APP_NEVERMIND_API_BASE as any as string; 
+        let baseUrl = 'http://' + window.location.hostname  + ':3080/api';
         new API(baseUrl).call(method,endpoint,(response:AxiosResponse<any>) => 
         {
             if(response.status === 200)
@@ -137,31 +144,45 @@ class PollWidget extends React.Component<PollWidgetProp, PollWidgetState> {
      * @returns JSX element
      */
     private renderPoll():JSX.Element {        
-        return (
-			<table>					
-				<tbody>
-                {this.state.poll.answer.map((answer:IPollOption) => (
-                    <tr key={answer.key}>
-						<td>{answer.response}</td>
-						 <td><span>{answer.votes}</span></td>
-					</tr>
+		let total = 0;
+		let stats:AnswerStat[] = []; 
+		
+		this.state.poll.answer.map( (pollOption:IPollOption) => {
+			total += pollOption.votes;
+			return null;			
+		});
+		
+		total = total === 0 ? 1 : total;
+		this.state.poll.answer.map( (pollOption:IPollOption) => {
+			stats.push({
+				key:pollOption.key,
+				label:pollOption.response,
+				votes:pollOption.votes,
+				percentage:((pollOption.votes / total) * 100)
+			});			
+			return null;			
+		});
+		
+		return (
+			<div className="poll-chart">
+                {stats.map((answer:AnswerStat) => (
+                    <div key={answer.key} className="bar">
+						<div className="outer">
+							 {`${answer.votes} votes`}
+							<div className="inner" style={{width:`${Math.round(answer.percentage)}%`}}></div>
+						</div>
+						<h3>{answer.label}</h3>						
+					</div>				
                 ))}
-				</tbody>
-            </table>
-        )
+			</div>
+			)
     }
 
     public render() {
         return (
         <section id={this.props.id} className="widget poll">
-            <div className="heading">
-				<h2>UQ Poll</h2>
-				<figure></figure>
-			</div>
-			<div className="content">
-				<h2>{this.state.poll.question}</h2>				
-				{this.renderPoll()}
-			</div>
+            <h2>{this.state.poll.question}</h2>
+			{this.renderPoll()}
         </section>
         )
     }

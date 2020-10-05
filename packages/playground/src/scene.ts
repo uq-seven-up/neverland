@@ -12,11 +12,13 @@ const lollyImg = require('./assets/lolly.png')
 const muffinImg = require('./assets/muffin.png')
 const swirlImg = require('./assets/swirl.png')
 const tilesImg = require('./assets/tiles.png')
+const puckImg = require('./assets/puck.png')
 
 const tileMapJson = require('./assets/level2.json')
 
-export default class MainWorldScene extends Phaser.Scene
+export default class MainWorldScene extends Phaser.Scene  
 {
+	private static LOCAL_PLAYER_ID = 'local_player';
 	private BASE_URL = '/client-screen/game';
 	private SOCKET_URL = 'ws://' + window.location.hostname + ':3080/?uuid=GAME_SCREEN';
 	private MAX_PLAYERS = 8;
@@ -158,7 +160,7 @@ export default class MainWorldScene extends Phaser.Scene
 					this.playerMove(aData[2],aData[1]);
 					break;					
 				case 'h':
-					this.playerStop(aData[2]);
+					// this.playerStop(aData[2]);
 					break;
 				case 'x':
 					this.playerDestroy(aData[2]);
@@ -178,6 +180,9 @@ export default class MainWorldScene extends Phaser.Scene
 		this.load.image('lolly',lollyImg);
 		this.load.image('muffin',muffinImg);
 		this.load.image('swirl',swirlImg);
+		this.load.image('puck',puckImg);
+
+		
 
 		this.load.atlas('player',playerSheetImg,playerAtlas);			
 		this.load.image("red", particleImg);
@@ -194,21 +199,23 @@ export default class MainWorldScene extends Phaser.Scene
 		/* Load tiles from a tile map. */
 		this.map = this.make.tilemap({ key: 'map' });
 		const tileset = this.map.addTilesetImage('my_simple_game','tiles');		
-		const groundLayer = this.map.createStaticLayer('ground', tileset, 0, 0);
+		this.map.createStaticLayer('ground', tileset, 0, 0);
 		
-		this.obstacle.push(this.physics.add.sprite(250,90,'donut'));
+		this.map.findTile
+
+		this.obstacle.push(this.physics.add.sprite(250,90,'puck'));
 		this.obstacle[0].setCollideWorldBounds(true);
-		this.obstacle[0].setBounce(0.3,0.3);
+		this.obstacle[0].setBounce(0.7,0.7);
 		this.obstacle[0].body.isCircle = true;
 
-		this.obstacle.push(this.physics.add.sprite(700,100,'donut'));
+		this.obstacle.push(this.physics.add.sprite(700,100,'puck'));
 		this.obstacle[1].setCollideWorldBounds(true);
-		this.obstacle[1].setBounce(0.3,0.3);
+		this.obstacle[1].setBounce(0.7,0.7);
 		this.obstacle[1].body.isCircle = true;
 		
-		this.obstacle.push(this.physics.add.sprite(850,90,'donut'));
+		this.obstacle.push(this.physics.add.sprite(850,90,'puck'));
 		this.obstacle[2].setCollideWorldBounds(true);
-		this.obstacle[2].setBounce(0.3,0.3);
+		this.obstacle[2].setBounce(0.7,0.7);
 		this.obstacle[2].body.isCircle = true;
 		
 		this.physics.world.on('tileoverlap', () => {console.log('listener')});
@@ -220,14 +227,21 @@ export default class MainWorldScene extends Phaser.Scene
 
 		const candyObjects = this.map.getObjectLayer('candy')['objects'];
 		candyObjects.forEach(candyObject => {
-			const candy = this.candyGroup.create(candyObject.x!, candyObject.y! - candyObject.height!,candyObject.type).setOrigin(0,0);
+			this.candyGroup.create(candyObject.x!, candyObject.y! - candyObject.height!,candyObject.type).setOrigin(0,0);
 		  });
 
-		  this.scoreText[0] = this.add.text(10, 10, 'Team 1: 0', {fontSize: '20px', fill: '#000'});
-		  this.scoreText[1] = this.add.text(10, 40, 'Team 2: 0', {fontSize: '20px', fill: '#000'});
+		this.scoreText[0] = this.add.text(10, 10, 'Team 1: 0', {fontSize: '20px', fill: '#000'});
+		this.scoreText[1] = this.add.text(10, 40, 'Team 2: 0', {fontSize: '20px', fill: '#000'});
 		
 		
-		
+		var p_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
+		p_key.on('down',(e:Phaser.Input.Keyboard.Key) => {
+			this.addPlayer(MainWorldScene.LOCAL_PLAYER_ID);
+		})  
+		this.cursors = this.input.keyboard.createCursorKeys();
+			// W key down
+	   
+	   
 		// Hello World
 		//const logo = this.add.image(400, 150, "tiger");
 		//var particles = this.add.particles('red');	  
@@ -288,14 +302,43 @@ export default class MainWorldScene extends Phaser.Scene
 		}				
 	}
 
+	private updateLocalPlayer(){
+		let player = this.getPlayerById(MainWorldScene.LOCAL_PLAYER_ID);
+		if(player === null) return;
+		if (this.cursors.up.isDown){player.move('n'); return;}
+		if (this.cursors.right.isDown){player.move('e');return;}
+		if (this.cursors.down.isDown){player.move('s');return;}
+		if (this.cursors.left.isDown){player.move('w');return;}
+		//player.stop();
+		
+	}
+
+	private adjustSpeedForTile(player:Player){
+		let tile = this.map.getTileAtWorldXY(player.sprite.x,player.sprite.y);
+		switch(tile.index)
+		{
+			case 1:
+				player.speed = 150;
+				break;
+			case 2:
+				player.speed = 300;
+				break;	
+			default:
+				player.speed = 50;
+		}
+	}
+
 	update(){		
 		for(var i=0;i<this.player.length;i++)
 		{
+			this.adjustSpeedForTile(this.player[i]);
 			this.player[i].update();
 			this.physics.collide(this.player[i].sprite,this.obstacle,() => {console.log('player collided')});
 			this.physics.collide(this.obstacle,this.obstacle,() => {console.log('obstacles collided')});
 			this.physics.collide(this.obstacle,this.candyGroup,() => {console.log('obstacles with candy')});
 			this.physics.overlap(this.player[i].sprite,this.candyGroup,this.handlePlayerOverlapsCandy,undefined,this);			
-		}						
+		}		
+		
+		this.updateLocalPlayer()
 	}
 }

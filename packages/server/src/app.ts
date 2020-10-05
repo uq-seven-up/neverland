@@ -4,7 +4,7 @@ import cors from 'cors';
 import WebSocket from 'ws';
 
 import {DB} from './controller/db';
-import {SocketUtil,GameWebSocket} from './lib/SocketUtil';
+import {GameServer,GameWebSocket} from './lib/GameServer';
 
 import busRoutes = require('./routes/bus');
 import exampleRoutes = require('./routes/example');
@@ -26,9 +26,6 @@ const PORT = 3080;
 
 /* Establish a connection to MongoDb. (By instantiating an arbitratry DB model.) */
 new DB.Models.RssFeed();
-
-/* Create socket utiliy to simplify sending messages to game clients.*/
-app.locals.socketUtil = new SocketUtil();
 
 /* Set headers to allows cross origin resource sharing (CORS) for the exposed REST API. */
 app.use(cors());
@@ -53,6 +50,7 @@ const server = app.listen(PORT, function () {
 /* Configure the Websocket Server. (A reference to the web sockets server is
 	 attached to the locals scope allowing the ws server to be accessible within routes.) 
 */
+app.locals.game = new GameServer();
 app.locals.ws = new WebSocket.Server({noServer:true,clientTracking:true}) as WebSocket.Server;
 app.locals.ws.on('connection', (socket : GameWebSocket, req:Request) => {
 	socket.uuid = req.url.replace('/?uuid=', '');
@@ -62,19 +60,19 @@ app.locals.ws.on('connection', (socket : GameWebSocket, req:Request) => {
 	socket.on('message', message => {
 		if(message.toString().startsWith('g|'))
 		{
-			app.locals.socketUtil.sendToGameScreen(app.locals.ws,message);
+			app.locals.game.sendToGameScreen(app.locals.ws,message,socket.uuid);
 			return;
 		}
 
 		if(message.toString().startsWith('c|'))
 		{
-			app.locals.socketUtil.routeGameMessage(app.locals.ws,message);
+			app.locals.game.routeGameMessage(app.locals.ws,message);
 			return;
 		}
 		
 		if(message.toString().startsWith('b|'))
 		{
-			app.locals.socketUtil.broadCastGameMessage(app.locals.ws,message);
+			app.locals.game.broadCastGameMessage(app.locals.ws,message);
 			return;
 		} 
 	});
@@ -83,7 +81,7 @@ app.locals.ws.on('connection', (socket : GameWebSocket, req:Request) => {
 	socket.on('close', (code:number,reason:string) => {
 		console.log('closing',socket.uuid);
 		/* Notify the game that the disconnected player should be removed from the game. */
-		app.locals.socketUtil.sendToGameScreen(app.locals.ws,`g|x|${socket.uuid}`);	
+		app.locals.game.sendToGameScreen(app.locals.ws,`g|x|${socket.uuid}`);	
 	});
 });
 

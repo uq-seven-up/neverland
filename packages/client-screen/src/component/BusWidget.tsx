@@ -4,6 +4,7 @@ import {API} from "@7up/common-utils"
 import {AxiosResponse } from 'axios';
 
 interface BusTime{
+    id: number;
     route_id: string;
     trip_id: string;
     departure_time: string;
@@ -105,66 +106,61 @@ class BusWidget extends React.Component<BusWidgetProp, BusWidgetState> {
      */
     private renderBusTimes() {
         if (this.state.status === 'off' || this.state.busTimes.length === 0){
+            const items = []
+            
+            for(var i = 0; i < 6; i++) {
+                items.push( 
+                    <li key={i}>
+                        <div>{i%2*100 + 66}</div>
+                        <div></div>
+                        <div>08:0{i} AM</div>
+                    </li>
+                );
+            }
+
             return (
                 <ul>
-                    <li>
-                        <div>66</div>
-                        <div>RBWH Station</div>
-                        <div>08:00 AM</div>
-                    </li>
-                    <li>
-                        <div>66</div>
-                        <div>RBWH Station</div>
-                        <div>08:00 AM</div>
-                    </li>
-                    <li>
-                        <div>66</div>
-                        <div>RBWH Station</div>
-                        <div>08:00 AM</div>
-                    </li>
-                    <li>
-                        <div>66</div>
-                        <div>RBWH Station</div>
-                        <div>08:00 AM</div>
-                    </li>
-                    <li>
-                        <div>66</div>
-                        <div>RBWH Station</div>
-                        <div>08:00 AM</div>
-                    </li>
-                    <li>
-                        <div>66</div>
-                        <div>RBWH Station</div>
-                        <div>08:00 AM</div>
-                    </li>
+                    {items}
                 </ul>
             );
         } 
         else {
             // Get the next bus time and remount component at time
-            if(this.state.timeout != -1) {
+            if(this.state.timeout !== -1) {
                 setTimeout(function(comp: BusWidget){
                     comp.componentDidMount();
                 }, this.state.timeout, this);
             }
+            else {
+                // Try again in an hour
+                setTimeout(function(comp: BusWidget){
+                    comp.componentDidMount();
+                }, 3600000, this);
+            }
 
-            return (
-                <ul>
-                    {this.state.busTimes.map((item: BusTime) => (
-                        <li>
-                            <div>
-                                {item.route_id}
-                            </div>
-                            <div>
-                                {item.trip_headsign}
-                            </div>
-                            <div>
-                                {item.departure_time}
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-            );    
+            if(this.state.busTimes.length !== 0) {
+                return (
+                    <ul>
+                        {this.state.busTimes.map((item: BusTime) => (
+                            <li key={item.id}>
+                                <div>
+                                    {item.route_id}
+                                </div>
+                                <div></div>
+                                <div>
+                                    {item.departure_time}
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                );    
+            }
+            else {
+                return (
+                    <p>No more buses...</p>
+                );
+            }
+            
         }
     }
 

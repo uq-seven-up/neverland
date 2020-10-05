@@ -6,9 +6,9 @@ return (
 
 <section className='section1'>
     <div className='box1'>
-    <h1 className='heading'>
-        UQ<br></br>Interctive<br></br>display
-    </h1>
+    <div className='heading'>
+        <figure></figure>
+    </div>
     </div>
 
     <div className='box2'>

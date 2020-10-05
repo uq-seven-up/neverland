@@ -1,6 +1,5 @@
 import * as express from 'express';
 import { Request, Response } from "express";
-import WebSocket from 'ws';
 import dotenv from "dotenv";
 import {DB} from '../controller/db'
 import {IPoll, IPollOption} from '../models/poll';
@@ -134,7 +133,7 @@ router.post('/:pollid/vote',async(req:Request,res:Response) => {
 		}
 
 		/* Use a websocket to notify the screen that poll data needs to be refreshed.*/
-		req.app.locals.socketUtil.sendMessage(req.app.locals.ws,'POLL_WIDGET',{"widget":"poll",action:'refresh'});
+		SocketUtil.sendMessage(req.app.locals.ws,'POLL_WIDGET',{"widget":"poll",action:'refresh'});
 		res.send({success:true,data:{poll:poll}})
 	});
 });

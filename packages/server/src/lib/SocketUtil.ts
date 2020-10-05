@@ -8,7 +8,7 @@ export class SocketUtil
 	 * @param uuid The uuid of the receiveing client socket.
 	 * @param data Data which will be encoded and sent.
 	 */
-	public sendMessage(ws:any,uuid:string,data:any):void
+	public static sendMessage(ws:any,uuid:string,data:any):void
 	{					
 		ws.clients.forEach(function each(client:any) {
 			if (client.uuid === uuid && client.readyState === WebSocket.OPEN) {			
@@ -22,7 +22,7 @@ export class SocketUtil
 	 * @param ws Reference to the web socket server.
 	 * @param data Data which will be encoded and sent.
 	 */
-	public broadCast(ws:any,data:any):void
+	public static broadCast(ws:any,data:any):void
 	{					
 		ws.clients.forEach(function each(client:any) {
 			if (client.readyState === WebSocket.OPEN) {			
@@ -30,6 +30,4 @@ export class SocketUtil
 			}
 		});
 	}
-
-	
 };

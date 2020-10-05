@@ -160,7 +160,7 @@ export default class MainWorldScene extends Phaser.Scene
 					this.playerMove(aData[2],aData[1]);
 					break;					
 				case 'h':
-					// this.playerStop(aData[2]);
+					this.playerStop(aData[2]);
 					break;
 				case 'x':
 					this.playerDestroy(aData[2]);
@@ -349,7 +349,6 @@ export default class MainWorldScene extends Phaser.Scene
 		{
 			this.adjustSpeedForTile(this.player[i]);
 			this.player[i].update();
-			this.physics.collide(this.player[i].sprite,this.player[i].sprite,() => {console.log('player collided')});
 			this.physics.collide(this.player[i].sprite,this.obstacle,() => {console.log('player collided')});
 			this.physics.collide(this.obstacle,this.obstacle,() => {console.log('obstacles collided')});
 			this.physics.collide(this.obstacle,this.candyGroup,() => {console.log('obstacles with candy')});

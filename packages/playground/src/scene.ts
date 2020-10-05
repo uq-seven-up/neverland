@@ -349,6 +349,10 @@ export default class MainWorldScene extends Phaser.Scene
 		{
 			this.adjustSpeedForTile(this.player[i]);
 			this.player[i].update();
+			for(var j=0;j<this.player.length;j++){
+				if(j === i) continue;
+				this.physics.collide(this.player[i].sprite,this.player[j].sprite,() => {console.log('two players collided')});
+			}
 			this.physics.collide(this.player[i].sprite,this.obstacle,() => {console.log('player collided')});
 			this.physics.collide(this.obstacle,this.obstacle,() => {console.log('obstacles collided')});
 			this.physics.collide(this.obstacle,this.candyGroup,() => {console.log('obstacles with candy')});

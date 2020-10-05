@@ -160,7 +160,7 @@ export default class MainWorldScene extends Phaser.Scene
 					this.playerMove(aData[2],aData[1]);
 					break;					
 				case 'h':
-					this.playerStop(aData[2]);
+					// this.playerStop(aData[2]);
 					break;
 				case 'x':
 					this.playerDestroy(aData[2]);
@@ -309,7 +309,7 @@ export default class MainWorldScene extends Phaser.Scene
 		if (this.cursors.right.isDown){player.move('e');return;}
 		if (this.cursors.down.isDown){player.move('s');return;}
 		if (this.cursors.left.isDown){player.move('w');return;}
-		player.stop();
+		//player.stop();
 		
 	}
 

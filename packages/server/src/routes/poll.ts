@@ -59,7 +59,7 @@ router.post('/create',async(req:Request,res:Response) => {
  */
 router.get('/active',async(req:Request,res:Response) => {	
 	try{
-		let poll =  await DB.Models.Poll.find().sort({published_date:-1}).limit(1);
+		let poll =  await DB.Models.Poll.find().sort({creation_date:-1}).limit(1);
 		if(poll && poll.length > 0)
 		{
 			res.send({success:true,data:{poll:poll[0]}});

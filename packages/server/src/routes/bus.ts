@@ -73,14 +73,14 @@ router.get('/translink-times/', async (req: Request, res: Response) => {
 	if(today.getTimezoneOffset() === 0) {
 		today.setTime(today.getTime() + 10 * 60 * 60 * 1000);
 	}
-	
+
 	const FILTER = {
 		$and: [
 			{ trip_id: get_filter(day)},
 			{ stop_id: { $in: get_stop_ids(stop) }},
 			{ $or: [ 
-				{departure_time: {$regex: new RegExp(`^${today.getHours().toFixed(2)}`)}}, 
-				{departure_time: {$regex: new RegExp(`^${(today.getHours() + 1).toFixed(2)}`)}}
+				{departure_time: {$regex: new RegExp(`^${("00" + today.getHours()).slice(-2)}`)}}, 
+				{departure_time: {$regex: new RegExp(`^${("00" + (today.getHours() + 1)).slice(-2)}`)}}
 			]}
 		]
 	};
@@ -92,7 +92,7 @@ router.get('/translink-times/', async (req: Request, res: Response) => {
 		await DB.Models.BusTime.find(FILTER, (err, results) => {
 			if (err) throw err;
 			var counter = 0;
-			console.log("Found " + results.length);
+			
 			for (var i = 0; i < results.length; i++) {
 				var row: any = results[i];
 				var splitTime: string[] = row.departure_time.split(':');

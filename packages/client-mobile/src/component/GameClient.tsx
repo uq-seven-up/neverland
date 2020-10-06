@@ -210,10 +210,11 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		
 		return(
 		<section>
-			<div className='gamehead'>
+			<div className='game'>
                 <figure></figure>
-            </div>
+            
 			{content}
+			</div>
 		</section>
         )
     }

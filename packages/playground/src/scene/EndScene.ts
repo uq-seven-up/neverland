@@ -1,12 +1,8 @@
 import * as Phaser from "phaser";
 
-const backgroundImg = require('../assets/intro_background.png');
-
-export default class IntroScene extends Phaser.Scene  
+export default class EndScene extends Phaser.Scene  
 {
 	private BASE_URL:string;
-
-	
 
 	constructor(config:Phaser.Types.Scenes.SettingsConfig,baseUrl:string)
 	{
@@ -14,31 +10,29 @@ export default class IntroScene extends Phaser.Scene
 		this.BASE_URL = baseUrl;
 	}
 
-	public preload():void {		
-		this.load.setBaseURL(this.BASE_URL);
-
-		this.load.image('background',backgroundImg);
-	}
-
-	public startGame()
+	public restart()
 	{
 		this.cameras.main.fade(2000, 0, 0, 0);
 	}
-	
+
+	public preload():void {		
+		this.load.setBaseURL(this.BASE_URL);
+	}
+
 	public create():void {
 		let that = this;
 
-		this.add.image(704,352,'background')
-
+		this.cameras.main.setBackgroundColor('rgba(255, 0, 0, 0)');
 		this.cameras.main.on('camerafadeoutcomplete', function () {
-			that.scene.start('game_scene')
+			that.scene.start('intro_scene')
         	}, this);
 
+		this.add.text(500, 300, 'The End', {fontSize: '80px', fill: '#fff'});
+
+
 		this.input.once('pointerdown', function (e:Phaser.Input.Pointer) {
-            that.startGame();
-		}, this);
-		
-		this.cameras.main.fadeIn(700, 0, 0, 0)
+            that.restart();
+        }, this);
 	}
 
 	public update():void{

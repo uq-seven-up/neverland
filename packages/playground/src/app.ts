@@ -1,4 +1,5 @@
 import * as Phaser from "phaser";
+import EndScene from "./scene/EndScene";
 import GameScene from "./scene/GameScene";
 import IntroScene from "./scene/IntroScene";
 
@@ -35,6 +36,9 @@ export class CandyGame extends Phaser.Game{
 		
 		let gameScene = new GameScene({},this.BASE_URL);
 		this.scene.add('game_scene',gameScene,false);
+
+		let endScene = new EndScene({},this.BASE_URL);
+		this.scene.add('end_scene',endScene,false);
 	}
 
 	public boot()

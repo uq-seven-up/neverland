@@ -127,7 +127,7 @@ class PollView extends React.Component<PollViewProp, PollViewState> {
 	{
 		return (
 			<>
-            <div className='poll'>
+            <div className='header'>
                 <figure></figure>
                 
             <h1>Select your answer</h1>

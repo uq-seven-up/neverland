@@ -27,45 +27,35 @@ body
 	-ms-user-select:none;
 	user-select:none;
 	-webkit-tap-highlight-color:rgba(0,0,0,0);
-
-	
 }
 
-
-.section1 {
+.header {
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
 	align-content: center;
 	flex-wrap: nowrap;
-	background-color: #502d82;
 	height: 80vh;
 }
 
-.section1 figure {
+.header h1 {
+	padding: 20px;
+}
+
+.header figure {
+	width: auto;
 	height: 30vh;
-	width: 100vw;
-	background-image: url('../gfx/logo.png');
+	background-image: url('../gfx/header.png');
 	background-size: contain;
 	background-repeat: no-repeat;
-	background-position: center;
 }
 
-.section1 h1 {
-	text-shadow: -3px 0 #896EAA, 0 3px #896EAA, 3px 0 #896EAA, 0 -3px #896EAA;
-	line-height: 0.9;
-	text-transform: uppercase;
-}
-
-
-.section1 .box1 {
+.header .content {
 	height: 50vh;
-	font-size: 15vw;
-	margin-top: 50px;
 }
 
 
-.section2 {
+.menu {
 	display: flex;
 	flex-direction: row;
 	justify-content: flex-start;
@@ -76,18 +66,18 @@ body
 	z-index: 1;
 }
 
-.section2 .box4 figure {
-	height: 20vh;
+.poll figure {
 	width: 50vw;
+	height: 20vh;
 	background-image: url('../gfx/pollicon.png');
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
 }
 
-.section2 .box5 figure {
-	height: 20vh;
+.game figure {
 	width: 50vw;
+	height: 20vh;
 	background-image: url('../gfx/gameicon.png');
 	background-size: contain;
 	background-repeat: no-repeat;
@@ -103,139 +93,16 @@ h2
 	color:white;
 }
 
+
+
 section button{
 	font-weight:500;
 	font-size:15px;
 	margin-bottom:15px;
 	box-sizing: border-box;
-	width: 60vw;
+	width: 80vw;
+	align-self: center;
 }
-
-
-#chevron1 {
-	position: relative;
-	text-align: center;
-	height: 30px;
-	width: 100vw;
-	
-  }
-  #chevron1:before {
-	content: '';
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 50%;
-	background:#8a65f8;
-	transform: skew(0deg, 35deg);
-  }
-  #chevron1:after {
-	content: '';
-	position: absolute;
-	top: 0;
-	right: 0;
-	height: 100%;
-	width: 50%;
-	background:#8a65f8;
-	transform: skew(0deg, -35deg);
-  }
-
-  #chevron2 {
-	position: relative;
-	text-align: center;
-	height: 30px;
-	width: 100vw;
-	
-  }
-  #chevron2:before {
-	content: '';
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 50%;
-	background:#7a4cea;
-	transform: skew(0deg, 35deg);
-  }
-  #chevron2:after {
-	content: '';
-	position: absolute;
-	top: 0;
-	right: 0;
-	height: 100%;
-	width: 50%;
-	background:#7a4cea;
-	transform: skew(0deg, -35deg);
-  }
-
-
-  #chevron3 {
-	position: relative;
-	text-align: center;
-	margin-bottom: 0px;
-	height: 20vh;
-	width: 100vw;
-  }
-  #chevron3:before {
-	content: '';
-	position: absolute;
-	left: 0;
-	height: 150%;
-	width: 50%;
-	background: #5c39b0;
-	transform: skew(0deg, 35deg);
-  }
-
-  #chevron3:after {
-	content: '';
-	position: absolute;
-	right: 0;
-	height: 150%;
-	width: 50%;
-	background: #5c39b0;
-	transform: skew(0deg, -35deg);
-  }
-
-  /* Logo header for pollview */
-
-  .poll {
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	align-content: center;
-	flex-wrap: nowrap;
-	background: rgb(92,51,179);
-	height: 80vh;
-}
-
-.poll figure {
-	width: auto;
-	height: 40vh;
-	background-image: url('../gfx/quizhead.png');
-	background-size: contain;
-	background-repeat: no-repeat;
-  }	
-
-
-  /* Logo header for gameview */
-
-.game {
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	align-content: center;
-	flex-wrap: nowrap;
-	background: rgb(92,51,179);
-	height: 80vh;
-}
-
- .game figure {
-width: auto;
-height: 40vh;
-background-image: url('../gfx/gamehead.png');
-background-size: contain;
-background-repeat: no-repeat;	
-}	
 
 
 .gamePad
@@ -245,6 +112,19 @@ background-repeat: no-repeat;
 	grid-template-rows: auto auto auto;	
 	align-self: center;
 }
+
+/* .trackpad {
+	height: 30vh;
+	width: 60vw;
+	border:5px white;
+	border-style: dashed;
+	align-self: center;
+}
+
+.trackpad p {
+	justify-content: center;
+	padding: 4vh;
+} */
 
 .gamePad div{
 	display:flex;

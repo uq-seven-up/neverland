@@ -22,7 +22,7 @@ export default class IntroScene extends Phaser.Scene
 
 	public startGame()
 	{
-		this.cameras.main.fade(2000, 0, 0, 0);
+		this.cameras.main.fade(1000, 0, 0, 0);
 	}
 	
 	public create():void {
@@ -38,7 +38,7 @@ export default class IntroScene extends Phaser.Scene
             that.startGame();
 		}, this);
 		
-		this.cameras.main.fadeIn(700, 0, 0, 0)
+		this.cameras.main.fadeIn(400, 0, 0, 0)
 	}
 
 	public update():void{

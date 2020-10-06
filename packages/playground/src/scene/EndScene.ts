@@ -3,6 +3,7 @@ import * as Phaser from "phaser";
 export default class EndScene extends Phaser.Scene  
 {
 	private BASE_URL:string;
+	private timeEvent!:Phaser.Time.TimerEvent;
 
 	constructor(config:Phaser.Types.Scenes.SettingsConfig,baseUrl:string)
 	{
@@ -25,14 +26,13 @@ export default class EndScene extends Phaser.Scene
 		this.cameras.main.setBackgroundColor('rgba(255, 0, 0, 0)');
 		this.cameras.main.on('camerafadeoutcomplete', function () {
 			that.scene.start('intro_scene')
-        	}, this);
+		}, this);
 
 		this.add.text(500, 300, 'The End', {fontSize: '80px', fill: '#fff'});
 
-
-		this.input.once('pointerdown', function (e:Phaser.Input.Pointer) {
-            that.restart();
-        }, this);
+		this.timeEvent = this.time.addEvent({delay:3000, 
+											callback:this.restart,
+											callbackScope:this});
 	}
 
 	public update():void{

@@ -20,6 +20,7 @@ const tileMapJson = require('../assets/level2.json')
 export default class GameScene extends Phaser.Scene  
 {
 	private static LOCAL_PLAYER_ID = 'local_player';
+	private static ROUND_TIME = 120;
 	private BASE_URL:string;
 	private cursors!:any;
 	private player:Player[];
@@ -32,6 +33,9 @@ export default class GameScene extends Phaser.Scene
 	private dots:any = null;
 	private walkAnim!:any;
 	private candyGroup!:Phaser.Physics.Arcade.Group;
+	private timeEvent!:Phaser.Time.TimerEvent;
+	private clockText!:Phaser.GameObjects.Text;
+	
 	constructor(config:Phaser.Types.Scenes.SettingsConfig,baseUrl:string)
 	{
 		super(config);
@@ -39,6 +43,7 @@ export default class GameScene extends Phaser.Scene
 		this.player = [];	
 		this.obstacle = [];
 		this.scoreText = [];
+
 		
 	}
 
@@ -252,6 +257,17 @@ export default class GameScene extends Phaser.Scene
 		this.cursors = this.input.keyboard.createCursorKeys();
 		(this.game as CandyGame).sendEventAllPlayers(90);
 		
+		this.clockText = this.add.text(1280, 10, '00:00:00', {fontSize: '60px', fill: '#000'});
+
+		this.timeEvent = this.time.addEvent({delay:1000, 
+											 repeat:GameScene.ROUND_TIME,
+											 callback:this.checkEndOfGame,
+											 callbackScope:this});
+
+		let that = this;
+		this.cameras.main.on('camerafadeoutcomplete', function () {
+			that.scene.start('end_scene')
+			}, this);												
 		// W key down
 	   
 	   
@@ -277,6 +293,18 @@ export default class GameScene extends Phaser.Scene
 		//this.ws.send('b|v||90');
 
 		this.cameras.main.fadeIn(1000, 0, 0, 0)
+	  }
+
+	  private endGame()
+	  {
+		this.cameras.main.fadeOut(5000, 0, 0, 0);
+	  }
+
+	  private checkEndOfGame()
+	  {
+		if(this.timeEvent.repeatCount === 6){
+			this.endGame()
+		} 
 	  }
 
 	private handlePlayerOverlapsCandy(playerObj:Phaser.Types.Physics.Arcade.GameObjectWithBody,candyObj:Phaser.Types.Physics.Arcade.GameObjectWithBody){
@@ -359,5 +387,7 @@ export default class GameScene extends Phaser.Scene
 		}		
 		
 		this.updateLocalPlayer()
+
+		this.clockText.setText(this.timeEvent.repeatCount.toString())
 	}
 }

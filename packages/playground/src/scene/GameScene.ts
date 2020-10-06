@@ -275,6 +275,8 @@ export default class GameScene extends Phaser.Scene
 //		  loop: -1
 //		});
 		//this.ws.send('b|v||90');
+
+		this.cameras.main.fadeIn(1000, 0, 0, 0)
 	  }
 
 	private handlePlayerOverlapsCandy(playerObj:Phaser.Types.Physics.Arcade.GameObjectWithBody,candyObj:Phaser.Types.Physics.Arcade.GameObjectWithBody){

@@ -1,5 +1,6 @@
 import * as Phaser from "phaser";
 import GameScene from "./scene/GameScene";
+import IntroScene from "./scene/IntroScene";
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
@@ -29,17 +30,18 @@ export class CandyGame extends Phaser.Game{
 			this.BASE_URL = '';			
 		}
 		
-		let scene = new GameScene({},this.BASE_URL);
-		this.scene.add('game_scene',scene,true);
+		let introScene = new IntroScene({},this.BASE_URL);
+		this.scene.add('intro_scene',introScene,true);
+		
+		let gameScene = new GameScene({},this.BASE_URL);
+		this.scene.add('game_scene',gameScene,false);
 	}
-
 
 	public boot()
 	{
 		super.boot();
 		this.connect();
 	}
-
 
 	private connect = () => {
 		this.ws = new WebSocket(this.SOCKET_URL);
@@ -56,6 +58,12 @@ export class CandyGame extends Phaser.Game{
 			{
 				let scene = this.scene.getScene('game_scene') as GameScene;
 				scene.processSocketMessage(message);
+			}
+
+			if(this.scene.isActive('intro_scene'))
+			{
+				let scene = this.scene.getScene('intro_scene') as IntroScene;
+				scene.startGame();
 			}
 		}
 

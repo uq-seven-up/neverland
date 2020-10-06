@@ -35,6 +35,7 @@ export default class GameScene extends Phaser.Scene
 	private candyGroup!:Phaser.Physics.Arcade.Group;
 	private timeEvent!:Phaser.Time.TimerEvent;
 	private clockText!:Phaser.GameObjects.Text;
+	private teamScore:number[];
 	
 	constructor(config:Phaser.Types.Scenes.SettingsConfig,baseUrl:string)
 	{
@@ -43,8 +44,7 @@ export default class GameScene extends Phaser.Scene
 		this.player = [];	
 		this.obstacle = [];
 		this.scoreText = [];
-
-		
+		this.teamScore = [0,0];		
 	}
 
 	private addPlayer(id:string)
@@ -53,6 +53,7 @@ export default class GameScene extends Phaser.Scene
 		
 		let player = new Player(id,this);
 		player.sprite.x = player.sprite.x + (player.sprite.width * this.player.length);
+		player.team = (this.player.length + 2) % 2;
 		this.player.push(player);		
 	}
 
@@ -185,6 +186,7 @@ export default class GameScene extends Phaser.Scene
 		this.player = [];	
 		this.obstacle = [];
 		this.scoreText = [];
+		this.teamScore = [0,0];	
 
 		/* Listen to cursor key events (arrow keys) */
 		this.cursors = this.input.keyboard.createCursorKeys();
@@ -266,7 +268,7 @@ export default class GameScene extends Phaser.Scene
 
 		let that = this;
 		this.cameras.main.on('camerafadeoutcomplete', function () {
-			that.scene.start('end_scene')
+			that.scene.start('end_scene',{teamScore:that.teamScore});
 			}, this);												
 		// W key down
 	   
@@ -337,8 +339,11 @@ export default class GameScene extends Phaser.Scene
 			}
 			
 			player.score += points;
-			
-			this.scoreText[0].text = 'Team 1: ' + player.score;
+			this.teamScore[player.team] =+ player.score;
+
+
+			this.scoreText[0].text = 'Team 1: ' + this.teamScore[0];
+			this.scoreText[1].text = 'Team 2: ' + this.teamScore[1];
 			candyObj.destroy();	
 		
 			(this.game as CandyGame).sendEventToPlayer(player.id,200);

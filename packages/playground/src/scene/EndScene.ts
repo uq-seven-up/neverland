@@ -1,5 +1,9 @@
 import * as Phaser from "phaser";
 
+declare interface EndSceneConfig {
+	teamScore:number[]
+}
+
 export default class EndScene extends Phaser.Scene  
 {
 	private BASE_URL:string;
@@ -20,7 +24,7 @@ export default class EndScene extends Phaser.Scene
 		this.load.setBaseURL(this.BASE_URL);
 	}
 
-	public create():void {
+	public create(data:EndSceneConfig):void {
 		let that = this;
 
 		this.cameras.main.setBackgroundColor('rgba(255, 0, 0, 0)');
@@ -29,6 +33,14 @@ export default class EndScene extends Phaser.Scene
 		}, this);
 
 		this.add.text(500, 300, 'The End', {fontSize: '80px', fill: '#fff'});
+
+		if(data.teamScore[0] > 1)
+		{
+			this.add.text(400, 400, 'Team One is the Winner', {fontSize: '40px', fill: '#fff'});
+		}else{
+			this.add.text(400, 400, 'Team Two is the Winner', {fontSize: '40px', fill: '#fff'});
+		}
+		
 
 		this.timeEvent = this.time.addEvent({delay:3000, 
 											callback:this.restart,

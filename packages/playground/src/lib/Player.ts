@@ -8,6 +8,7 @@ export default class Player{
 	private _speed_x:number;
 	private _speed_y:number;
 	private _score:number;
+	private _team:number;
 
 	constructor(id:string,scene:Phaser.Scene)
 	{
@@ -15,6 +16,7 @@ export default class Player{
 		this._speed_x = 0;
 		this._speed_y = 0;
 		this._score = 0;
+		this._team = 0;
 
 		scene.anims.create({
 			key: "walk",
@@ -65,6 +67,18 @@ export default class Player{
 
 	public get speed() {
 		return this._speed;
+	}
+
+	public set team(value:number) {
+		this._team = value;
+		if(this._team % 2 === 0)
+		{
+			this._sprite.tint = 0xCCCC00;
+		}
+	}
+
+	public get team() {
+		return this._team;
 	}
 
 	public move(heading:string){

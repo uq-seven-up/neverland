@@ -65,7 +65,13 @@ class PollWidget extends React.Component<PollWidgetProp, PollWidgetState> {
 
 		this.ws.onmessage = (evt:any) => {
 			// listen to data sent from the websocket server
-			const data = JSON.parse(evt.data)
+			let data:any;
+			try {
+				data = JSON.parse(evt.data)
+			}catch(e){
+				return;
+			}
+			
 			if(data.action && data.action === 'refresh')
 			{
 				this.callAPI('fetchActivePoll','GET','/poll/active');

@@ -5,11 +5,14 @@ const Menu = () => {
 
 return (
 
-<div className='section2'>
-    <div className='box4'>
+
+<div className='menu'>
+    
+    <div className='poll'>
     <NavLink to='/PollView'><figure></figure></NavLink>
     </div>
-    <div className='box5'>
+
+    <div className='game'>
     <NavLink to='/GameClient'><figure></figure></NavLink>
     </div>
 </div>

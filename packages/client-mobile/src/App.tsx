@@ -13,7 +13,7 @@ class App extends Component {
 				<div>
 					<Menu />
 					<Switch>
-						<Route path="/" component={FrontPage} exact/>
+						<Route path="/" component={PollView} exact/>
 						<Route path="/PollView" component={PollView} />
 						<Route path="/GameClient" component={GameClient} />
 					</Switch>

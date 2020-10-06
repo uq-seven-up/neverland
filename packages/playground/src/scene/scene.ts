@@ -1,21 +1,21 @@
 import * as Phaser from "phaser";
-import {CandyGame} from "./app";
-import Player from "./lib/Player"
+import {CandyGame} from "../app";
+import Player from "../lib/Player"
 
-const playerAtlas = require('./assets/my-knight.json')
-const playerSheetImg = require('./assets/my-knight-0.png')
-const particleImg = require('./assets/muzzleflash3.png')
+const playerAtlas = require('../assets/my-knight.json')
+const playerSheetImg = require('../assets/my-knight-0.png')
+const particleImg = require('../assets/muzzleflash3.png')
 
-const cookieImg = require('./assets/cookie.png')
-const donutImg = require('./assets/donut.png')
-const icecreamImg = require('./assets/icecream.png')
-const lollyImg = require('./assets/lolly.png')
-const muffinImg = require('./assets/muffin.png')
-const swirlImg = require('./assets/swirl.png')
-const tilesImg = require('./assets/tiles.png')
-const puckImg = require('./assets/puck.png')
+const cookieImg = require('../assets/cookie.png')
+const donutImg = require('../assets/donut.png')
+const icecreamImg = require('../assets/icecream.png')
+const lollyImg = require('../assets/lolly.png')
+const muffinImg = require('../assets/muffin.png')
+const swirlImg = require('../assets/swirl.png')
+const tilesImg = require('../assets/tiles.png')
+const puckImg = require('../assets/puck.png')
 
-const tileMapJson = require('./assets/level2.json')
+const tileMapJson = require('../assets/level2.json')
 
 export default class MainWorldScene extends Phaser.Scene  
 {

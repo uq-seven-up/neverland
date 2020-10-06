@@ -50,38 +50,39 @@ const server = app.listen(PORT, function () {
 /* Configure the Websocket Server. (A reference to the web sockets server is
 	 attached to the locals scope allowing the ws server to be accessible within routes.) 
 */
-app.locals.game = new GameServer();
 app.locals.ws = new WebSocket.Server({noServer:true,clientTracking:true}) as WebSocket.Server;
+app.locals.game = new GameServer(app.locals.ws);
 app.locals.ws.on('connection', (socket : GameWebSocket, req:Request) => {
 	socket.uuid = req.url.replace('/?uuid=', '');
 	console.log('new connection',socket.uuid);
 
 	/* Identify and process incoming web socket messages. */
 	socket.on('message', message => {
-		if(message.toString().startsWith('g|'))
+		let msg = message.toString();
+		if(msg.startsWith('g|'))
 		{
-			app.locals.game.sendToGameScreen(app.locals.ws,message,socket.uuid);
+			app.locals.game.sendToGameScreen(msg,socket.uuid);
 			return;
 		}
 
 		if(message.toString().startsWith('c|'))
 		{
-			app.locals.game.routeGameMessage(app.locals.ws,message);
+			app.locals.game.routeGameMessage(msg);
 			return;
 		}
 		
 		if(message.toString().startsWith('b|'))
 		{
-			app.locals.game.broadCastGameMessage(app.locals.ws,message);
+			app.locals.game.broadCastGameMessage(msg);
 			return;
-		} 
+		}
 	});
 
 	/* Handle clients disconnecting. */
 	socket.on('close', (code:number,reason:string) => {
 		console.log('closing',socket.uuid);
 		/* Notify the game that the disconnected player should be removed from the game. */
-		app.locals.game.sendToGameScreen(app.locals.ws,`g|x|${socket.uuid}`);	
+		app.locals.game.sendToGameScreen(`g|x|${socket.uuid}`,socket.uuid);	
 	});
 });
 

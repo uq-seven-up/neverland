@@ -72,40 +72,40 @@ export default class Player{
 		{
 			case 'n':
 				this._speed_x = 0;
-				this._speed_y = -1 * this._speed;
+				this._speed_y = -1;
 				break;
 			case 'ne':
-				this._speed_x = 1 * this._speed;
-				this._speed_y = -1 * this._speed;
+				this._speed_x = 1;
+				this._speed_y = -1;
 				this._sprite.flipX = false;
 				break;
 			case 'e':
-				this._speed_x = 1 * this._speed;
+				this._speed_x = 1;
 				this._speed_y = 0;
 				this._sprite.flipX = false;
 				break;
 			case 'se':
-				this._speed_x = 1 * this._speed;
-				this._speed_y = 1 * this._speed;
+				this._speed_x = 1;
+				this._speed_y = 1;
 				this._sprite.flipX = false;
 				break;
 			case 's':
 				this._speed_x = 0;
-				this._speed_y = 1 * this._speed;				
+				this._speed_y = 1;				
 				break;
 			case 'sw':
-				this._speed_x = -1 * this._speed;
-				this._speed_y = 1 * this._speed;
+				this._speed_x = -1;
+				this._speed_y = 1;
 				this._sprite.flipX = true;
 				break;
 			case 'w':
-				this._speed_x = -1 * this._speed;
+				this._speed_x = -1;
 				this._speed_y = 0;
 				this._sprite.flipX = true;
 				break;
 			case 'nw':
-				this._speed_x = -1 * this._speed;
-				this._speed_y = -1 * this._speed;
+				this._speed_x = -1;
+				this._speed_y = -1;
 				this._sprite.flipX = true;
 				break;
 			default:
@@ -124,7 +124,7 @@ export default class Player{
 	}
 
 	public update() {
-		this._sprite.body.velocity.x = this._speed_x;
-		this._sprite.body.velocity.y = this._speed_y;
+		this._sprite.body.velocity.x = this._speed_x * this._speed;
+		this._sprite.body.velocity.y = this._speed_y * this._speed;
 	}
 }

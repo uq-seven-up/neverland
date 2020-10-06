@@ -1,4 +1,5 @@
 import * as Phaser from "phaser";
+import {CandyGame} from "./app";
 import Player from "./lib/Player"
 
 const playerAtlas = require('./assets/my-knight.json')
@@ -19,39 +20,34 @@ const tileMapJson = require('./assets/level2.json')
 export default class MainWorldScene extends Phaser.Scene  
 {
 	private static LOCAL_PLAYER_ID = 'local_player';
-	private BASE_URL = '/client-screen/game';
-	private SOCKET_URL = 'ws://' + window.location.hostname + ':3080/?uuid=GAME_SCREEN';
-	private MAX_PLAYERS = 8;
+	private BASE_URL:string;
 	private cursors!:any;
 	private player:Player[];
 	private scoreText:Phaser.GameObjects.Text[];
 	private obstacle:Phaser.Physics.Arcade.Sprite[];
 	private boom!:any;
-	private ws!:WebSocket;
 	private map!:Phaser.Tilemaps.Tilemap;
 	private layer:any = null;
 	private safetile = 14;
 	private dots:any = null;
 	private walkAnim!:any;
 	private candyGroup!:Phaser.Physics.Arcade.Group;
-	constructor()
+	constructor(config:Phaser.Types.Scenes.SettingsConfig,baseUrl:string)
 	{
-		super({key:'MyScene',active:true});
+		super(config);
+		this.BASE_URL = baseUrl;
 		this.player = [];	
 		this.obstacle = [];
 		this.scoreText = [];
-		if(process.env.NODE_ENV === 'development')
-		{
-			this.BASE_URL = '';			
-		}
-		console.log(process.env.NODE_ENV,this.BASE_URL,this.SOCKET_URL);
+		
 	}
 
 	private addPlayer(id:string)
 	{
-		if(this.player.length >= this.MAX_PLAYERS) return;
-
+		if(this.getPlayerById(id)) return;
+		
 		let player = new Player(id,this);
+		player.sprite.x = player.sprite.x + (player.sprite.width * this.player.length);
 		this.player.push(player);		
 	}
 
@@ -115,59 +111,49 @@ export default class MainWorldScene extends Phaser.Scene
 		return index;
 	}
 
-	private openWebSocket():void{
-		this.ws = new WebSocket(this.SOCKET_URL);
-		// this.ws = new WebSocket('ws://neverland.scherzer.com.au:3080/?uuid=GAME_SCREEN');	
-
-		this.ws.onopen = () => {
-			console.log('Scene connected to socket server.')
+	public processSocketMessage(message:string)
+	{
+		let aData = message.split('|');
+			
+		/* TODO: Fix this. Invalid messages will crash the server. */
+		switch(aData[1])
+		{
+			case 'j':
+				this.addPlayer(aData[2]);
+				break;
+			case 'n':
+				this.playerMove(aData[2],aData[1]);
+				break;
+			case 'ne':
+				this.playerMove(aData[2],aData[1]);
+				break;					
+			case 'e':
+				this.playerMove(aData[2],aData[1]);
+				break;
+			case 'se':
+				this.playerMove(aData[2],aData[1]);
+				break;
+			case 's':
+				this.playerMove(aData[2],aData[1]);
+				break;
+			case 'sw':
+				this.playerMove(aData[2],aData[1]);
+				break;					
+			case 'w':
+				this.playerMove(aData[2],aData[1]);
+				break;
+			case 'nw':
+				this.playerMove(aData[2],aData[1]);
+				break;					
+			case 'h':
+				this.playerStop(aData[2]);
+				break;
+			case 'x':
+				this.playerDestroy(aData[2]);
+				break;
 		}
-
-		this.ws.onmessage = (evt:any) => {			
-			const message = evt.data.toString();
-			
-			if(!message.startsWith('g|')) return;
-			let aData = message.split('|');
-			
-			/* TODO: Fix this. Invalid messages will crash the server. */
-			switch(aData[1])
-			{
-				case 'j':
-					this.addPlayer(aData[2]);
-					break;
-				case 'n':
-					this.playerMove(aData[2],aData[1]);
-					break;
-				case 'ne':
-					this.playerMove(aData[2],aData[1]);
-					break;					
-				case 'e':
-					this.playerMove(aData[2],aData[1]);
-					break;
-				case 'se':
-					this.playerMove(aData[2],aData[1]);
-					break;
-				case 's':
-					this.playerMove(aData[2],aData[1]);
-					break;
-				case 'sw':
-					this.playerMove(aData[2],aData[1]);
-					break;					
-				case 'w':
-					this.playerMove(aData[2],aData[1]);
-					break;
-				case 'nw':
-					this.playerMove(aData[2],aData[1]);
-					break;					
-				case 'h':
-					this.playerStop(aData[2]);
-					break;
-				case 'x':
-					this.playerDestroy(aData[2]);
-					break;
-			}
-		}		
 	}
+
 
 	preload() {		
 		this.load.setBaseURL(this.BASE_URL);
@@ -187,10 +173,14 @@ export default class MainWorldScene extends Phaser.Scene
 		this.load.atlas('player',playerSheetImg,playerAtlas);			
 		this.load.image("red", particleImg);
 
-		this.openWebSocket();	
+			
 	}
 
 	create() {
+		this.player = [];	
+		this.obstacle = [];
+		this.scoreText = [];
+
 		/* Listen to cursor key events (arrow keys) */
 		this.cursors = this.input.keyboard.createCursorKeys();
 		
@@ -201,8 +191,7 @@ export default class MainWorldScene extends Phaser.Scene
 		const tileset = this.map.addTilesetImage('my_simple_game','tiles');		
 		this.map.createStaticLayer('ground', tileset, 0, 0);
 		
-		this.map.findTile
-
+		//this.map.findTile
 		this.obstacle.push(this.physics.add.sprite(250,90,'puck'));
 		this.obstacle[0].setCollideWorldBounds(true);
 		this.obstacle[0].setBounce(0.7,0.7);
@@ -218,6 +207,22 @@ export default class MainWorldScene extends Phaser.Scene
 		this.obstacle[2].setBounce(0.7,0.7);
 		this.obstacle[2].body.isCircle = true;
 		
+		this.obstacle.push(this.physics.add.sprite(500,90,'puck'));
+		this.obstacle[3].setCollideWorldBounds(true);
+		this.obstacle[3].setBounce(0.7,0.7);
+		this.obstacle[3].body.isCircle = true;
+
+		this.obstacle.push(this.physics.add.sprite(850,590,'puck'));
+		this.obstacle[4].setCollideWorldBounds(true);
+		this.obstacle[4].setBounce(0.1,0.1);
+		this.obstacle[4].body.isCircle = true;
+
+		this.obstacle.push(this.physics.add.sprite(350,190,'puck'));
+		this.obstacle[5].setCollideWorldBounds(true);
+		this.obstacle[5].setBounce(0.1,0.1);
+		this.obstacle[5].body.isCircle = true;
+
+
 		this.physics.world.on('tileoverlap', () => {console.log('listener')});
 
 		this.candyGroup = this.physics.add.group({
@@ -237,9 +242,17 @@ export default class MainWorldScene extends Phaser.Scene
 		var p_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
 		p_key.on('down',(e:Phaser.Input.Keyboard.Key) => {
 			this.addPlayer(MainWorldScene.LOCAL_PLAYER_ID);
-		})  
+		}) 
+		
+		var r_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+		r_key.on('down',(e:Phaser.Input.Keyboard.Key) => {
+			this.scene.restart();
+		},this);
+		 
 		this.cursors = this.input.keyboard.createCursorKeys();
-			// W key down
+		(this.game as CandyGame).sendEventAllPlayers(90);
+		
+		// W key down
 	   
 	   
 		// Hello World
@@ -261,6 +274,7 @@ export default class MainWorldScene extends Phaser.Scene
 //		  yoyo: true,
 //		  loop: -1
 //		});
+		//this.ws.send('b|v||90');
 	  }
 
 	private handlePlayerOverlapsCandy(playerObj:Phaser.Types.Physics.Arcade.GameObjectWithBody,candyObj:Phaser.Types.Physics.Arcade.GameObjectWithBody){
@@ -296,9 +310,8 @@ export default class MainWorldScene extends Phaser.Scene
 			
 			this.scoreText[0].text = 'Team 1: ' + player.score;
 			candyObj.destroy();	
-			if (this.ws.readyState === WebSocket.OPEN) {
-				this.ws.send(`c|v|${player.id}|200|`);
-			}
+		
+			(this.game as CandyGame).sendEventToPlayer(player.id,200);
 		}				
 	}
 
@@ -309,7 +322,7 @@ export default class MainWorldScene extends Phaser.Scene
 		if (this.cursors.right.isDown){player.move('e');return;}
 		if (this.cursors.down.isDown){player.move('s');return;}
 		if (this.cursors.left.isDown){player.move('w');return;}
-		player.stop();
+		//player.stop();
 		
 	}
 
@@ -333,6 +346,10 @@ export default class MainWorldScene extends Phaser.Scene
 		{
 			this.adjustSpeedForTile(this.player[i]);
 			this.player[i].update();
+			for(var j=0;j<this.player.length;j++){
+				if(j === i) continue;
+				this.physics.collide(this.player[i].sprite,this.player[j].sprite,() => {console.log('two players collided')});
+			}
 			this.physics.collide(this.player[i].sprite,this.obstacle,() => {console.log('player collided')});
 			this.physics.collide(this.obstacle,this.obstacle,() => {console.log('obstacles collided')});
 			this.physics.collide(this.obstacle,this.candyGroup,() => {console.log('obstacles with candy')});

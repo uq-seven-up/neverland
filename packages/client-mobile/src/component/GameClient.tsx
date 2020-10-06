@@ -1,9 +1,17 @@
 import React from "react"
 import {CFKitUtil} from '@7up/common-utils';
 
+enum GameState {
+	WAITING,
+	PLAYING,
+	FULL
+}
+
 interface GameClientProp {}
 interface GameClientState {
+	game:GameState,
 	playerId:string,
+	enableMusic:boolean,
 	enableSound:boolean
 }
 
@@ -24,6 +32,8 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		https://github.com/facebook/react/issues/12856#issuecomment-613145789
 		*/
 		this.state = {
+			game:GameState.WAITING,
+			enableMusic:false,
 			enableSound:false,
 			playerId:CFKitUtil.createGUID()	
         }
@@ -32,6 +42,12 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
     /* ########################################################*/
     /* React life-cycle methods.*/
     public componentDidMount(): void {
+		this.connect();
+    }
+	
+	/* ########################################################*/
+	private connect = () =>
+	{
 		let socketServerHost = 'ws://' + window.location.hostname + ':3080'
 		this.ws = new WebSocket(socketServerHost + '?uuid=' + this.state.playerId);
 		this.ws.onopen = () => {
@@ -44,13 +60,27 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 			let message = evt.data as string;
 			
 			console.log(message)
-			if(message.startsWith('c|'))
+			if(message.startsWith('c|') || message.startsWith('b|'))
 			{
 				let data = message.split('|');
 				if(data[1] === 'v')
 				{
 					switch(data[3])
 					{
+						/* Game Invite.*/
+						case '95':
+							console.log('accept invite');
+							this.ws.send(`g|j|${this.state.playerId}`);
+							break;
+						/* Game is full.*/
+						case '110':
+							this.setState({game:GameState.FULL})																				
+							break;
+						/* Joined game.*/
+						case '120':
+							this.setState({game:GameState.PLAYING})																				
+							break;
+						/* Collected and item. */
 						case '200':
 							if(window.navigator.vibrate)
 							{
@@ -69,30 +99,38 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		}
 
 		this.ws.onclose = () => {
-			console.log('Game client disconnected')			
+			let that = this;
+			console.log('Game client disconnected, retry reconnect in two seconds.')	
+			setTimeout(function() {
+			that.connect();
+			}, 2000);		
 		}
-    }
-    /* ########################################################*/
-	
+	}
+
+
 	private toggleSound = () => {
 		if(!this.chimeSound)
 		{
 			this.chimeSound = new Audio('/client-mobile/sound/chime.mp3');
 		}
+		this.setState({enableSound:!this.state.enableSound});
+	}
+
+	private toggleMusic = () => {
 		if(!this.music)
 		{
 			this.music = new Audio('/client-mobile/sound/423350__sieuamthanh__rung-sang-sac.mp3');
 			this.music.loop = true;
 		}
-		/* 	Remember we are toggling the sound BEFORE we set the correct value for the 
-			enableSound state.*/
-		if(this.state.enableSound){
+		/* 	Remember we are toggling the music BEFORE we set the correct value for the 
+			enableMusic state.*/
+		if(this.state.enableMusic){
 			this.music.pause();
 		} else {
 			this.music.play();
 			this.music.volume = 0.5;
 		}
-		this.setState({enableSound:!this.state.enableSound});
+		this.setState({enableMusic:!this.state.enableMusic});
 	}
 
 	private handleClickMove = (e:React.MouseEvent<HTMLElement>) =>
@@ -134,25 +172,49 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 	}
 
 	/* ########################################################*/
-    /* UI Rendering */
+	/* UI Rendering */
+	private renderGameFull()
+	{
+		return(<h1>Game is full.</h1>)
+	}
+
+	private renderGameActive()
+	{
+		return(
+			<>
+				<div className="gamePad">
+					<div data-heading="n" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8593;</div>
+					<div data-heading="ne" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8599;</div>
+					<div data-heading="e" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8594;</div>
+					<div data-heading="se" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8600;</div>
+					<div data-heading="s" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8595;</div>
+					<div data-heading="sw" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8601;</div>
+					<div data-heading="w" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8592;</div>
+					<div data-heading="nw" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8598;</div>				
+				</div>
+				<button onClick={this.toggleSound}>{this.state.enableSound ? 'Disable Sound' : 'Enable Sound'}</button>
+				<button onClick={this.toggleMusic}>{this.state.enableMusic ? 'Disable Music' : 'Enable Music'}</button>
+			</>
+		)
+	}
+
 	public render() {		
+		let content:JSX.Element;
+		if(this.state.game === GameState.FULL)
+		{
+			content = this.renderGameFull();
+		}else
+		{
+			content = this.renderGameActive();
+		}
+		
 		return(
 		<section>
 			<div className='game'>
                 <figure></figure>
-	
-        	<div className="gamePad">
-				<div data-heading="n" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8593;</div>
-				<div data-heading="ne" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8599;</div>
-				<div data-heading="e" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8594;</div>
-				<div data-heading="se" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8600;</div>
-				<div data-heading="s" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8595;</div>
-				<div data-heading="sw" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8601;</div>
-				<div data-heading="w" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8592;</div>
-				<div data-heading="nw" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8598;</div>				
+            
+			{content}
 			</div>
-		<button onClick={this.toggleSound}>{this.state.enableSound ? 'Disable Sound' : 'Enable Sound'}</button>
-		</div>
 		</section>
         )
     }

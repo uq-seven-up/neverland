@@ -196,31 +196,46 @@ section button{
 	transform: skew(0deg, -35deg);
   }
 
-  /* Logo header for pollview and gameview pages */
+  /* Logo header for pollview */
 
-.pollhead {
-	width: 100vw;
-	height: 30vh;
+  .poll {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-content: center;
+	flex-wrap: nowrap;
+	background: rgb(92,51,179);
+	height: 80vh;
 }
- 
-.pollhead figure {
-	width: 100vw;
-	min-height: 30vh;
+
+.poll figure {
+	width: auto;
+	height: 40vh;
 	background-image: url('../gfx/quizhead.png');
 	background-size: contain;
 	background-repeat: no-repeat;
-	background-position: center;	
   }	
 
- .gamehead figure {
-width: 100vw;
+
+  /* Logo header for gameview */
+
+.game {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-content: center;
+	flex-wrap: nowrap;
+	background: rgb(92,51,179);
+	height: 80vh;
+}
+
+ .game figure {
+width: auto;
 height: 40vh;
 background-image: url('../gfx/gamehead.png');
 background-size: contain;
-background-repeat: no-repeat;
-background-position: center;	
+background-repeat: no-repeat;	
 }	
-
 
 
 .gamePad
@@ -228,7 +243,9 @@ background-position: center;
 	display:inline-grid;
 	grid-template-columns: auto auto auto;
 	grid-template-rows: auto auto auto;	
+	align-self: center;
 }
+
 .gamePad div{
 	display:flex;
 	width:80px;

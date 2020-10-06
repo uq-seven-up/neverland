@@ -138,9 +138,9 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 	public render() {		
 		return(
 		<section>
-			<div className='gamehead'>
+			<div className='game'>
                 <figure></figure>
-            </div>
+	
         	<div className="gamePad">
 				<div data-heading="n" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8593;</div>
 				<div data-heading="ne" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8599;</div>
@@ -152,6 +152,7 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 				<div data-heading="nw" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8598;</div>				
 			</div>
 		<button onClick={this.toggleSound}>{this.state.enableSound ? 'Disable Sound' : 'Enable Sound'}</button>
+		</div>
 		</section>
         )
     }

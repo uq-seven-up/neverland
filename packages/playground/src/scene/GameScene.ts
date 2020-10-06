@@ -17,7 +17,7 @@ const puckImg = require('../assets/puck.png')
 
 const tileMapJson = require('../assets/level2.json')
 
-export default class MainWorldScene extends Phaser.Scene  
+export default class GameScene extends Phaser.Scene  
 {
 	private static LOCAL_PLAYER_ID = 'local_player';
 	private BASE_URL:string;
@@ -241,7 +241,7 @@ export default class MainWorldScene extends Phaser.Scene
 		
 		var p_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
 		p_key.on('down',(e:Phaser.Input.Keyboard.Key) => {
-			this.addPlayer(MainWorldScene.LOCAL_PLAYER_ID);
+			this.addPlayer(GameScene.LOCAL_PLAYER_ID);
 		}) 
 		
 		var r_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
@@ -316,7 +316,7 @@ export default class MainWorldScene extends Phaser.Scene
 	}
 
 	private updateLocalPlayer(){
-		let player = this.getPlayerById(MainWorldScene.LOCAL_PLAYER_ID);
+		let player = this.getPlayerById(GameScene.LOCAL_PLAYER_ID);
 		if(player === null) return;
 		if (this.cursors.up.isDown){player.move('n'); return;}
 		if (this.cursors.right.isDown){player.move('e');return;}

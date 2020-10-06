@@ -1,5 +1,5 @@
 import * as Phaser from "phaser";
-import MainWorldScene from "./scene/scene";
+import GameScene from "./scene/GameScene";
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
@@ -29,8 +29,8 @@ export class CandyGame extends Phaser.Game{
 			this.BASE_URL = '';			
 		}
 		
-		let scene = new MainWorldScene({},this.BASE_URL);
-		this.scene.add('main_world',scene,true);
+		let scene = new GameScene({},this.BASE_URL);
+		this.scene.add('game_scene',scene,true);
 	}
 
 
@@ -52,9 +52,9 @@ export class CandyGame extends Phaser.Game{
 			const message = evt.data.toString();
 			if(!message.startsWith('g|')) return;
 			
-			if(this.scene.isActive('main_world'))
+			if(this.scene.isActive('game_scene'))
 			{
-				let scene = this.scene.getScene('main_world') as MainWorldScene;
+				let scene = this.scene.getScene('game_scene') as GameScene;
 				scene.processSocketMessage(message);
 			}
 		}

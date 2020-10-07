@@ -4,19 +4,24 @@ import * as Phaser from "phaser";
  * Manages a player as well as the player character.
  */
 export default class Player{
-
 	/** The unique identifier for this player. In practice this is the UUID set by the mobile-client. */
 	private _id:string;
+	
 	/** Reference to the sprite representing this player in the game world. */
 	private _sprite!:Phaser.Physics.Arcade.Sprite;
+	
 	/** The players curren movement speed. */
 	private _speed:number = 200;
+	
 	/** The x direction that is applied for movement. 1=right, -1=left. */
 	private _speed_x:number;
+	
 	/** The y direction that is applied for movement. 1=down, -1=up. */
 	private _speed_y:number;
+	
 	/** The total points accumalated by this player. */
 	private _score:number;
+	
 	/** The team that this player is on. 0=Team 1, 1=Team 2. */
 	private _team:number;
 
@@ -89,6 +94,8 @@ export default class Player{
 
 	public set team(value:number) {
 		this._team = value;
+		
+		/* For now tint the players which are on the 'other' team. */
 		if(this._team % 2 === 0)
 		{
 			this._sprite.tint = 0xCCCC00;

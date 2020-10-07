@@ -34,10 +34,10 @@ export default class CandyGame extends Phaser.Game{
 		
 		/* Instantiate all game scenes.*/
 		let introScene = new IntroScene({},this.BASE_URL);
-		this.scene.add('intro_scene',introScene,false);
+		this.scene.add('intro_scene',introScene,true);
 		
 		let gameScene = new GameScene({},this.BASE_URL);
-		this.scene.add('game_scene',gameScene,true);
+		this.scene.add('game_scene',gameScene,false);
 
 		let endScene = new EndScene({},this.BASE_URL);
 		this.scene.add('end_scene',endScene,false);

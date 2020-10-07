@@ -3,7 +3,7 @@ import CandyGame from "../CandyGame";
 
 /** Defines the properties needed by the asset loaded when loading game assets. */
 export declare interface AssetItem {
-	type:'atlas'|'image'|'map',
+	type:'atlas'|'image'|'map'|'sheet',
 	src:string,
 	ref?:string /* A reference to a previously loaded image, only required for atlas assets.  */
 }
@@ -23,7 +23,7 @@ export default class AbstractScene extends Phaser.Scene
 	}
 
 	/**
-	 * Helper method which simplifies loading scene assest such as images, atlases, and maps.
+	 * Helper method which simplifies loading scene assest such as images, atlases, maps and sprite sheets.
 	 * 
 	 * See the GameScene for an example definition.
 	 * @param asset A map where each key is an Asset Item.
@@ -45,6 +45,10 @@ export default class AbstractScene extends Phaser.Scene
 				
 				case 'map':
 					this.load.tilemapTiledJSON(key,item.src);
+				break;
+
+				case 'sheet':
+					this.load.spritesheet(key,item.src,{frameWidth: 64, frameHeight: 64});
 				break;
 			}
 		});

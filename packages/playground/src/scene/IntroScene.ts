@@ -41,7 +41,7 @@ export default class IntroScene extends AbstractScene
 		this.input.once('pointerdown', function (e:Phaser.Input.Pointer) {
             that.startGame();
 		}, this);
-		
+	
 		/* Fade in the intro scene. */
 		this.cameras.main.fadeIn(400, 0, 0, 0)
 	}

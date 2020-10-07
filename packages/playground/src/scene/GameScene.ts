@@ -4,6 +4,7 @@ import {AssetItem} from "./AbstractScene"
 import {EndSceneConfig} from "./EndScene"
 import CandyGame from "../CandyGame";
 import Player from "../lib/Player"
+import { Bounds } from "matter";
 
 /* Define assets which need to be loaded for this scene. */
 const ASSET:Map<string,AssetItem> = new Map();
@@ -15,6 +16,7 @@ ASSET.set('muffin',{type:'image',src:require('../assets/muffin.png')});
 ASSET.set('swirl',{type:'image',src:require('../assets/swirl.png')});
 ASSET.set('puck',{type:'image',src:require('../assets/puck.png')});
 ASSET.set('particle',{type:'image',src:require('../assets/muzzleflash3.png')});
+ASSET.set('rain',{type:'image',src:require('../assets/rain.png')});
 ASSET.set('tiles',{type:'image',src:require('../assets/tiles.png')});
 ASSET.set('knight',{type:'image',src:require('../assets/my-knight-0.png')});
 ASSET.set('player',{type:'atlas',src:require('../assets/my-knight.json'),ref:'knight'});
@@ -54,6 +56,9 @@ export default class GameScene extends AbstractScene
 	
 	/** Timer Object for counting down remaining game time. */
 	private timeEvent!:Phaser.Time.TimerEvent;
+
+	/** Adds rain particles to the scene. */
+	private rainEmitter!:Phaser.GameObjects.Particles.ParticleEmitter;
 	
 	/** The score for each team. Team 1 = 0, Team 2 = 1. */
 	private teamScore:number[];
@@ -117,41 +122,29 @@ export default class GameScene extends AbstractScene
 		  });
 
 		/* Place pucks onto the game board. */
-		this.puck.push(this.physics.add.sprite(250,90,'puck'));
-		this.puck[0].setCollideWorldBounds(true);
-		this.puck[0].setBounce(0.7,0.7);
-		this.puck[0].body.isCircle = true;
-
-		this.puck.push(this.physics.add.sprite(700,100,'puck'));
-		this.puck[1].setCollideWorldBounds(true);
-		this.puck[1].setBounce(0.7,0.7);
-		this.puck[1].body.isCircle = true;
+		this.addPuck(250,90);
+		this.addPuck(700,100);
+		this.addPuck(850,90);
 		
-		this.puck.push(this.physics.add.sprite(850,90,'puck'));
-		this.puck[2].setCollideWorldBounds(true);
-		this.puck[2].setBounce(0.7,0.7);
-		this.puck[2].body.isCircle = true;
-		
-		this.puck.push(this.physics.add.sprite(500,90,'puck'));
-		this.puck[3].setCollideWorldBounds(true);
-		this.puck[3].setBounce(0.7,0.7);
-		this.puck[3].body.isCircle = true;
-
-		this.puck.push(this.physics.add.sprite(850,590,'puck'));
-		this.puck[4].setCollideWorldBounds(true);
-		this.puck[4].setBounce(0.1,0.1);
-		this.puck[4].body.isCircle = true;
-
-		this.puck.push(this.physics.add.sprite(350,190,'puck'));
-		this.puck[5].setCollideWorldBounds(true);
-		this.puck[5].setBounce(0.1,0.1);
-		this.puck[5].body.isCircle = true;
-
 		/* Position the text for displaying the team score and remaining game time.*/
 		this.scoreText[0] = this.add.text(10, 10, 'Team 1: 0', {fontSize: '20px', fill: '#000'});
 		this.scoreText[1] = this.add.text(10, 40, 'Team 2: 0', {fontSize: '20px', fill: '#000'});
 		this.clockText = this.add.text(1280, 10, GameScene.ROUND_TIME.toString(), {fontSize: '60px', fill: '#000'});
 		
+		/* Rain effect emitter. */
+		var rainParticle = this.add.particles('rain');	  
+		this.rainEmitter = rainParticle.createEmitter({
+				y: 0,
+				x: { min: 0, max: this.game.canvas.width},
+				accelerationX:0,
+				accelerationY:0,
+				gravityY:500,
+				lifespan:2200,
+				bounce:0.3,
+				scaleX:[0.3,0.5],
+				scaleY:[0.5,1],
+				bounds:{x:0,y:0,w:this.game.canvas.width,h:this.game.canvas.height}
+			});
 		/* 
 			var particles = this.add.particles('red');	  
 			var emitter = particles.createEmitter({
@@ -175,6 +168,8 @@ export default class GameScene extends AbstractScene
 
 		/* Broadcast the start of the game to all players (mobile-clients) */
 		this.sendEventToAllPlayers(90);
+
+		this.rain(true);
 
 		/* Start the game countdown. */
 		this.timeEvent = this.time.addEvent({delay:1000, 
@@ -414,6 +409,31 @@ export default class GameScene extends AbstractScene
 	}
 
 	/**
+	 * Place a movable puck onto the map.
+	 */
+	private addPuck(x:number,y:number)
+	{
+		this.puck.push(this.physics.add.sprite(x,y,'puck'));
+		this.puck[0].setCollideWorldBounds(true);
+		this.puck[0].setBounce(0.7,0.7);
+		this.puck[0].body.isCircle = true;
+	}
+
+	/**
+	 * Start and stops raining on the scene.
+	 */
+	private rain = (makeItRain:boolean) =>
+	{
+		if(makeItRain)
+		{
+			this.rainEmitter.start();
+		}else
+		{
+			this.rainEmitter.pause;
+		}
+	}
+	
+	/**
 	 * Processes incoming game messages sent by the game server.
 	 * 
 	 * This includes movement commands initiated by the mobile client,
@@ -463,6 +483,8 @@ export default class GameScene extends AbstractScene
 				break;
 		}
 	}
+
+
 
 	/**
 	 * Check for the end of game condition.

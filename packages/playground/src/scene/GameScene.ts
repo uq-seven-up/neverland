@@ -105,7 +105,7 @@ export default class GameScene extends AbstractScene
 		const tileset = this.map.addTilesetImage('my_simple_game','tiles');		
 		this.map.createStaticLayer('ground', tileset, 0, 0);
 		
-		/* Render the candy layer in the gameworld. */
+		/* Render the candy layer in the game world. */
 		this.candyGroup = this.physics.add.group({
 			allowGravity: false,
 			immovable: true
@@ -147,7 +147,7 @@ export default class GameScene extends AbstractScene
 		this.puck[5].setBounce(0.1,0.1);
 		this.puck[5].body.isCircle = true;
 
-		/* Render the team score and remaining game time.*/
+		/* Position the text for displaying the team score and remaining game time.*/
 		this.scoreText[0] = this.add.text(10, 10, 'Team 1: 0', {fontSize: '20px', fill: '#000'});
 		this.scoreText[1] = this.add.text(10, 40, 'Team 2: 0', {fontSize: '20px', fill: '#000'});
 		this.clockText = this.add.text(1280, 10, GameScene.ROUND_TIME.toString(), {fontSize: '60px', fill: '#000'});
@@ -173,7 +173,7 @@ export default class GameScene extends AbstractScene
 			that.scene.start('end_scene',config);
 		}, this);
 
-		/* Broadcast the start of the game to all players (mobile-clients.) */
+		/* Broadcast the start of the game to all players (mobile-clients) */
 		this.sendEventToAllPlayers(90);
 
 		/* Start the game countdown. */
@@ -195,17 +195,28 @@ export default class GameScene extends AbstractScene
 		/* Manage world interaction for each player currently in the game.*/
 		for(var i=0;i<this.player.length;i++)
 		{
+			/* Adjust speed based on tile player is standing on.*/
 			this.adjustSpeedForTile(this.player[i]);
-			this.player[i].update();
+			
+			/* Test players colliding with each other.*/
 			for(var j=0;j<this.player.length;j++){
 				if(j === i) continue;
-				this.physics.collide(this.player[i].sprite,this.player[j].sprite,() => {console.log('two players collided')});
+				this.physics.collide(this.player[i].sprite,this.player[j].sprite,() => {return;});/* two players collided */
 			}
-			this.physics.collide(this.player[i].sprite,this.puck,() => {console.log('player collided')});
-			this.physics.collide(this.puck,this.puck,() => {console.log('pucks collided')});
-			this.physics.collide(this.puck,this.candyGroup,() => {console.log('pucks with candy')});
+
+			/* Player can collide with pucks. (push pucks around) */
+			this.physics.collide(this.player[i].sprite,this.puck,() => {return;});/* player collided with puck */
+			
+			/* Player can collide with candy. (to collect candy) */
 			this.physics.overlap(this.player[i].sprite,this.candyGroup,this.handlePlayerOverlapsCandy,undefined,this);			
+
+			/* Update player position on the map. */
+			this.player[i].update();
 		}		
+		
+		/* Manage object collisions in the game world.*/
+		this.physics.collide(this.puck,this.puck,() => {return;});/* pucks collided */
+		this.physics.collide(this.puck,this.candyGroup,() => {return;});/* pucks collided with candy. */
 		
 		/* Manage the local player. (Debug Player) */
 		this.updateLocalPlayer()

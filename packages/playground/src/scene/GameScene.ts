@@ -251,7 +251,7 @@ export default class GameScene extends AbstractScene
 		},this);
 		 
 		this.cursors = this.input.keyboard.createCursorKeys();
-		(this.game as CandyGame).sendEventAllPlayers(90);
+		this.sendEventToAllPlayers(90);
 		
 		this.clockText = this.add.text(1280, 10, '00:00:00', {fontSize: '60px', fill: '#000'});
 

@@ -51,11 +51,28 @@ export default class AbstractScene extends Phaser.Scene
 		});
 	}
 
-	protected sendEventToPlayers(playerId:string,eventId:number){
+	/**
+	 * Convenience method for sending a game event to a specific. Player.
+	 * 
+	 * For an overview of event types see the comments in.
+	 * packages/server/src/lib/GameServer.ts
+	 * 
+	 * @param playerId The player id which should receive the message.
+	 * @param eventId The event id which is send to the players client.
+	 */
+	protected sendEventToPlayer(playerId:string,eventId:number){
 		(this.game as CandyGame).sendEventToPlayer(playerId,eventId);
 	}
 
+	/**
+	 * Convenience method for broadcasting a game event to all players.
+	 * 
+	 * For an overview of event types see the comments in.
+	 * packages/server/src/lib/GameServer.ts
+	 * 
+	 * @param eventId The event id which is send to the players client.
+	 */
 	protected sendEventToAllPlayers(eventId:number){
-		(this.game as CandyGame).sendEventAllPlayers(eventId);
+		(this.game as CandyGame).sendEventToAllPlayers(eventId);
 	}
 }

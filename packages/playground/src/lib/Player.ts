@@ -1,13 +1,23 @@
 import * as Phaser from "phaser";
 
+/**
+ * Manages a player as well as the player character.
+ */
 export default class Player{
 
+	/** The unique identifier for this player. In practice this is the UUID set by the mobile-client. */
 	private _id:string;
+	/** Reference to the sprite representing this player in the game world. */
 	private _sprite!:Phaser.Physics.Arcade.Sprite;
+	/** The players curren movement speed. */
 	private _speed:number = 200;
+	/** The x direction that is applied for movement. 1=right, -1=left. */
 	private _speed_x:number;
+	/** The y direction that is applied for movement. 1=down, -1=up. */
 	private _speed_y:number;
+	/** The total points accumalated by this player. */
 	private _score:number;
+	/** The team that this player is on. 0=Team 1, 1=Team 2. */
 	private _team:number;
 
 	constructor(id:string,scene:Phaser.Scene)
@@ -18,6 +28,7 @@ export default class Player{
 		this._score = 0;
 		this._team = 0;
 
+		/* Configure the animation used for this player character.*/
 		scene.anims.create({
 			key: "walk",
 			frameRate: 7,
@@ -31,9 +42,16 @@ export default class Player{
 			repeat: -1
 		});
 
+		/* Place the player into the scene.*/
 		this._sprite = scene.physics.add.sprite(50,200,'player');		
+		
+		/* Allow the player to be identified from the sprite. */
 		this._sprite.setName(this._id);
+		
+		/* Stop the player from leaving the screen. */
 		this._sprite.setCollideWorldBounds(true);
+		
+		/* Start the walk animation. */
 		this._sprite.play("walk");
 	}
 
@@ -81,6 +99,10 @@ export default class Player{
 		return this._team;
 	}
 
+	/**
+	 * Moves the player character towards the specified heading.
+	 * @param heading Compass directions.(n,ne,e,se,s,sw,w,nw)
+	 */
 	public move(heading:string){
 		switch(heading)
 		{
@@ -128,16 +150,22 @@ export default class Player{
 		}
 	}
 
-	public destroy() {
-		this._sprite.destroy();
-	}
-
+	/**
+	 *  Makes the player character stationary.
+	 */
 	public stop(){
 		this._speed_x = 0;
 		this._speed_y = 0;
 	}
 
+	/** Called when the player is taken out of the game. */
+	public destroy() {
+		this._sprite.destroy();
+	}
+
+	/** Called as part of the game loop. */
 	public update() {
+		/* Move the player inside of the game world.*/
 		this._sprite.body.velocity.x = this._speed_x * this._speed;
 		this._sprite.body.velocity.y = this._speed_y * this._speed;
 	}

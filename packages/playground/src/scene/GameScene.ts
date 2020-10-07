@@ -21,12 +21,12 @@ ASSET.set('player',{type:'atlas',src:require('../assets/my-knight.json'),ref:'kn
 ASSET.set('map',{type:'map',src:require('../assets/level2.json')});
 
 /**
- * Manages the scene in which player play the game play.
+ * Manages the scene in which the game is played.
  */
 export default class GameScene extends AbstractScene  
 {
 	/** The duration of a single game in seconds. */
-	private static ROUND_TIME = 9;
+	private static ROUND_TIME = 120;
 	
 	/** The id used by the player using the keyboard connected to the game screen. (debug player) */
 	private static LOCAL_PLAYER_ID = 'local_player';
@@ -47,7 +47,7 @@ export default class GameScene extends AbstractScene
 	private clockText!:Phaser.GameObjects.Text;
 	
 	/** Pucks that can be pushed around the map. */
-	private obstacle:Phaser.Physics.Arcade.Sprite[];
+	private puck:Phaser.Physics.Arcade.Sprite[];
 	
 	/** Candy that can be collected by players.*/
 	private candyGroup!:Phaser.Physics.Arcade.Group;
@@ -63,7 +63,7 @@ export default class GameScene extends AbstractScene
 		super(config,baseUrl);
 		
 		this.player = [];	
-		this.obstacle = [];
+		this.puck = [];
 		this.scoreText = [];
 		this.teamScore = [0,0];		
 	}
@@ -77,61 +77,35 @@ export default class GameScene extends AbstractScene
 		this.assetLoader(ASSET);
 	}
 
-
 	/**
 	 * Phaser life cycle method. (This method is called by the Scene Manager when the scene starts, after init() and preload())
 	 * https://photonstorm.github.io/phaser3-docs/Phaser.Types.Scenes.html#.SceneCreateCallback
 	 */
 	public create() {
+		/* Ensure game properties are reset when the scene is restarted (for the next new game). */
 		this.player = [];	
-		this.obstacle = [];
+		this.puck = [];
 		this.scoreText = [];
 		this.teamScore = [0,0];	
 
-		/* Listen to cursor key events (arrow keys) */
-		this.cursors = this.input.keyboard.createCursorKeys();
+		/* Pressing "1" on the keyboard places the local player into the game. (debug player.) */
+		var one_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
+		one_key.on('down',(e:Phaser.Input.Keyboard.Key) => {
+			this.addPlayer(GameScene.LOCAL_PLAYER_ID);
+		}) 
 		
+		/* Listen to cursor key events (for controlling the local player with arrow keys) */
+		this.cursors = this.input.keyboard.createCursorKeys();
+
+		/* Prevent objects from leaving the map. */
 		this.physics.world.setBoundsCollision(true,true,true,true);
 
-		/* Load tiles from a tile map. */
-		this.map = this.make.tilemap({ key: 'map' });
+		/* Render the game map created with tiled. (the tile map). */
+		this.map = this.make.tilemap({key:'map'});
 		const tileset = this.map.addTilesetImage('my_simple_game','tiles');		
 		this.map.createStaticLayer('ground', tileset, 0, 0);
 		
-		//this.map.findTile
-		this.obstacle.push(this.physics.add.sprite(250,90,'puck'));
-		this.obstacle[0].setCollideWorldBounds(true);
-		this.obstacle[0].setBounce(0.7,0.7);
-		this.obstacle[0].body.isCircle = true;
-
-		this.obstacle.push(this.physics.add.sprite(700,100,'puck'));
-		this.obstacle[1].setCollideWorldBounds(true);
-		this.obstacle[1].setBounce(0.7,0.7);
-		this.obstacle[1].body.isCircle = true;
-		
-		this.obstacle.push(this.physics.add.sprite(850,90,'puck'));
-		this.obstacle[2].setCollideWorldBounds(true);
-		this.obstacle[2].setBounce(0.7,0.7);
-		this.obstacle[2].body.isCircle = true;
-		
-		this.obstacle.push(this.physics.add.sprite(500,90,'puck'));
-		this.obstacle[3].setCollideWorldBounds(true);
-		this.obstacle[3].setBounce(0.7,0.7);
-		this.obstacle[3].body.isCircle = true;
-
-		this.obstacle.push(this.physics.add.sprite(850,590,'puck'));
-		this.obstacle[4].setCollideWorldBounds(true);
-		this.obstacle[4].setBounce(0.1,0.1);
-		this.obstacle[4].body.isCircle = true;
-
-		this.obstacle.push(this.physics.add.sprite(350,190,'puck'));
-		this.obstacle[5].setCollideWorldBounds(true);
-		this.obstacle[5].setBounce(0.1,0.1);
-		this.obstacle[5].body.isCircle = true;
-
-
-		this.physics.world.on('tileoverlap', () => {console.log('listener')});
-
+		/* Render the candy layer in the gameworld. */
 		this.candyGroup = this.physics.add.group({
 			allowGravity: false,
 			immovable: true
@@ -142,54 +116,75 @@ export default class GameScene extends AbstractScene
 			this.candyGroup.create(candyObject.x!, candyObject.y! - candyObject.height!,candyObject.type).setOrigin(0,0);
 		  });
 
+		/* Place pucks onto the game board. */
+		this.puck.push(this.physics.add.sprite(250,90,'puck'));
+		this.puck[0].setCollideWorldBounds(true);
+		this.puck[0].setBounce(0.7,0.7);
+		this.puck[0].body.isCircle = true;
+
+		this.puck.push(this.physics.add.sprite(700,100,'puck'));
+		this.puck[1].setCollideWorldBounds(true);
+		this.puck[1].setBounce(0.7,0.7);
+		this.puck[1].body.isCircle = true;
+		
+		this.puck.push(this.physics.add.sprite(850,90,'puck'));
+		this.puck[2].setCollideWorldBounds(true);
+		this.puck[2].setBounce(0.7,0.7);
+		this.puck[2].body.isCircle = true;
+		
+		this.puck.push(this.physics.add.sprite(500,90,'puck'));
+		this.puck[3].setCollideWorldBounds(true);
+		this.puck[3].setBounce(0.7,0.7);
+		this.puck[3].body.isCircle = true;
+
+		this.puck.push(this.physics.add.sprite(850,590,'puck'));
+		this.puck[4].setCollideWorldBounds(true);
+		this.puck[4].setBounce(0.1,0.1);
+		this.puck[4].body.isCircle = true;
+
+		this.puck.push(this.physics.add.sprite(350,190,'puck'));
+		this.puck[5].setCollideWorldBounds(true);
+		this.puck[5].setBounce(0.1,0.1);
+		this.puck[5].body.isCircle = true;
+
+		/* Render the team score and remaining game time.*/
 		this.scoreText[0] = this.add.text(10, 10, 'Team 1: 0', {fontSize: '20px', fill: '#000'});
 		this.scoreText[1] = this.add.text(10, 40, 'Team 2: 0', {fontSize: '20px', fill: '#000'});
+		this.clockText = this.add.text(1280, 10, GameScene.ROUND_TIME.toString(), {fontSize: '60px', fill: '#000'});
 		
-		
-		var p_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
-		p_key.on('down',(e:Phaser.Input.Keyboard.Key) => {
-			this.addPlayer(GameScene.LOCAL_PLAYER_ID);
-		}) 
-		
-		var r_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
-		r_key.on('down',(e:Phaser.Input.Keyboard.Key) => {
-			this.scene.restart();
-		},this);
-		 
-		this.cursors = this.input.keyboard.createCursorKeys();
-		this.sendEventToAllPlayers(90);
-		
-		this.clockText = this.add.text(1280, 10, '00:00:00', {fontSize: '60px', fill: '#000'});
+		/* 
+			var particles = this.add.particles('red');	  
+			var emitter = particles.createEmitter({
+				speed: 100,
+				scale: { start: 1, end: 0 },
+				blendMode: 'ADD'
+			});
+			emitter.startFollow(this.player[0].sprite,-100);	
+		*/
 
-		this.timeEvent = this.time.addEvent({delay:1000, 
-											 repeat:GameScene.ROUND_TIME,
-											 callback:this.checkEndOfGame,
-											 callbackScope:this});
-
+		/* Switch to the end game scene after this scene has faded out. */
 		let that = this;
 		this.cameras.main.on('camerafadeoutcomplete', function () {
+			/* Pass the team score to the end game scene. */
 			let config:EndSceneConfig = {
 				teamScore:that.teamScore
 			};
 
 			that.scene.start('end_scene',config);
-		}, this);												
-		
-	   
-		//var particles = this.add.particles('red');	  
-		//var emitter = particles.createEmitter({
-	//		  speed: 100,
-	//		  scale: { start: 1, end: 0 },
-	//		  blendMode: 'ADD'
-	//	});
-		// emitter.startFollow(this.player[0].sprite,-100);
-	  
-		//this.sendEventToAllPlayers(90);
-		
-		this.cameras.main.fadeIn(1000, 0, 0, 0)
+		}, this);
+
+		/* Broadcast the start of the game to all players (mobile-clients.) */
+		this.sendEventToAllPlayers(90);
+
+		/* Start the game countdown. */
+		this.timeEvent = this.time.addEvent({delay:1000, 
+											repeat:GameScene.ROUND_TIME,
+											callback:this.checkEndOfGame,
+											callbackScope:this});
+
+		/* Fade in the game scene. */
+		this.cameras.main.fadeIn(1000, 0, 0, 0);
 	  }
-
-
 
 	/**
 	 * Phaser life cycle method. (This method is called once per game step while the scene is running.)
@@ -206,9 +201,9 @@ export default class GameScene extends AbstractScene
 				if(j === i) continue;
 				this.physics.collide(this.player[i].sprite,this.player[j].sprite,() => {console.log('two players collided')});
 			}
-			this.physics.collide(this.player[i].sprite,this.obstacle,() => {console.log('player collided')});
-			this.physics.collide(this.obstacle,this.obstacle,() => {console.log('obstacles collided')});
-			this.physics.collide(this.obstacle,this.candyGroup,() => {console.log('obstacles with candy')});
+			this.physics.collide(this.player[i].sprite,this.puck,() => {console.log('player collided')});
+			this.physics.collide(this.puck,this.puck,() => {console.log('pucks collided')});
+			this.physics.collide(this.puck,this.candyGroup,() => {console.log('pucks with candy')});
 			this.physics.overlap(this.player[i].sprite,this.candyGroup,this.handlePlayerOverlapsCandy,undefined,this);			
 		}		
 		

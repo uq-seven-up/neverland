@@ -96,7 +96,7 @@ export default class Player{
 		this._team = value;
 		
 		/* For now tint the players which are on the 'other' team. */
-		if(this._team % 2 === 0)
+		if(this._team % 2 === 1)
 		{
 			this._sprite.tint = 0xCCCC00;
 		}

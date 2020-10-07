@@ -10,7 +10,7 @@ export default class Player{
 	/** Reference to the sprite representing this player in the game world. */
 	private _sprite!:Phaser.Physics.Arcade.Sprite;
 	
-	/** The players curren movement speed. */
+	/** The players current movement speed. (note in the game this is changed based on the tile the user is standing on.) */
 	private _speed:number = 200;
 	
 	/** The x direction that is applied for movement. 1=right, -1=left. */

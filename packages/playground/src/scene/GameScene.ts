@@ -333,10 +333,10 @@ export default class GameScene extends AbstractScene
 		switch(tile.index)
 		{
 			case 1:
-				player.speed = 150;
+				player.speed = 250;
 				break;
 			case 2:
-				player.speed = 300;
+				player.speed = 350;
 				break;	
 			default:
 				player.speed = 50;
@@ -415,7 +415,8 @@ export default class GameScene extends AbstractScene
 	{
 		this.puck.push(this.physics.add.sprite(x,y,'puck'));
 		this.puck[0].setCollideWorldBounds(true);
-		this.puck[0].setBounce(0.7,0.7);
+		this.puck[0].setBounce(0.9,0.9);
+		this.puck[0].setFriction(20);
 		this.puck[0].body.isCircle = true;
 	}
 

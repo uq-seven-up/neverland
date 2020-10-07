@@ -1,10 +1,11 @@
 import * as Phaser from "phaser";
 import CandyGame from "../CandyGame";
 
+/** Defines the properties need by the asset loaded when loading a asset. */
 export declare interface AssetItem {
-	type:'image'|'atlas'|'map',
+	type:'atlas'|'image'|'map',
 	src:string,
-	ref?:string
+	ref?:string /* A reference to a previously loaded image, only required for atlas assets.  */
 }
 
 /**
@@ -12,9 +13,7 @@ export declare interface AssetItem {
  */
 export default class AbstractScene extends Phaser.Scene
 {
-	/**
-	 * Defines the location from which assets will be loaded.
-	 */
+	/** URL prefix used when loading scene assets.*/
 	protected BASE_URL:string;
 
 	constructor(config:Phaser.Types.Scenes.SettingsConfig,baseUrl:string)

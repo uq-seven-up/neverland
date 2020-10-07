@@ -4,7 +4,7 @@ import {AssetItem} from "./AbstractScene"
 import CandyGame from "../CandyGame";
 import Player from "../lib/Player"
 
-
+/* Define assets which need to be loaded for this scene. */
 const ASSET:Map<string,AssetItem> = new Map();
 ASSET.set('cookie',{type:'image',src:require('../assets/cookie.png')});
 ASSET.set('donut',{type:'image',src:require('../assets/donut.png')});
@@ -23,7 +23,7 @@ ASSET.set('map',{type:'map',src:require('../assets/level2.json')});
 export default class GameScene extends AbstractScene  
 {
 	private static LOCAL_PLAYER_ID = 'local_player';
-	private static ROUND_TIME = 120;
+	private static ROUND_TIME = 9;
 	
 	private cursors!:any;
 	private player:Player[];

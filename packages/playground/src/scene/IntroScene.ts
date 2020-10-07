@@ -1,17 +1,19 @@
 import * as Phaser from "phaser";
+import AbstractScene from "./AbstractScene"
+import {AssetItem} from "./AbstractScene"
 
-const backgroundImg = require('../assets/intro_background.png');
+/* Define assets which need to be loaded for this scene. */
+const ASSET:Map<string,AssetItem> = new Map();
+ASSET.set('background',{type:'image',src:require('../assets/intro_background.png')});
 
-export default class IntroScene extends Phaser.Scene  
+/**
+ * Manage the introduction (splash screen) scene.
+ */
+export default class IntroScene extends AbstractScene 
 {
-	private BASE_URL:string;
-
-	
-
 	constructor(config:Phaser.Types.Scenes.SettingsConfig,baseUrl:string)
 	{
-		super(config);
-		this.BASE_URL = baseUrl;
+		super(config,baseUrl);
 	}
 
 	/**
@@ -19,9 +21,7 @@ export default class IntroScene extends Phaser.Scene
 	 * https://photonstorm.github.io/phaser3-docs/Phaser.Types.Scenes.html#.ScenePreloadCallback
 	 */	
 	public preload():void {		
-		this.load.setBaseURL(this.BASE_URL);
-
-		this.load.image('background',backgroundImg);
+		this.assetLoader(ASSET);
 	}
 
 	/**
@@ -31,16 +31,18 @@ export default class IntroScene extends Phaser.Scene
 	public create():void {
 		this.add.image(704,352,'background')
 		
+		/* Switch to the game scene after this scene has faded out. */
 		let that = this;
-
 		this.cameras.main.on('camerafadeoutcomplete', function () {
 			that.scene.start('game_scene')
         	}, this);
 
+		/* For debugging, a mouse click / tap on the display also starts the game. */
 		this.input.once('pointerdown', function (e:Phaser.Input.Pointer) {
             that.startGame();
 		}, this);
 		
+		/* Fade in the intro scene. */
 		this.cameras.main.fadeIn(400, 0, 0, 0)
 	}
 

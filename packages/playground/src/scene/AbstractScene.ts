@@ -1,7 +1,7 @@
 import * as Phaser from "phaser";
 import CandyGame from "../CandyGame";
 
-/** Defines the properties need by the asset loaded when loading a asset. */
+/** Defines the properties needed by the asset loaded when loading game assets. */
 export declare interface AssetItem {
 	type:'atlas'|'image'|'map',
 	src:string,
@@ -51,7 +51,7 @@ export default class AbstractScene extends Phaser.Scene
 	}
 
 	/**
-	 * Convenience method for sending a game event to a specific. Player.
+	 * Convenience method for sending a game event to a specific player.
 	 * 
 	 * For an overview of event types see the comments in.
 	 * packages/server/src/lib/GameServer.ts

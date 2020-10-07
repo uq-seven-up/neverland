@@ -14,21 +14,24 @@ export default class IntroScene extends Phaser.Scene
 		this.BASE_URL = baseUrl;
 	}
 
+	/**
+	 * Phaser life cycle method. (This method is called by the Scene Manager, after init() and before create())
+	 * https://photonstorm.github.io/phaser3-docs/Phaser.Types.Scenes.html#.ScenePreloadCallback
+	 */	
 	public preload():void {		
 		this.load.setBaseURL(this.BASE_URL);
 
 		this.load.image('background',backgroundImg);
 	}
 
-	public startGame()
-	{
-		this.cameras.main.fade(1000, 0, 0, 0);
-	}
-	
+	/**
+	 * Phaser life cycle method. (This method is called by the Scene Manager when the scene starts, after init() and preload())
+	 * https://photonstorm.github.io/phaser3-docs/Phaser.Types.Scenes.html#.SceneCreateCallback
+	 */
 	public create():void {
-		let that = this;
-
 		this.add.image(704,352,'background')
+		
+		let that = this;
 
 		this.cameras.main.on('camerafadeoutcomplete', function () {
 			that.scene.start('game_scene')
@@ -41,7 +44,12 @@ export default class IntroScene extends Phaser.Scene
 		this.cameras.main.fadeIn(400, 0, 0, 0)
 	}
 
-	public update():void{
-	
+	/**
+	 * Start running the game scene.
+	 */
+	public startGame()
+	{
+		/* The end of the fade triggers a camera event, defined inside of the create method */
+		this.cameras.main.fade(1000, 0, 0, 0);
 	}
 }

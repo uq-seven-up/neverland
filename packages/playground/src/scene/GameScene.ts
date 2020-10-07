@@ -1,27 +1,30 @@
 import * as Phaser from "phaser";
-import {CandyGame} from "../app";
+import AbstractScene from "./AbstractScene"
+import {AssetItem} from "./AbstractScene"
+import CandyGame from "../CandyGame";
 import Player from "../lib/Player"
 
-const playerAtlas = require('../assets/my-knight.json')
-const playerSheetImg = require('../assets/my-knight-0.png')
-const particleImg = require('../assets/muzzleflash3.png')
 
-const cookieImg = require('../assets/cookie.png')
-const donutImg = require('../assets/donut.png')
-const icecreamImg = require('../assets/icecream.png')
-const lollyImg = require('../assets/lolly.png')
-const muffinImg = require('../assets/muffin.png')
-const swirlImg = require('../assets/swirl.png')
-const tilesImg = require('../assets/tiles.png')
-const puckImg = require('../assets/puck.png')
+const ASSET:Map<string,AssetItem> = new Map();
+ASSET.set('cookie',{type:'image',src:require('../assets/cookie.png')});
+ASSET.set('donut',{type:'image',src:require('../assets/donut.png')});
+ASSET.set('icecream',{type:'image',src:require('../assets/icecream.png')});
+ASSET.set('lolly',{type:'image',src:require('../assets/lolly.png')});
+ASSET.set('muffin',{type:'image',src:require('../assets/muffin.png')});
+ASSET.set('swirl',{type:'image',src:require('../assets/swirl.png')});
+ASSET.set('puck',{type:'image',src:require('../assets/puck.png')});
+ASSET.set('particle',{type:'image',src:require('../assets/muzzleflash3.png')});
+ASSET.set('tiles',{type:'image',src:require('../assets/tiles.png')});
+ASSET.set('knight',{type:'image',src:require('../assets/my-knight-0.png')});
+ASSET.set('player',{type:'atlas',src:require('../assets/my-knight.json'),ref:'knight'});
+ASSET.set('map',{type:'map',src:require('../assets/level2.json')});
 
-const tileMapJson = require('../assets/level2.json')
 
-export default class GameScene extends Phaser.Scene  
+export default class GameScene extends AbstractScene  
 {
 	private static LOCAL_PLAYER_ID = 'local_player';
 	private static ROUND_TIME = 120;
-	private BASE_URL:string;
+	
 	private cursors!:any;
 	private player:Player[];
 	private scoreText:Phaser.GameObjects.Text[];
@@ -39,8 +42,8 @@ export default class GameScene extends Phaser.Scene
 	
 	constructor(config:Phaser.Types.Scenes.SettingsConfig,baseUrl:string)
 	{
-		super(config);
-		this.BASE_URL = baseUrl;
+		super(config,baseUrl);
+		
 		this.player = [];	
 		this.obstacle = [];
 		this.scoreText = [];
@@ -160,29 +163,20 @@ export default class GameScene extends Phaser.Scene
 		}
 	}
 
-
-	preload() {		
-		this.load.setBaseURL(this.BASE_URL);
-		
-		this.load.tilemapTiledJSON('map', tileMapJson);
-		this.load.image('tiles',tilesImg);
-		this.load.image('cookie',cookieImg);
-		this.load.image('donut',donutImg);
-		this.load.image('icecream',icecreamImg);
-		this.load.image('lolly',lollyImg);
-		this.load.image('muffin',muffinImg);
-		this.load.image('swirl',swirlImg);
-		this.load.image('puck',puckImg);
-
-		
-
-		this.load.atlas('player',playerSheetImg,playerAtlas);			
-		this.load.image("red", particleImg);
-
-			
+/**
+ * Phaser life cycle method. (This method is called by the Scene Manager, after init() and before create())
+ * https://photonstorm.github.io/phaser3-docs/Phaser.Types.Scenes.html#.ScenePreloadCallback
+ */
+	public preload() {		
+		this.assetLoader(ASSET);
 	}
 
-	create() {
+
+/**
+ * Phaser life cycle method. (This method is called by the Scene Manager when the scene starts, after init() and preload())
+ * https://photonstorm.github.io/phaser3-docs/Phaser.Types.Scenes.html#.SceneCreateCallback
+ */
+	public create() {
 		this.player = [];	
 		this.obstacle = [];
 		this.scoreText = [];
@@ -293,7 +287,6 @@ export default class GameScene extends Phaser.Scene
 //		  loop: -1
 //		});
 		//this.ws.send('b|v||90');
-
 		this.cameras.main.fadeIn(1000, 0, 0, 0)
 	  }
 
@@ -376,7 +369,11 @@ export default class GameScene extends Phaser.Scene
 		}
 	}
 
-	update(){		
+	/**
+	 * Phaser life cycle method. (This method is called once per game step while the scene is running.)
+	 * https://photonstorm.github.io/phaser3-docs/Phaser.Scene.html#update
+	 */
+	public update(){		
 		for(var i=0;i<this.player.length;i++)
 		{
 			this.adjustSpeedForTile(this.player[i]);

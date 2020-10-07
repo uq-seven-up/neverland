@@ -51,7 +51,7 @@ body
 }
 
 .header .content {
-	height: 50vh;
+	height: 55vh;
 }
 
 
@@ -66,19 +66,36 @@ body
 	z-index: 1;
 }
 
+.menu h1{
+	color:  rgb(80,41,132);
+	font-size: 3em;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.menu .inactive {
+	text-decoration: none;
+}
+
+.menu .active {
+	text-decoration: underline rgb(80,41,132);
+}
+
+
 .poll figure {
 	width: 50vw;
-	height: 20vh;
-	background-image: url('../gfx/pollicon.png');
+	height: 15vh;
+	background-image: url('../gfx/poll3.png');
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
 }
 
+
 .game figure {
 	width: 50vw;
-	height: 20vh;
-	background-image: url('../gfx/gameicon.png');
+	height: 15vh;
+	background-image: url('../gfx/game3.png');
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -111,6 +128,7 @@ section button{
 	grid-template-columns: auto auto auto;
 	grid-template-rows: auto auto auto;	
 	align-self: center;
+	padding: 20px;
 }
 
 /* .trackpad {

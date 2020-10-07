@@ -127,8 +127,7 @@ class PollView extends React.Component<PollViewProp, PollViewState> {
 	{
 		return (
 			<>
-            <div className='header'>
-                <figure></figure>
+        
                 
             <h1>Select your answer</h1>
 			{
@@ -136,23 +135,32 @@ class PollView extends React.Component<PollViewProp, PollViewState> {
 					<button key={answer.key} data-key={answer.key} onClick={this.handleClick}>{answer.response}</button>
 				))
 			}
-            </div>
+    
 			</>
 		)
 	}
 	
-	public render() {		
+	public render() {	
+        	
 		if(this.state.voted)
 		{
 			return(<>
-			<h2>Thanks for Participating.</h2>
+                <div className='header'>
+                <figure></figure>
+                
+			    <h2>Thanks for Participating!</h2>
+                </div>
+
 			</>)
 		}
 
 		return (
+            <div className='header'>
+            <figure></figure>
 		<section>
         	{this.renderAnswers()}			
         </section>
+        </div>
         )
     }
 }

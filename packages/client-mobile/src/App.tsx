@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
 import PollView from './component/PollView'
-import FrontPage from './component/FrontPage'
 import Menu from './component/Menu'
 import GameClient from './component/GameClient'
 

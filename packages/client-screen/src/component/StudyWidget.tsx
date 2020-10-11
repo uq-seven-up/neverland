@@ -5,7 +5,7 @@ import { AxiosResponse } from 'axios';
 import ProgressBarComponent from './ProgressBar';
 
 interface SpaceAvailability {
-	[key: string]: string;
+	[key: string]: any;
 }
 
 interface StudyWidgetProp {
@@ -24,12 +24,11 @@ class StudyWidget extends React.Component<
 	StudyWidgetProp,
 	SpaceAvailabilityState
 > {
-	nonStLuciaLibraries: string[];
 	colorsList: string[];
 	libraryVisibilityToggle: boolean;
+
 	constructor(props: StudyWidgetProp) {
 		super(props);
-		this.nonStLuciaLibraries = ['Gatton', 'Herston', 'PACE', 'Whitty'];
 		this.colorsList = [
 			'#7EFAFA',
 			'#FCB1FC',
@@ -49,7 +48,7 @@ class StudyWidget extends React.Component<
 	public componentDidMount(): void {
 		console.log('Study Widget Component Did Mount');
 		this.callAPI('', 'GET', '/studyspace/availability-data');
-		this.callTimeInterval();
+		// this.callTimeInterval();
 	}
 	/* ########################################################*/
 
@@ -99,6 +98,7 @@ class StudyWidget extends React.Component<
 	 * in intervals by toggling their class
 	 */
 	private callTimeInterval() {
+		// Not Called
 		setInterval(() => {
 			const libraryElements = document.querySelectorAll('.library');
 			libraryElements.forEach((library: any, index: number) => {
@@ -138,10 +138,6 @@ class StudyWidget extends React.Component<
 		endpoint: string,
 		result: any,
 	): void => {
-		this.nonStLuciaLibraries.forEach((library: any) => {
-			delete result.data[library];
-		});
-
 		this.setState({ spaceAvailability: result.data });
 	};
 	/* ########################################################*/
@@ -171,15 +167,15 @@ class StudyWidget extends React.Component<
 						<ProgressBarComponent key={2} color="#BCFA7E" filled={36} />
 						<span>{`Central`}</span>
 					</div>
-					<div className="library hide">
+					<div className="library">
 						<ProgressBarComponent key={3} color="#FBB03B" filled={49} />
 						<span>{`DHEngSci`}</span>
 					</div>
-					<div className="library hide">
+					<div className="library">
 						<ProgressBarComponent key={4} color="#EDE57E" filled={45} />
 						<span>{`DuhigStudy`}</span>
 					</div>
-					<div className="library hide">
+					<div className="library">
 						<ProgressBarComponent key={5} color="#00D6CA" filled={32} />
 						<span>{`Law Library`}</span>
 					</div>
@@ -190,7 +186,7 @@ class StudyWidget extends React.Component<
 				<div>
 					{Object.keys(this.state.spaceAvailability).map(
 						(key: any, index: number) => (
-							<div className={index < 3 ? 'library' : 'library hide'}>
+							<div className="library">
 								<div>
 									<ProgressBarComponent
 										key={index}

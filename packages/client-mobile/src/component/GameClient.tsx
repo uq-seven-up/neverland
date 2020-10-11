@@ -1,5 +1,4 @@
 import React from "react"
-import ReactDOM from "react-dom"
 import {CFKitUtil} from '@7up/common-utils';
 
 enum GameState {
@@ -14,7 +13,8 @@ interface GameClientState {
 	playerId:string,
 	enableMusic:boolean,
 	enableSound:boolean,
-	tracking: boolean
+	tracking: boolean,
+	comment: string
 }
 
 interface CartesianCoordinates{
@@ -49,6 +49,7 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 			enableSound:false,
 			playerId:CFKitUtil.createGUID(),
 			tracking: false,
+			comment: "No comment"
         }
     }
 
@@ -156,7 +157,7 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 	}
 
 	private getPolarCoordinates(x: number, y: number) {
-		var trackGetter = document.querySelector('.singleTrack');
+		var trackGetter = document.querySelector('.trackpad');
 		let trackpad: Element;
 		var result: PolarCoordinates = {bearing: 0, radius:0};
 
@@ -205,6 +206,7 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		let x = e.clientX;
 		let y = e.clientY;
 		let heading = this.getCardinal(x, y);
+		this.createParticleAtPoint(x, y);
 		if(this.ws.readyState === this.ws.OPEN){			
 			this.ws.send(`g|${heading}|${this.state.playerId}`);
 		}
@@ -221,15 +223,16 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		let x = e.clientX;
 		let y = e.clientY;
 		let heading = this.getCardinal(x, y);
+		this.createParticleAtPoint(x, y);
 		if(this.ws.readyState === this.ws.OPEN){			
 			this.ws.send(`g|${heading}|${this.state.playerId}`);
 		}
+
+		this.setState({comment: `X ${x} Y ${y}`});
 	}
 
 	private handleMouseUp = (e:React.MouseEvent<HTMLElement>) => {
-		e.preventDefault();
-		let heading = e.currentTarget.dataset.heading;
-		
+		e.preventDefault();		
 		e.preventDefault();		
 		if(this.ws.readyState === this.ws.OPEN){			
 			this.ws.send(`g|h|${this.state.playerId}`);
@@ -240,13 +243,13 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 
 	private handleTouchStart = (e:React.TouchEvent<HTMLElement>) =>
 	{
-		let touch = e.touches[0];
 		e.preventDefault && e.preventDefault();
       	e.stopPropagation && e.stopPropagation();
 		this.setState({tracking: true});
 		let x = e.touches[0].clientX;
 		let y = e.touches[0].clientY;
 		let heading = this.getCardinal(x, y);
+		this.createParticleAtPoint(x, y);
 		if(this.ws.readyState === this.ws.OPEN){			
 			this.ws.send(`g|${heading}|${this.state.playerId}`);
 		}
@@ -258,6 +261,7 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		let x = e.touches[0].clientX;
 		let y = e.touches[0].clientY;
 		let heading = this.getCardinal(x, y);
+		this.createParticleAtPoint(x, y);
 		if(this.ws.readyState === this.ws.OPEN){			
 			this.ws.send(`g|${heading}|${this.state.playerId}`);
 		}
@@ -266,11 +270,48 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 	private handleTouchEnd = (e:React.TouchEvent<HTMLElement>) =>
 	{
 		e.preventDefault();
-
 		if(this.ws.readyState === this.ws.OPEN){			
 			this.ws.send(`g|h|${this.state.playerId}`);
 		}		
 		this.setState({tracking: false});
+	}
+
+	/* Particle Effect */
+	private createParticleAtPoint(x: number, y:number) {
+		var particleContainer = document.querySelector(".gamePad");
+		var scaling = 20;
+		for(var i = 0; i < 5; i++) {
+			var dot = document.createElement("div");
+			dot.classList.add("dot");
+
+			var pos = Math.random() < 0.5;
+			var xvalue: number;
+			var yvalue: number;
+
+			if(pos){
+				xvalue = x + Math.floor(Math.random() * scaling);
+			}
+			else {
+				xvalue = x - Math.floor(Math.random() * scaling);
+			}
+
+			pos = Math.random() < 0.5;
+
+			if(pos){
+				yvalue = y + Math.floor(Math.random() * scaling);
+			}
+			else {
+				yvalue = y - Math.floor(Math.random() * scaling);
+			}
+
+			var size = Math.floor(Math.random() * scaling);
+			dot.style.width = size + "px";
+			dot.style.height = size + "px";
+			dot.style.top = yvalue + "px";
+			dot.style.left = xvalue + "px";
+			dot.style.backgroundColor = "rgb(" + Math.floor(Math.random() * 255) + ",0," + Math.floor(Math.random() * 255) + ")";
+			particleContainer?.appendChild(dot);
+		}
 	}
 
 	/* ########################################################*/
@@ -284,8 +325,9 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 	{
 		return(
 			<>
+			{/* <div>{this.state.comment}</div> */}
 				<div className="gamePad">
-					<div className="singleTrack" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onTouchMove={this.handleTouchMove} onMouseDown={this.handleMouseDown} onMouseMove={((e)=>this.handleMouseMove(e))} onMouseUp={this.handleMouseUp} onMouseLeave={this.handleMouseUp}>
+					<div className="trackpad" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onTouchMove={this.handleTouchMove} onMouseDown={this.handleMouseDown} onMouseMove={((e)=>this.handleMouseMove(e))} onMouseUp={this.handleMouseUp} onMouseLeave={this.handleMouseUp}>
 						<div></div>
 					</div>
 				</div>

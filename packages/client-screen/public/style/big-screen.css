@@ -33,7 +33,7 @@ main {
 
 #root {
 	display: grid;
-	grid-template-columns: 340px 300px minmax(0, 1fr);
+	grid-template-columns: 340px 400px minmax(0, 1fr);
 	grid-template-rows: 240px 380px minmax(0, 1fr);
 	grid-gap: 20px;
 	width: 100%;

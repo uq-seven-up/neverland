@@ -41,6 +41,7 @@
     margin-top: 8px;
     display: inline-flex;
     flex-wrap: wrap;
+    justify-content: space-evenly;
 }
 
 .widget.transit .content ul li {
@@ -50,7 +51,7 @@
     font-size: 1.1rem;
     display: flex;
     justify-content: space-between;
-    width: 46%;
+    width: 40%;
     border: 2px #4D4D4D solid;
     margin-top: 10px;
 }
@@ -62,18 +63,18 @@
 }
 
 .widget.transit .content ul li div:nth-child(1){
-    display: inline;
-    padding-left: 5px;
+    padding-left: 10px;
+    width: 35%;
 }
 
 .widget.transit .content ul li div:nth-child(2){
-    display: inline;
     padding: 0px;
 }
 
 .widget.transit .content ul li div:nth-child(3){
-    display: inline;
     padding-right: 5px;
+    width: 65%;
+    padding-left: 5px;
 }
 
 .widget.transit .content ul li:nth-child(1){

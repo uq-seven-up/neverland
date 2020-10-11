@@ -1,4 +1,5 @@
 import React from "react"
+import ReactDOM from "react-dom"
 import {CFKitUtil} from '@7up/common-utils';
 
 enum GameState {
@@ -12,7 +13,18 @@ interface GameClientState {
 	game:GameState,
 	playerId:string,
 	enableMusic:boolean,
-	enableSound:boolean
+	enableSound:boolean,
+	tracking: boolean
+}
+
+interface CartesianCoordinates{
+	x: number,
+	y: number
+}
+
+interface PolarCoordinates{
+	bearing: number,
+	radius: number
 }
 
 
@@ -35,7 +47,8 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 			game:GameState.WAITING,
 			enableMusic:false,
 			enableSound:false,
-			playerId:CFKitUtil.createGUID()	
+			playerId:CFKitUtil.createGUID(),
+			tracking: false,
         }
     }
 
@@ -107,7 +120,7 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		}
 	}
 
-
+	/* Music methods */
 	private toggleSound = () => {
 		if(!this.chimeSound)
 		{
@@ -133,33 +146,121 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		this.setState({enableMusic:!this.state.enableMusic});
 	}
 
-	private handleClickMove = (e:React.MouseEvent<HTMLElement>) =>
+	/* Event handler for movement */
+	private getRelativeCoordinates(x: number, y: number, rect: DOMRect){
+		var result: CartesianCoordinates = {x: 0, y:0};
+		var width = rect.width;
+		var height = rect.height;
+		result = {x: x - rect['x'] - width / 2, y: y - rect['y'] - height / 2};
+		return result;
+	}
+
+	private getPolarCoordinates(x: number, y: number) {
+		var trackGetter = document.querySelector('.singleTrack');
+		let trackpad: Element;
+		var result: PolarCoordinates = {bearing: 0, radius:0};
+
+		if(trackGetter === null) {
+			return result;
+		}
+		trackpad = trackGetter;
+		var rect = trackpad.getBoundingClientRect();
+		var cartesian: CartesianCoordinates = this.getRelativeCoordinates(x, y, rect);
+
+		var radius = Math.sqrt(Math.pow(cartesian.x, 2) + Math.pow(cartesian.y, 2));
+		var bearing = Math.atan(cartesian.y/cartesian.x);
+
+		if(cartesian.x < 0) {
+			bearing += Math.PI;
+		}
+		else if(cartesian.x > 0 && cartesian.y < 0) {
+			bearing += 2 * Math.PI;
+		}
+
+		result.bearing = bearing;
+		result.radius = radius;
+
+		return result;
+	}
+
+	private getCardinal(x: number, y: number){
+		let polar = this.getPolarCoordinates(x, y);
+
+		var bearing = polar.bearing;
+		bearing -= (1/8 * Math.PI);
+
+		if(bearing < 0) {
+			return 'e';
+		}
+
+		var index = Math.floor(bearing / (Math.PI * 2 / 8));
+		var directions = ['se', 's', 'sw', 'w', 'nw', 'n', 'ne', 'e'];
+
+		return directions[index];
+	}
+
+	private handleMouseDown = (e:React.MouseEvent<HTMLElement>) => {
+		e.preventDefault();
+		this.setState({tracking: true});
+		let x = e.clientX;
+		let y = e.clientY;
+		let heading = this.getCardinal(x, y);
+		if(this.ws.readyState === this.ws.OPEN){			
+			this.ws.send(`g|${heading}|${this.state.playerId}`);
+		}
+	}
+
+	private handleMouseMove = (e:React.MouseEvent<HTMLElement>) =>
 	{
+		if(!this.state.tracking) {
+			return;
+		}
+
+		e.preventDefault();
+		e.stopPropagation && e.stopPropagation();
+		let x = e.clientX;
+		let y = e.clientY;
+		let heading = this.getCardinal(x, y);
+		if(this.ws.readyState === this.ws.OPEN){			
+			this.ws.send(`g|${heading}|${this.state.playerId}`);
+		}
+	}
+
+	private handleMouseUp = (e:React.MouseEvent<HTMLElement>) => {
 		e.preventDefault();
 		let heading = e.currentTarget.dataset.heading;
 		
-		if(this.ws.readyState === this.ws.OPEN){			
-			this.ws.send(`g|${heading}|${this.state.playerId}`);
-		}								
-	}
-
-	private handleClickStop = (e:React.MouseEvent<HTMLElement>) =>
-	{
 		e.preventDefault();		
 		if(this.ws.readyState === this.ws.OPEN){			
 			this.ws.send(`g|h|${this.state.playerId}`);
-		}		
+		}	
+
+		this.setState({tracking: false});
 	}
 
 	private handleTouchStart = (e:React.TouchEvent<HTMLElement>) =>
 	{
+		let touch = e.touches[0];
 		e.preventDefault && e.preventDefault();
       	e.stopPropagation && e.stopPropagation();
-      	let heading = e.currentTarget.dataset.heading;
-		
+		this.setState({tracking: true});
+		let x = e.touches[0].clientX;
+		let y = e.touches[0].clientY;
+		let heading = this.getCardinal(x, y);
 		if(this.ws.readyState === this.ws.OPEN){			
 			this.ws.send(`g|${heading}|${this.state.playerId}`);
-		}		
+		}
+	}
+
+	private handleTouchMove = (e:React.TouchEvent<HTMLElement>) => {
+		e.preventDefault && e.preventDefault();
+		e.stopPropagation && e.stopPropagation();
+		let x = e.touches[0].clientX;
+		let y = e.touches[0].clientY;
+		let heading = this.getCardinal(x, y);
+		if(this.ws.readyState === this.ws.OPEN){			
+			this.ws.send(`g|${heading}|${this.state.playerId}`);
+		}
 	}
 
 	private handleTouchEnd = (e:React.TouchEvent<HTMLElement>) =>
@@ -169,6 +270,7 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		if(this.ws.readyState === this.ws.OPEN){			
 			this.ws.send(`g|h|${this.state.playerId}`);
 		}		
+		this.setState({tracking: false});
 	}
 
 	/* ########################################################*/
@@ -183,14 +285,9 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		return(
 			<>
 				<div className="gamePad">
-					<div data-heading="n" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8593;</div>
-					<div data-heading="ne" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8599;</div>
-					<div data-heading="e" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8594;</div>
-					<div data-heading="se" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8600;</div>
-					<div data-heading="s" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8595;</div>
-					<div data-heading="sw" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8601;</div>
-					<div data-heading="w" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8592;</div>
-					<div data-heading="nw" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onMouseDown={this.handleClickMove} onMouseUp={this.handleClickStop}>&#8598;</div>				
+					<div className="singleTrack" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onTouchMove={this.handleTouchMove} onMouseDown={this.handleMouseDown} onMouseMove={((e)=>this.handleMouseMove(e))} onMouseUp={this.handleMouseUp} onMouseLeave={this.handleMouseUp}>
+						<div></div>
+					</div>
 				</div>
 				<button onClick={this.toggleSound}>{this.state.enableSound ? 'Disable Sound' : 'Enable Sound'}</button>
 				<button onClick={this.toggleMusic}>{this.state.enableMusic ? 'Disable Music' : 'Enable Music'}</button>

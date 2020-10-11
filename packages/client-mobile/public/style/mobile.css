@@ -146,14 +146,30 @@ section button{
 
 .gamePad div{
 	display:flex;
-	width:80px;
-	height:80px;
+	width:80vw;
+	height:300px;
 	font-size: 30px;
 	font-weight: bold;
 	border:1px solid #3C1F63;
 	justify-content: center;
 	align-items: center;
+	background-color: rgba(0, 0, 0, 1);
+	touch-action: none;
+	border-radius: 50px;
 }
+
+.gamePad div *{
+	width: 100%;
+	height: 100%;
+	background-color: purple;
+}
+
+.gamePad .dot{
+	position: absolute;
+	border-radius: 50%;
+	background-color: darkblue;
+}
+
 .gamePad div:nth-child(1){grid-column-start: 2;grid-row-start: 1;}
 .gamePad div:nth-child(2){grid-column-start: 3;grid-row-start: 1;}
 .gamePad div:nth-child(3){grid-column-start: 3;grid-row-start: 2;}

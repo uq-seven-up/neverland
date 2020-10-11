@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 
 import {API} from "@7up/common-utils"
 import {AxiosResponse } from 'axios';

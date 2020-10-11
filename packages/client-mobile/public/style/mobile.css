@@ -39,6 +39,8 @@ body
 	height: 80vh;
 }
 
+
+
 .header h1 {
 	padding: 20px;
 }
@@ -51,11 +53,23 @@ body
 	background-repeat: no-repeat;
 }
 
+/* Change logo when screen wider than 400px */
+@media screen and (min-width: 400px) {
+	.header figure {
+		width: auto;
+		height: 30vh;
+		background-image: url('../gfx/logo.png');
+		background-size: contain;
+		background-repeat: no-repeat;
+		margin-top: 20px;
+	}
+}
+
 .header .content {
 	height: 55vh;
 }
 
-
+/* Mobile menu */
 .menu {
 	display: flex;
 	flex-direction: row;
@@ -74,6 +88,7 @@ body
 	text-transform: uppercase;
 }
 
+/* Display active content */
 .menu .inactive {
 	text-decoration: none;
 }
@@ -82,7 +97,7 @@ body
 	text-decoration: underline rgb(80,41,132);
 }
 
-
+/* Poll logo */
 .poll figure {
 	width: 50vw;
 	height: 15vh;
@@ -92,7 +107,7 @@ body
 	background-position: center;
 }
 
-
+/* Game logo */
 .game figure {
 	width: 50vw;
 	height: 15vh;

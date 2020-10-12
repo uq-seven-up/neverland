@@ -9,19 +9,19 @@
   </data>
  </layer>
  <objectgroup id="2" name="obstacle">
-  <object id="1" type="tree" gid="16" x="253.54" y="65.5929" width="64" height="64"/>
-  <object id="2" type="tree" gid="16" x="60.3805" y="254.553" width="64" height="64"/>
-  <object id="3" type="tree" gid="16" x="1343.21" y="63.4934" width="64" height="64"/>
-  <object id="4" type="tree" gid="16" x="1345.31" y="443.513" width="64" height="64"/>
-  <object id="5" type="tree" gid="16" x="1021.98" y="193.666" width="64" height="64"/>
-  <object id="6" type="tree" gid="16" x="576.872" y="386.825" width="64" height="64"/>
-  <object id="7" type="umbrella" gid="17" x="320.726" y="65.5929" width="64" height="64"/>
-  <object id="8" type="umbrella" gid="17" x="64.5797" y="323.839" width="64" height="64"/>
-  <object id="9" type="umbrella" gid="18" x="125.467" y="258.752" width="64" height="64"/>
-  <object id="10" type="umbrella" gid="18" x="511.785" y="386.825" width="64" height="64"/>
-  <object id="11" type="umbrella" gid="18" x="1024.08" y="260.852" width="64" height="64"/>
-  <object id="12" type="umbrella" gid="18" x="1345.31" y="128.58" width="64" height="64"/>
-  <object id="13" type="umbrella" gid="17" x="1280.22" y="449.812" width="64" height="64"/>
+  <object id="1" type="palm" gid="16" x="253.54" y="65.5929" width="64" height="64"/>
+  <object id="2" type="palm" gid="16" x="60.3805" y="254.553" width="64" height="64"/>
+  <object id="3" type="palm" gid="16" x="1343.21" y="63.4934" width="64" height="64"/>
+  <object id="4" type="palm" gid="16" x="1345.31" y="443.513" width="64" height="64"/>
+  <object id="5" type="palm" gid="16" x="1021.98" y="193.666" width="64" height="64"/>
+  <object id="6" type="palm" gid="16" x="576.872" y="386.825" width="64" height="64"/>
+  <object id="7" type="umbrella1" gid="17" x="320.726" y="65.5929" width="64" height="64"/>
+  <object id="8" type="umbrella1" gid="17" x="64.5797" y="323.839" width="64" height="64"/>
+  <object id="9" type="umbrella2" gid="18" x="125.467" y="258.752" width="64" height="64"/>
+  <object id="10" type="umbrella2" gid="18" x="511.785" y="386.825" width="64" height="64"/>
+  <object id="11" type="umbrella2" gid="18" x="1024.08" y="260.852" width="64" height="64"/>
+  <object id="12" type="umbrella2" gid="18" x="1345.31" y="128.58" width="64" height="64"/>
+  <object id="13" type="umbrella1" gid="17" x="1280.22" y="449.812" width="64" height="64"/>
  </objectgroup>
  <objectgroup id="3" name="candy">
   <object id="14" type="icecream" gid="24" x="576.872" y="512.799" width="64" height="64"/>

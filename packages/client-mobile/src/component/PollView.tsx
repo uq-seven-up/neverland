@@ -21,7 +21,7 @@ declare interface IPoll{
 interface PollViewProp {}
 interface PollViewState {
 	voted:boolean,
-	poll:IPoll
+    poll:IPoll
 }
 
 
@@ -123,34 +123,40 @@ class PollView extends React.Component<PollViewProp, PollViewState> {
 
 	/* ########################################################*/
     /* UI Rendering*/
-	private renderAnswers = () =>
-	{
-		return (
+    private renderAnswers = () =>
+	{   
+        var i = 1;
+
+        return (
+            
 			<>
-        
-                
+            <h1 id='question'>Question of the Day</h1>
+
             <h1>Select your answer</h1>
+
+    
 			{
 				this.state.poll.answer.map((answer:IPollOption) => (
-					<button key={answer.key} data-key={answer.key} onClick={this.handleClick}>{answer.response}</button>
-				))
+					<button className='pollbutton' id={'pollbutton'+ i} key={answer.key} data-key={answer.key} onClick={this.handleClick}>{answer.response}{i++}</button>       
+                    ))
+                
 			}
     
 			</>
 		)
-	}
+    }
 	
-	public render() {	
-        	
+	public render() {
+       	
 		if(this.state.voted)
 		{
 			return(<>
                 <div className='header'>
                 <figure></figure>
                 
-			    <h2>Thanks for Participating!</h2>
+			    {/* <h2>Thanks for Participating!</h2> */}
+                <div className='thanks'></div>
                 </div>
-
 			</>)
 		}
 

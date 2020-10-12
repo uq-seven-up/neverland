@@ -18,6 +18,8 @@ body
 	height:100vh;
 	box-sizing: border-box;	
 	background: rgb(92,51,179);
+	/* Increae ID on poll button */
+	counter-reset: id-counter;
 	
 	/* Disable the select, copy, define, menus from popping up on mobile devices on long touches. e.g. holding down a dirction button in the game controller. */
 	-webkit-touch-callout:none;
@@ -39,6 +41,11 @@ body
 	height: 80vh;
 }
 
+.header #question {
+	font-size: 2em;
+	font-weight: 500;
+}
+
 
 
 .header h1 {
@@ -53,6 +60,15 @@ body
 	background-repeat: no-repeat;
 }
 
+.header .thanks {
+	width: auto;
+	height: 30vh;
+	background-image: url('../gfx/thanks.png');
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
 /* Change logo when screen wider than 400px */
 @media screen and (min-width: 400px) {
 	.header figure {
@@ -62,6 +78,7 @@ body
 		background-size: contain;
 		background-repeat: no-repeat;
 		margin-top: 20px;
+		background-position: center;
 	}
 }
 
@@ -117,7 +134,6 @@ body
 	background-position: center;
 }
 
-
 h2
 {
 	font-family: 'Varta', sans-serif;	
@@ -126,8 +142,6 @@ h2
 	color:white;
 }
 
-
-
 section button{
 	font-weight:500;
 	font-size:15px;
@@ -135,6 +149,30 @@ section button{
 	box-sizing: border-box;
 	width: 80vw;
 	align-self: center;
+}
+
+.pollbutton {
+	border-width: 5px;
+	color: rgb(80,41,132);
+	font-size: 20px;
+	font-weight: 800;	
+}
+
+
+#pollbutton1 {
+	border-color: #fbb03b;
+}
+
+#pollbutton2 {
+	border-color: #7efafa;	
+}
+
+#pollbutton3 {
+	border-color: #bcfa7e;	
+}
+
+#pollbutton4 {
+	border-color: #fcb1fc;	
 }
 
 

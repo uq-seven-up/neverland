@@ -125,8 +125,6 @@ class PollView extends React.Component<PollViewProp, PollViewState> {
     /* UI Rendering*/
     private renderAnswers = () =>
 	{   
-        var i = 1;
-
         return (
             
 			<>
@@ -134,15 +132,16 @@ class PollView extends React.Component<PollViewProp, PollViewState> {
 
             <h1>Select your answer</h1>
 
-    
-			{
+            <div className='pollbuttons'>
+			{   
 				this.state.poll.answer.map((answer:IPollOption) => (
-					<button className='pollbutton' id={'pollbutton'+ i} key={answer.key} data-key={answer.key} onClick={this.handleClick}>{answer.response}{i++}</button>       
-                    ))
-                
+					<button id='button' key={answer.key} data-key={answer.key} onClick={this.handleClick}>{answer.response}</button>       
+                    ))               
 			}
-    
+            </div>
 			</>
+
+            
 		)
     }
 	

@@ -151,27 +151,26 @@ section button{
 	align-self: center;
 }
 
-.pollbutton {
+#button {
 	border-width: 5px;
 	color: rgb(80,41,132);
 	font-size: 20px;
 	font-weight: 800;	
 }
 
-
-#pollbutton1 {
+#button:nth-child(1) {	
 	border-color: #fbb03b;
 }
 
-#pollbutton2 {
+#button:nth-child(2) {
 	border-color: #7efafa;	
 }
 
-#pollbutton3 {
+#button:nth-child(3) {
 	border-color: #bcfa7e;	
 }
 
-#pollbutton4 {
+#button:nth-child(4) {
 	border-color: #fcb1fc;	
 }
 

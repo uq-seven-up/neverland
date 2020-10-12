@@ -17,10 +17,13 @@ ASSET.set('swirl',{type:'image',src:require('../assets/swirl.png')});
 ASSET.set('puck',{type:'image',src:require('../assets/puck.png')});
 ASSET.set('particle',{type:'image',src:require('../assets/muzzleflash3.png')});
 ASSET.set('rain',{type:'image',src:require('../assets/rain.png')});
-ASSET.set('tiles',{type:'image',src:require('../assets/tiles.png')});
+ASSET.set('tiles',{type:'image',src:require('../assets/final tiles.png')});
 ASSET.set('knight',{type:'image',src:require('../assets/my-knight-0.png')});
 ASSET.set('player',{type:'atlas',src:require('../assets/my-knight.json'),ref:'knight'});
-ASSET.set('map',{type:'map',src:require('../assets/level2.json')});
+ASSET.set('level_2',{type:'map',src:require('../assets/level2.json')});
+ASSET.set('level_3',{type:'map',src:require('../assets/level3.json')});
+ASSET.set('level_4',{type:'map',src:require('../assets/level4.json')});
+
 
 /**
  * Manages the scene in which the game is played.
@@ -106,7 +109,8 @@ export default class GameScene extends AbstractScene
 		this.physics.world.setBoundsCollision(true,true,true,true);
 
 		/* Render the game map created with tiled. (the tile map). */
-		this.map = this.make.tilemap({key:'map'});
+		let mapName = 'level_' + (Math.floor(Math.random() * 3) + 2);
+		this.map = this.make.tilemap({key:mapName});
 		const tileset = this.map.addTilesetImage('my_simple_game','tiles');		
 		this.map.createStaticLayer('ground', tileset, 0, 0);
 		

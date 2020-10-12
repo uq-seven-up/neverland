@@ -25,19 +25,21 @@ export default class Player{
 	/** The team that this player is on. 0=Team 1, 1=Team 2. */
 	private _team:number;
 
-	constructor(id:string,scene:Phaser.Scene)
+	constructor(id:string,team:number,scene:Phaser.Scene)
 	{
 		this._id = id;
 		this._speed_x = 0;
 		this._speed_y = 0;
 		this._score = 0;
-		this._team = 0;
+		this._team = team;
 
 		/* Configure the animation used for this player character.*/
+		let playersprite = team === 1? "player_cat": "player_dog";
+		let walkinganimal = team === 1? "walk_cat": "walk_dog"
 		scene.anims.create({
-			key: "walk",
+			key: walkinganimal,
 			frameRate: 7,
-			frames: scene.anims.generateFrameNames("player", {
+			frames: scene.anims.generateFrameNames(playersprite, {
 				prefix: "Walk_",
 				suffix: ".png",
 				start: 1,
@@ -48,7 +50,7 @@ export default class Player{
 		});
 
 		/* Place the player into the scene.*/
-		this._sprite = scene.physics.add.sprite(50,200,'player');		
+		this._sprite = scene.physics.add.sprite(50,200,playersprite);		
 		
 		/* Allow the player to be identified from the sprite. */
 		this._sprite.setName(this._id);
@@ -57,7 +59,7 @@ export default class Player{
 		this._sprite.setCollideWorldBounds(true);
 		
 		/* Start the walk animation. */
-		this._sprite.play("walk");
+		this._sprite.play(walkinganimal);
 	}
 
 	public get id():string {
@@ -96,10 +98,10 @@ export default class Player{
 		this._team = value;
 		
 		/* For now tint the players which are on the 'other' team. */
-		if(this._team % 2 === 1)
-		{
-			this._sprite.tint = 0xCCCC00;
-		}
+		// if(this._team % 2 === 1)
+		// {
+		// 	this._sprite.tint = 0xCCCC00;
+		// }
 	}
 
 	public get team() {

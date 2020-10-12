@@ -19,7 +19,10 @@ ASSET.set('particle',{type:'image',src:require('../assets/muzzleflash3.png')});
 ASSET.set('rain',{type:'image',src:require('../assets/rain.png')});
 ASSET.set('tiles',{type:'image',src:require('../assets/final tiles.png')});
 ASSET.set('knight',{type:'image',src:require('../assets/my-knight-0.png')});
-ASSET.set('player',{type:'atlas',src:require('../assets/my-knight.json'),ref:'knight'});
+ASSET.set('cat',{type:'image',src:require('../assets/my_cat.png')});
+ASSET.set('dog',{type:'image',src:require('../assets/my_dog.png')});
+ASSET.set('player_cat',{type:'atlas',src:require('../assets/my_cat.json'),ref:'cat'});
+ASSET.set('player_dog',{type:'atlas',src:require('../assets/my_dog.json'),ref:'dog'});
 ASSET.set('level_2',{type:'map',src:require('../assets/level2.json')});
 ASSET.set('level_3',{type:'map',src:require('../assets/level3.json')});
 ASSET.set('level_4',{type:'map',src:require('../assets/level4.json')});
@@ -232,12 +235,12 @@ export default class GameScene extends AbstractScene
 	private addPlayer(id:string)
 	{
 		if(this.getPlayerById(id)) return;/* prevent adding a player into the game more than once. */
-		
-
-		let player = new Player(id,this);
+		let team = (this.player.length) % 2;
+		let player = new Player(id, team, this);
 		/* Give each player a different start position, to prevent players overlapping on game start. */
+		player.team = team;
 		player.sprite.x = player.sprite.x + (player.sprite.width * this.player.length);
-		player.team = (this.player.length + 2) % 2;
+		
 		
 		/* Start tracking this player in the game. */
 		this.player.push(player);	
@@ -437,10 +440,10 @@ export default class GameScene extends AbstractScene
 	private addPuck(x:number,y:number)
 	{
 		this.puck.push(this.physics.add.sprite(x,y,'puck'));
-		this.puck[0].setCollideWorldBounds(true);
-		this.puck[0].setBounce(0.9,0.9);
-		this.puck[0].setFriction(20);
-		this.puck[0].body.isCircle = true;
+		this.puck[this.puck.length - 1].setCollideWorldBounds(true);
+		this.puck[this.puck.length - 1].setBounce(0.9,0.9);
+		this.puck[this.puck.length - 1].setFriction(20);
+		this.puck[this.puck.length - 1].body.isCircle = true;
 	}
 
 	/**

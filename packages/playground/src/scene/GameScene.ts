@@ -342,8 +342,27 @@ export default class GameScene extends AbstractScene
 			case 2:
 				player.speed = 350;
 				break;	
+			case 3:
+			case 4:
+			case 5:
+			case 6:
+			case 13:
+				player.speed = 100;
+				break;
+			case 7:
+				player.speed = 350;
+				break;
+			case 8:
+				player.speed = 200;
+				break;
+			case 9:
+				player.speed = 400;
+				break;
+			case 14:
+				player.speed = 200;
+				break;
 			default:
-				player.speed = 50;
+				player.speed = 250;
 		}
 	}
 

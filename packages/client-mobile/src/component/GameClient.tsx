@@ -331,8 +331,10 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 						<div></div>
 					</div>
 				</div>
+				<div className='gamebuttons'>
 				<button onClick={this.toggleSound}>{this.state.enableSound ? 'Disable Sound' : 'Enable Sound'}</button>
 				<button onClick={this.toggleMusic}>{this.state.enableMusic ? 'Disable Music' : 'Enable Music'}</button>
+				</div>
 			</>
 		)
 	}

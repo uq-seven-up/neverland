@@ -153,7 +153,6 @@ class PollView extends React.Component<PollViewProp, PollViewState> {
                 <div className='header'>
                 <figure></figure>
                 
-			    {/* <h2>Thanks for Participating!</h2> */}
                 <div className='thanks'></div>
                 </div>
 			</>)

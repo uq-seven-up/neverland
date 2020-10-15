@@ -11,19 +11,22 @@ import { AxiosResponse } from 'axios';
 
 /* Define assets which need to be loaded for this scene. */
 const ASSET:Map<string,AssetItem> = new Map();
+ASSET.set('cat',{type:'image',src:require('../assets/my_cat.png')});
 ASSET.set('cookie',{type:'image',src:require('../assets/cookie.png')});
+ASSET.set('dog',{type:'image',src:require('../assets/my_dog.png')});
 ASSET.set('donut',{type:'image',src:require('../assets/donut.png')});
 ASSET.set('icecream',{type:'image',src:require('../assets/icecream.png')});
 ASSET.set('lolly',{type:'image',src:require('../assets/lolly.png')});
 ASSET.set('muffin',{type:'image',src:require('../assets/muffin.png')});
-ASSET.set('swirl',{type:'image',src:require('../assets/swirl.png')});
-ASSET.set('puck',{type:'image',src:require('../assets/puck.png')});
+ASSET.set('palm',{type:'image',src:require('../assets/palm.png')});
 ASSET.set('particle',{type:'image',src:require('../assets/muzzleflash3.png')});
+ASSET.set('puck',{type:'image',src:require('../assets/puck.png')});
 ASSET.set('rain',{type:'image',src:require('../assets/rain.png')});
+ASSET.set('swirl',{type:'image',src:require('../assets/swirl.png')});
+ASSET.set('tree',{type:'image',src:require('../assets/tree.png')});
 ASSET.set('tiles',{type:'image',src:require('../assets/final tiles.png')});
-ASSET.set('knight',{type:'image',src:require('../assets/my-knight-0.png')});
-ASSET.set('cat',{type:'image',src:require('../assets/my_cat.png')});
-ASSET.set('dog',{type:'image',src:require('../assets/my_dog.png')});
+ASSET.set('umbrella1',{type:'image',src:require('../assets/umbrella1.png')});
+ASSET.set('umbrella2',{type:'image',src:require('../assets/umbrella2.png')});
 ASSET.set('player_cat',{type:'atlas',src:require('../assets/my_cat.json'),ref:'cat'});
 ASSET.set('player_dog',{type:'atlas',src:require('../assets/my_dog.json'),ref:'dog'});
 ASSET.set('level_2',{type:'map',src:require('../assets/level2.json')}); //field

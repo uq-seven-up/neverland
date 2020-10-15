@@ -406,32 +406,40 @@ export default class GameScene extends AbstractScene
 		{
 			/* Determine the amount of points to award based on the type of candy the player collided with. */
 			let points = 0
+			let calories = 0
 			let candySprite = candyObj as Phaser.Physics.Arcade.Sprite;
 			switch(candySprite.texture.key)
 			{
 				case 'cookie':
 					points = 25
+					calories = 5
 					break
 				case 'donut':
 					points = 50
+					calories = 5
 					break
 				case 'icecream':
 					points = 50
+					calories = 5
 					break
 				case 'lolly':
 					points = 10
+					calories = 5
 					break
 				case 'muffin':
 					points = 5
+					calories = 5
 					break 
 				case 'swirl':
 					points = 10
+					calories = 5
 					break;
 			}
 			
 			/* Update the players and the teams score. */
+			player.calories += calories;
 			player.score += points;
-			this.teamScore[player.team] =+ player.score;
+			this.teamScore[player.team] =+ points;
   
 			/* Update the game score board text. */
 			this.scoreText[0].text = 'Team 1: ' + this.teamScore[0];

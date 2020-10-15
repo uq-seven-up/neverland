@@ -21,6 +21,9 @@ export default class Player{
 	
 	/** The total points accumalated by this player. */
 	private _score:number;
+
+	/** Tracks how much calories of candy the player has consumed. */
+	private _calories:number;
 	
 	/** The team that this player is on. 0=Team 1, 1=Team 2. */
 	private _team:number;
@@ -34,6 +37,7 @@ export default class Player{
 		this._speed_x = 0;
 		this._speed_y = 0;
 		this._score = 0;
+		this._calories = 0;
 		this._team = team;
 
 		/* Configure the animation used for this player character.*/
@@ -103,6 +107,14 @@ export default class Player{
 
 	public get speed() {
 		return this._speed;
+	}
+
+	public set calories(value:number) {
+		this._calories = value;
+	}
+
+	public get calories() {
+		return this._calories;
 	}
 
 	public set team(value:number) {
@@ -197,5 +209,14 @@ export default class Player{
 		/* Move the player inside of the game world.*/
 		this._sprite.body.velocity.x = this._speed_x * this._speed;
 		this._sprite.body.velocity.y = this._speed_y * this._speed;
+		if(this._calories > 40)
+		{
+			this._sprite.scale = 2;
+		}else if (this.calories > 20)
+		{
+			this._sprite.scale = 1.5;
+		}else{
+			this._sprite.scale = 1;
+		}
 	}
 }

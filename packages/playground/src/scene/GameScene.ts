@@ -5,6 +5,9 @@ import {EndSceneConfig} from "./EndScene"
 import CandyGame from "../CandyGame";
 import Player from "../lib/Player"
 import { Bounds } from "matter";
+import { API } from '@7up/common-utils';
+import { AxiosResponse } from 'axios';
+
 
 /* Define assets which need to be loaded for this scene. */
 const ASSET:Map<string,AssetItem> = new Map();
@@ -23,9 +26,9 @@ ASSET.set('cat',{type:'image',src:require('../assets/my_cat.png')});
 ASSET.set('dog',{type:'image',src:require('../assets/my_dog.png')});
 ASSET.set('player_cat',{type:'atlas',src:require('../assets/my_cat.json'),ref:'cat'});
 ASSET.set('player_dog',{type:'atlas',src:require('../assets/my_dog.json'),ref:'dog'});
-ASSET.set('level_2',{type:'map',src:require('../assets/level2.json')});
-ASSET.set('level_3',{type:'map',src:require('../assets/level3.json')});
-ASSET.set('level_4',{type:'map',src:require('../assets/level4.json')});
+ASSET.set('level_2',{type:'map',src:require('../assets/level2.json')}); //field
+ASSET.set('level_3',{type:'map',src:require('../assets/level3.json')}); //ice
+ASSET.set('level_4',{type:'map',src:require('../assets/level4.json')}); //beach
 
 
 /**
@@ -33,7 +36,8 @@ ASSET.set('level_4',{type:'map',src:require('../assets/level4.json')});
  */
 export default class GameScene extends AbstractScene  
 {
-	/** The duration of a single game in seconds. */
+
+ 	/** The duration of a single game in seconds. */
 	private static ROUND_TIME = 120;
 	
 	/** The id used by the player using the keyboard connected to the game screen. (debug player) */
@@ -109,10 +113,25 @@ export default class GameScene extends AbstractScene
 		this.cursors = this.input.keyboard.createCursorKeys();
 
 		/* Prevent objects from leaving the map. */
+		
 		this.physics.world.setBoundsCollision(true,true,true,true);
-
-		/* Render the game map created with tiled. (the tile map). */
+		
+	/* Render the game map created with tiled. (the tile map). */
+		
 		let mapName = 'level_' + (Math.floor(Math.random() * 3) + 2);
+
+	/* change the map based on the weather */
+		
+		let weatherTemp = (window.localStorage.getItem("temp") as any) as number;
+		
+		if (weatherTemp <= 18) {
+			mapName = 'level_3';
+		} else if (weatherTemp > 18 && weatherTemp <= 25) {
+			mapName = 'level_2';
+		} else {
+			mapName = 'level_4';
+		}
+
 		this.map = this.make.tilemap({key:mapName});
 		const tileset = this.map.addTilesetImage('my_simple_game','tiles');		
 		this.map.createStaticLayer('ground', tileset, 0, 0);

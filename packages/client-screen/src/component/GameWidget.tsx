@@ -27,12 +27,13 @@ class GameWidget extends React.Component<GameWidgetProp, GameWidgetState> {
     public componentDidMount(): void {		
 		this.ws.onopen = () => {
 			// on connecting, do nothing but log it to the console
-			console.log('Connected to web socket server.')
+			console.log('Connected to web socket.')
 		}
 
 		this.ws.onmessage = (evt:any) => {
 			// listen to data sent from the websocket server
 			const data = JSON.parse(evt.data)
+			
 			if(data.gameMap)
 			{
 				/* Transform received gameMap data to a Map type.*/

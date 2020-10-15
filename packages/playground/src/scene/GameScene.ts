@@ -4,10 +4,6 @@ import {AssetItem} from "./AbstractScene"
 import {EndSceneConfig} from "./EndScene"
 import CandyGame from "../CandyGame";
 import Player from "../lib/Player"
-import { Bounds } from "matter";
-import { API } from '@7up/common-utils';
-import { AxiosResponse } from 'axios';
-
 
 /* Define assets which need to be loaded for this scene. */
 const ASSET:Map<string,AssetItem> = new Map();
@@ -19,10 +15,10 @@ ASSET.set('icecream',{type:'image',src:require('../assets/icecream.png')});
 ASSET.set('lolly',{type:'image',src:require('../assets/lolly.png')});
 ASSET.set('muffin',{type:'image',src:require('../assets/muffin.png')});
 ASSET.set('palm',{type:'image',src:require('../assets/palm.png')});
-ASSET.set('particle',{type:'image',src:require('../assets/muzzleflash3.png')});
 ASSET.set('puck',{type:'image',src:require('../assets/puck.png')});
 ASSET.set('rain',{type:'image',src:require('../assets/rain.png')});
 ASSET.set('swirl',{type:'image',src:require('../assets/swirl.png')});
+ASSET.set('trail_0',{type:'image',src:require('../assets/muzzleflash3.png')});
 ASSET.set('tree',{type:'image',src:require('../assets/tree.png')});
 ASSET.set('tiles',{type:'image',src:require('../assets/final tiles.png')});
 ASSET.set('umbrella1',{type:'image',src:require('../assets/umbrella1.png')});
@@ -174,26 +170,18 @@ export default class GameScene extends AbstractScene
 		/* Rain effect emitter. */
 		var rainParticle = this.add.particles('rain');	  
 		this.rainEmitter = rainParticle.createEmitter({
-				y: 0,
-				x: { min: 0, max: this.game.canvas.width},
-				accelerationX:0,
-				accelerationY:0,
-				gravityY:500,
-				lifespan:2200,
-				bounce:0.3,
-				scaleX:[0.3,0.5],
-				scaleY:[0.5,1],
-				bounds:{x:0,y:0,w:this.game.canvas.width,h:this.game.canvas.height}
-			});
-		/* 
-			var particles = this.add.particles('red');	  
-			var emitter = particles.createEmitter({
-				speed: 100,
-				scale: { start: 1, end: 0 },
-				blendMode: 'ADD'
-			});
-			emitter.startFollow(this.player[0].sprite,-100);	
-		*/
+			y: 0,
+			x: { min: 0, max: this.game.canvas.width},
+			accelerationX:0,
+			accelerationY:0,
+			gravityY:500,
+			lifespan:2200,
+			bounce:0.3,
+			scaleX:[0.3,0.5],
+			scaleY:[0.5,1],
+			bounds:{x:0,y:0,w:this.game.canvas.width,h:this.game.canvas.height}
+		});	
+		
 
 		/* Switch to the end game scene after this scene has faded out. */
 		let that = this;
@@ -274,10 +262,10 @@ export default class GameScene extends AbstractScene
 		if(this.getPlayerById(id)) return;/* prevent adding a player into the game more than once. */
 		let team = (this.player.length) % 2;
 		let player = new Player(id, team, this);
+		
 		/* Give each player a different start position, to prevent players overlapping on game start. */
 		player.team = team;
 		player.sprite.x = player.sprite.x + (player.sprite.width * this.player.length);
-		
 		
 		/* Start tracking this player in the game. */
 		this.player.push(player);	
@@ -468,7 +456,7 @@ export default class GameScene extends AbstractScene
 		if (this.cursors.right.isDown){player.move('e');return;}
 		if (this.cursors.down.isDown){player.move('s');return;}
 		if (this.cursors.left.isDown){player.move('w');return;}
-		//player.stop();	
+		player.stop();	
 	}
 
 	/**

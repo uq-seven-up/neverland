@@ -25,6 +25,9 @@ export default class Player{
 	/** The team that this player is on. 0=Team 1, 1=Team 2. */
 	private _team:number;
 
+	/** The trail of particles following a player as they move. */
+	private _trail:Phaser.GameObjects.Particles.ParticleEmitter
+	
 	constructor(id:string,team:number,scene:Phaser.Scene)
 	{
 		this._id = id;
@@ -60,6 +63,14 @@ export default class Player{
 		
 		/* Start the walk animation. */
 		this._sprite.play(walkinganimal);
+
+		/* Make particle trails, when player walks. */
+		var particles = scene.add.particles('trail_0');	  
+		this._trail = particles.createEmitter({
+			speed: 100,
+			scale: { start: 1, end: 0 },
+			blendMode: 'ADD'
+		});
 	}
 
 	public get id():string {
@@ -113,6 +124,7 @@ export default class Player{
 	 * @param heading Compass directions.(n,ne,e,se,s,sw,w,nw)
 	 */
 	public move(heading:string){
+		
 		switch(heading)
 		{
 			case 'n':
@@ -152,11 +164,16 @@ export default class Player{
 				this._speed_x = -1;
 				this._speed_y = -1;
 				this._sprite.flipX = true;
+				
 				break;
 			default:
 				this._speed_x = 0;
 				this._speed_y = 0;
 		}
+
+		this._trail.startFollow(this._sprite,this._speed_x * -60,this._speed_y * -60,true);
+		this._trail.resume();
+		this._trail.visible = true;
 	}
 
 	/**
@@ -165,6 +182,9 @@ export default class Player{
 	public stop(){
 		this._speed_x = 0;
 		this._speed_y = 0;
+		this._trail.visible = false;
+		this._trail.pause();
+
 	}
 
 	/** Called when the player is taken out of the game. */

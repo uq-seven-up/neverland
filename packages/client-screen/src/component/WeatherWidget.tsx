@@ -140,7 +140,6 @@ class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetStat
       iconName = 'rainy-icon'
     }
 		window.localStorage.setItem("temp", (this.state.weather.temp as any) as string)
-		let variable = window.localStorage.setItem("temp", (this.state.weather.temp as any) as string)
     return (
       <section id={this.props.id} className="widget weather">						
 		<div className="date">{this.dateBuilder(new Date())}</div>				

@@ -66,6 +66,9 @@ export default class GameScene extends AbstractScene
 	
 	/** Candy that can be collected by players.*/
 	private candyGroup!:Phaser.Physics.Arcade.Group;
+
+	/** Obstacles that players must walk around.*/
+	private obstacleGroup!:Phaser.Physics.Arcade.Group;
 	
 	/** Timer Object for counting down remaining game time. */
 	private timeEvent!:Phaser.Time.TimerEvent;
@@ -116,24 +119,20 @@ export default class GameScene extends AbstractScene
 		this.cursors = this.input.keyboard.createCursorKeys();
 
 		/* Prevent objects from leaving the map. */
-		
 		this.physics.world.setBoundsCollision(true,true,true,true);
 		
-	/* Render the game map created with tiled. (the tile map). */
-		
+		/* Render the game map created with tiled. (the tile map). */
 		let mapName = 'level_' + (Math.floor(Math.random() * 3) + 2);
 
-	/* change the map based on the weather */
-		
+		/* change the map based on the weather */
 		let weatherTemp = (window.localStorage.getItem("temp") as any) as number;
-		
 		if (weatherTemp <= 18) {
 			mapName = 'level_3';
 		} else if (weatherTemp > 18 && weatherTemp <= 25) {
 			mapName = 'level_2';
 		} else {
 			mapName = 'level_4';
-		}
+		}mapName = 'level_4';
 
 		this.map = this.make.tilemap({key:mapName});
 		const tileset = this.map.addTilesetImage('my_simple_game','tiles');		
@@ -149,6 +148,18 @@ export default class GameScene extends AbstractScene
 		candyObjects.forEach(candyObject => {
 			this.candyGroup.create(candyObject.x!, candyObject.y! - candyObject.height!,candyObject.type).setOrigin(0,0);
 		  });
+		  
+		/* Render the obstacle layer in the game world. */
+		this.obstacleGroup = this.physics.add.group({
+			allowGravity: false,
+			immovable: true
+		  });
+
+		const obstacleObjects = this.map.getObjectLayer('obstacle')['objects'];
+		obstacleObjects.forEach(obstacleObject => {
+			this.obstacleGroup.create(obstacleObject.x!, obstacleObject.y! - obstacleObject.height!,obstacleObject.type).setOrigin(0,0);
+		  });
+		 
 
 		/* Place pucks onto the game board. */
 		this.addPuck(250,90);
@@ -231,9 +242,12 @@ export default class GameScene extends AbstractScene
 			/* Player can collide with pucks. (push pucks around) */
 			this.physics.collide(this.player[i].sprite,this.puck,() => {return;});/* player collided with puck */
 			
+			/* Player can collide with obstacles. (must walk around obstacles) */
+			this.physics.collide(this.player[i].sprite,this.obstacleGroup,undefined);
+
 			/* Player can collide with candy. (to collect candy) */
 			this.physics.overlap(this.player[i].sprite,this.candyGroup,this.handlePlayerOverlapsCandy,undefined,this);			
-
+			
 			/* Update player position on the map. */
 			this.player[i].update();
 		}		
@@ -241,6 +255,7 @@ export default class GameScene extends AbstractScene
 		/* Manage object collisions in the game world.*/
 		this.physics.collide(this.puck,this.puck,() => {return;});/* pucks collided */
 		this.physics.collide(this.puck,this.candyGroup,() => {return;});/* pucks collided with candy. */
+		this.physics.collide(this.puck,this.obstacleGroup,() => {return;});/* puck collided with obstacle. */
 		
 		/* Manage the local player. (Debug Player) */
 		this.updateLocalPlayer()

@@ -103,7 +103,9 @@ export default class GameScene extends AbstractScene
 		this.player = [];	
 		this.puck = [];
 		this.scoreText = [];
-		this.teamScore = [0,0];	
+		this.teamScore = [0,0];
+		window.localStorage.setItem('game_team1',this.teamScore[0].toString());
+		window.localStorage.setItem('game_team2',this.teamScore[1].toString());
 
 		/* Pressing "1" on the keyboard places the local player into the game. (debug player.) */
 		var one_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
@@ -439,8 +441,12 @@ export default class GameScene extends AbstractScene
 			/* Update the players and the teams score. */
 			player.calories += calories;
 			player.score += points;
-			this.teamScore[player.team] =+ points;
+			this.teamScore[player.team] += points;
   
+			/* Update score in local storage for sharing with other widgets. */
+			window.localStorage.setItem('game_team1',this.teamScore[0].toString());
+			window.localStorage.setItem('game_team2',this.teamScore[1].toString());
+			
 			/* Update the game score board text. */
 			this.scoreText[0].text = 'Team 1: ' + this.teamScore[0];
 			this.scoreText[1].text = 'Team 2: ' + this.teamScore[1];

@@ -3,7 +3,8 @@ import AbstractScene from "./AbstractScene"
 import {AssetItem} from "./AbstractScene"
 import {EndSceneConfig} from "./EndScene"
 import CandyGame from "../CandyGame";
-import Player from "../lib/Player"
+import Player from "../lib/Player";
+import Puck from "../lib/Puck";
 
 /* Define assets which need to be loaded for this scene. */
 const ASSET:Map<string,AssetItem> = new Map();
@@ -58,7 +59,8 @@ export default class GameScene extends AbstractScene
 	private clockText!:Phaser.GameObjects.Text;
 	
 	/** Pucks that can be pushed around the map. */
-	private puck:Phaser.Physics.Arcade.Sprite[];
+	private puck:Puck[];
+	private puckSprite:Phaser.Physics.Arcade.Sprite[];
 	
 	/** Candy that can be collected by players.*/
 	private candyGroup!:Phaser.Physics.Arcade.Group;
@@ -81,6 +83,7 @@ export default class GameScene extends AbstractScene
 		
 		this.player = [];	
 		this.puck = [];
+		this.puckSprite = [];
 		this.scoreText = [];
 		this.teamScore = [0,0];		
 	}
@@ -102,6 +105,7 @@ export default class GameScene extends AbstractScene
 		/* Ensure game properties are reset when the scene is restarted (for the next new game). */
 		this.player = [];	
 		this.puck = [];
+		this.puckSprite = [];
 		this.scoreText = [];
 		this.teamScore = [0,0];
 		window.localStorage.setItem('game_team1',this.teamScore[0].toString());
@@ -233,7 +237,7 @@ export default class GameScene extends AbstractScene
 			}
 
 			/* Player can collide with pucks. (push pucks around) */
-			this.physics.collide(this.player[i].sprite,this.puck,() => {return;});/* player collided with puck */
+			this.physics.collide(this.player[i].sprite,this.puckSprite,this.handlePLayerHitByPuck,undefined,this);/* player collided with puck */
 			
 			/* Player can collide with obstacles. (must walk around obstacles) */
 			this.physics.collide(this.player[i].sprite,this.obstacleGroup,undefined);
@@ -243,12 +247,17 @@ export default class GameScene extends AbstractScene
 			
 			/* Update player position on the map. */
 			this.player[i].update();
-		}		
+		}
+
+		for(var i=0;i<this.puck.length;i++)
+		{
+			this.puck[i].update();
+		}
 		
 		/* Manage object collisions in the game world.*/
-		this.physics.collide(this.puck,this.puck,() => {return;});/* pucks collided */
-		this.physics.collide(this.puck,this.candyGroup,() => {return;});/* pucks collided with candy. */
-		this.physics.collide(this.puck,this.obstacleGroup,() => {return;});/* puck collided with obstacle. */
+		this.physics.collide(this.puckSprite,this.puckSprite,() => {return;});/* pucks collided */
+		this.physics.collide(this.puckSprite,this.candyGroup,() => {return;});/* pucks collided with candy. */
+		this.physics.collide(this.puckSprite,this.obstacleGroup,() => {return;});/* puck collided with obstacle. */
 		
 		/* Manage the local player. (Debug Player) */
 		this.updateLocalPlayer()
@@ -370,32 +379,32 @@ export default class GameScene extends AbstractScene
 		switch(tile.index)
 		{
 			case 1:
-				player.speed = 250;
+				player.speed = 350;
 				break;
 			case 2:
-				player.speed = 350;
+				player.speed = 450;
 				break;	
 			case 3:
 			case 4:
 			case 5:
 			case 6:
 			case 13:
-				player.speed = 100;
+				player.speed = 200;
 				break;
 			case 7:
-				player.speed = 350;
+				player.speed = 450;
 				break;
 			case 8:
-				player.speed = 200;
+				player.speed = 300;
 				break;
 			case 9:
-				player.speed = 400;
+				player.speed = 500;
 				break;
 			case 14:
-				player.speed = 200;
+				player.speed = 300;
 				break;
 			default:
-				player.speed = 250;
+				player.speed = 350;
 		}
 	}
 
@@ -461,6 +470,20 @@ export default class GameScene extends AbstractScene
 			(this.game as CandyGame).sendEventToPlayer(player.id,200);
 		}
 	}
+
+	private handlePLayerHitByPuck(playerObj:Phaser.Types.Physics.Arcade.GameObjectWithBody,puckObj:Phaser.Types.Physics.Arcade.GameObjectWithBody)
+	{
+		let player = this.getPlayerById(playerObj.name);
+		let puck = this.puck[parseInt(puckObj.name,10)];
+		
+		if(player === null || player.id === puck.lastPlayerId) return;
+		
+		if(puck.lastPlayerId !== ''){
+			console.log('Player', player?.id, 'was hit by',puck.lastPlayerId);
+		}
+		
+		puck.lastPlayerId = player?.id;
+	}
   
 	/**
 	 * Allow moving the local player (debug player) using the keyboard cursor keys.
@@ -481,11 +504,9 @@ export default class GameScene extends AbstractScene
 	 */
 	private addPuck(x:number,y:number)
 	{
-		this.puck.push(this.physics.add.sprite(x,y,'puck'));
-		this.puck[this.puck.length - 1].setCollideWorldBounds(true);
-		this.puck[this.puck.length - 1].setBounce(0.9,0.9);
-		this.puck[this.puck.length - 1].setFriction(20);
-		this.puck[this.puck.length - 1].body.isCircle = true;
+		let puck = new Puck(this.puck.length,this,x,y)
+		this.puck.push(puck);
+		this.puckSprite.push(puck.sprite);
 	}
 
 	/**

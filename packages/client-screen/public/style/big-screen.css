@@ -197,7 +197,7 @@ main {
 }
 
 #g_cellbox_3.class-container {
-	animation-delay: 5s;
+	animation-delay: -5s;
 }
 
 .library,

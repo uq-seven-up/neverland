@@ -124,32 +124,32 @@ class LeaderboardWidget extends React.Component<
 	 * @returns JSX element
 	 */
 	private renderTimings() {
-		if (this.state.teamScores.length === 0) {
-			return (
-				<div>
-					<div className="team-score">
-						<ProgressBarComponent key={0} color="#EDE57E" filled={100} showPercentage={false} topScore={100} />
-						<span>{`Team 1`}</span>
-					</div>
-					<div className="team-score">
-						<ProgressBarComponent key={1} color="#e0e0e0" filled={80} showPercentage={false} topScore={100} />
-						<span>{`Team 2`}</span>
-					</div>
-					<div className="team-score">
-						<ProgressBarComponent key={2} color='#FBB03B' filled={50} showPercentage={false} topScore={100} />
-						<span>{`Team 3`}</span>
-					</div>
-					<div className="team-score">
-						<ProgressBarComponent key={3} color="#BCFA7E" filled={15} showPercentage={false} topScore={100} />
-						<span>{`Team 4`}</span>
-					</div>
-					<div className="team-score">
-						<ProgressBarComponent key={4} color="#BCFA7E" filled={10} showPercentage={false} topScore={100} />
-						<span>{`Team 5`}</span>
-					</div>
-				</div>
-			);
-		} else {
+		// if (this.state.teamScores.length === 0) {
+		// 	return (
+		// 		<div>
+		// 			<div className="team-score">
+		// 				<ProgressBarComponent key={0} color="#EDE57E" filled={100} showPercentage={false} topScore={100} />
+		// 				<span>{`Team 1`}</span>
+		// 			</div>
+		// 			<div className="team-score">
+		// 				<ProgressBarComponent key={1} color="#e0e0e0" filled={80} showPercentage={false} topScore={100} />
+		// 				<span>{`Team 2`}</span>
+		// 			</div>
+		// 			<div className="team-score">
+		// 				<ProgressBarComponent key={2} color='#FBB03B' filled={50} showPercentage={false} topScore={100} />
+		// 				<span>{`Team 3`}</span>
+		// 			</div>
+		// 			<div className="team-score">
+		// 				<ProgressBarComponent key={3} color="#BCFA7E" filled={15} showPercentage={false} topScore={100} />
+		// 				<span>{`Team 4`}</span>
+		// 			</div>
+		// 			<div className="team-score">
+		// 				<ProgressBarComponent key={4} color="#BCFA7E" filled={10} showPercentage={false} topScore={100} />
+		// 				<span>{`Team 5`}</span>
+		// 			</div>
+		// 		</div>
+		// 	);
+		// } else {
 		return (
 			<div>
 				{this.state.teamScores.map(
@@ -170,7 +170,7 @@ class LeaderboardWidget extends React.Component<
 				)}
 			</div>
 		);
-		}
+		// }
 	}
 
 	public render() {

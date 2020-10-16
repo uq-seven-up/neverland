@@ -32,11 +32,11 @@ function App() {
 			</div>
 			<div className="flip-card">
 				<div id="g_cellbox_3" className="class-container">
-					<div className="g_cell card-front">
-						<StudyWidget id="widget_study" />
+				<div className="g_cell card-front">
+						<LeaderboardWidget id="widget_leaderboard" />
 					</div>
 					<div className="g_cell card-back">
-						<LeaderboardWidget id="widget_study" />
+						<StudyWidget id="widget_study" />
 					</div>
 				</div>
 			</div>

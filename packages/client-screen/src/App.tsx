@@ -7,6 +7,7 @@ import QRCodeWidget from './component/QRCodeWidget';
 import PollWidget from './component/PollWidget';
 import BusWidget from './component/BusWidget';
 import StudyWidget from './component/StudyWidget';
+import LeaderboardWidget from './component/LeaderboardWidget'
 
 function App() {
 	let mobilePort =  process.env.NODE_ENV === 'development' ? ':3010' : '';
@@ -20,7 +21,7 @@ function App() {
 				<WeatherWidget id="widget_weather" name="Weather Widget PoC" />
 			</div>
 			<div className="flip-card">
-				<div id="g_cellbox_2">
+				<div id="g_cellbox_2" className="class-container">
 					<div className="g_cell card-front">
 						<BusWidget id="widget_bus_uq" name="UQ Lakes" />
 					</div>
@@ -29,10 +30,20 @@ function App() {
 					</div>
 				</div>
 			</div>
-
-			<div id="g_cellbox_3" className="g_cell">
-				<StudyWidget id="widget_study" />
+			<div className="flip-card">
+				<div id="g_cellbox_3" className="class-container">
+					<div className="g_cell card-front">
+						<StudyWidget id="widget_study" />
+					</div>
+					<div className="g_cell card-back">
+						<LeaderboardWidget id="widget_study" />
+					</div>
+				</div>
 			</div>
+
+			{/* <div id="g_cellbox_3" className="g_cell">
+				<StudyWidget id="widget_study" />
+			</div> */}
 
 			<div id="g_cellbox_4" className="g_cell">
 				<PollWidget id="widget_poll" />

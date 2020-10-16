@@ -4,51 +4,47 @@ import { API } from '@7up/common-utils';
 import { AxiosResponse } from 'axios';
 import ProgressBarComponent from './ProgressBar';
 
-interface SpaceAvailability {
+interface teamScores {
 	[key: string]: any;
 }
 
-interface StudyWidgetProp {
+interface LeaderboardWidgetProp {
 	id?: string;
 }
 
-interface SpaceAvailabilityState {
-	spaceAvailability: SpaceAvailability[];
+interface teamScoresState {
+	teamScores: teamScores[];
 }
 
 /**
  * This widget is a proof of concept implementation of a
  * react component using a class.
  */
-class StudyWidget extends React.Component<
-	StudyWidgetProp,
-	SpaceAvailabilityState
+class LeaderboardWidget extends React.Component<
+	LeaderboardWidgetProp,
+	teamScoresState
 > {
 	colorsList: string[];
-	libraryVisibilityToggle: boolean;
 
-	constructor(props: StudyWidgetProp) {
+	constructor(props: LeaderboardWidgetProp) {
 		super(props);
 		this.colorsList = [
-			'#7EFAFA',
-			'#FCB1FC',
-			'#BCFA7E',
-			'#FBB03B',
 			'#EDE57E',
-			'#00D6CA',
+			'#e0e0e0',
+			'#FBB03B',
+			'#BCFA7E',
+			'#BCFA7E',
 		];
-		this.libraryVisibilityToggle = true;
 		this.state = {
-			spaceAvailability: [],
+			teamScores: [],
 		};
 	}
 
 	/* ########################################################*/
 	/* React life-cycle event.*/
 	public componentDidMount(): void {
-		console.log('Study Widget Component Did Mount');
-		this.callAPI('', 'GET', '/studyspace/availability-data');
-		// this.callTimeInterval();
+		console.log('Leaderboard Widget Component Did Mount');
+		this.callAPI('', 'GET', '/leaderboard/scores');
 	}
 	/* ########################################################*/
 
@@ -92,36 +88,6 @@ class StudyWidget extends React.Component<
 	/* ########################################################*/
 
 	/* ########################################################*/
-	/* Toggle ProgressBar Visibility*/
-	/**
-	 * Toggles visibility of the first 3 and the last 3 libraries
-	 * in intervals by toggling their class
-	 */
-	private callTimeInterval() {
-		// Not Called
-		setInterval(() => {
-			const libraryElements = document.querySelectorAll('.library');
-			libraryElements.forEach((library: any, index: number) => {
-				if (this.libraryVisibilityToggle) {
-					if (index < 3) {
-						library.classList.add('hide');
-					} else {
-						library.classList.remove('hide');
-					}
-				} else {
-					if (index < 3) {
-						library.classList.remove('hide');
-					} else {
-						library.classList.add('hide');
-					}
-				}
-			});
-			this.libraryVisibilityToggle = !this.libraryVisibilityToggle;
-		}, 4000);
-	}
-	/* ########################################################*/
-
-	/* ########################################################*/
 	/* Event Handlers. */
 	/**
 	 * This method is called by callAPI() afer a successfull response has been received from the REST Server.
@@ -138,7 +104,13 @@ class StudyWidget extends React.Component<
 		endpoint: string,
 		result: any,
 	): void => {
-		this.setState({ spaceAvailability: result.data });
+		const sortedData = result.data.sort((a: any, b: any) => a.score > b.score ? -1: 1);
+		const slicedData = sortedData.slice(0, 5);
+		slicedData[0].name += " 👑";
+		slicedData[1].name += " 🥈";
+		slicedData[2].name += " 🥉";
+		
+		this.setState({ teamScores: slicedData });
 	};
 	/* ########################################################*/
 
@@ -152,68 +124,68 @@ class StudyWidget extends React.Component<
 	 * @returns JSX element
 	 */
 	private renderTimings() {
-		if (this.state.spaceAvailability.length === 0) {
+		if (this.state.teamScores.length === 0) {
 			return (
 				<div>
-					<div className="library">
-						<ProgressBarComponent key={0} color="#7EFAFA" filled={48} />
-						<span>{`Arch Music`}</span>
+					<div className="team-score">
+						<ProgressBarComponent key={0} color="#EDE57E" filled={100} showPercentage={false} topScore={100} />
+						<span>{`Team 1`}</span>
 					</div>
-					<div className="library">
-						<ProgressBarComponent key={1} color="#FCB1FC" filled={44} />
-						<span>{`Biol Sci`}</span>
+					<div className="team-score">
+						<ProgressBarComponent key={1} color="#e0e0e0" filled={80} showPercentage={false} topScore={100} />
+						<span>{`Team 2`}</span>
 					</div>
-					<div className="library">
-						<ProgressBarComponent key={2} color="#BCFA7E" filled={36} />
-						<span>{`Central`}</span>
+					<div className="team-score">
+						<ProgressBarComponent key={2} color='#FBB03B' filled={50} showPercentage={false} topScore={100} />
+						<span>{`Team 3`}</span>
 					</div>
-					<div className="library">
-						<ProgressBarComponent key={3} color="#FBB03B" filled={49} />
-						<span>{`DHEngSci`}</span>
+					<div className="team-score">
+						<ProgressBarComponent key={3} color="#BCFA7E" filled={15} showPercentage={false} topScore={100} />
+						<span>{`Team 4`}</span>
 					</div>
-					<div className="library">
-						<ProgressBarComponent key={4} color="#EDE57E" filled={45} />
-						<span>{`DuhigStudy`}</span>
-					</div>
-					<div className="library">
-						<ProgressBarComponent key={5} color="#00D6CA" filled={32} />
-						<span>{`Law Library`}</span>
+					<div className="team-score">
+						<ProgressBarComponent key={4} color="#BCFA7E" filled={10} showPercentage={false} topScore={100} />
+						<span>{`Team 5`}</span>
 					</div>
 				</div>
 			);
 		} else {
-			return (
-				<div>
-					{Object.keys(this.state.spaceAvailability).map(
-						(key: any, index: number) => (
-							<div className="library">
-								<div>
-									<ProgressBarComponent
-										key={index}
-										color={this.colorsList[index]}
-										filled={this.state.spaceAvailability[key]}
-									/>
-									<span>{`${key} `}</span>
-								</div>
+		return (
+			<div>
+				{this.state.teamScores.map(
+					(teamScore: any, index: number) => (
+						<div className="team-score">
+							<div>
+								<ProgressBarComponent
+									key={index}
+									color={this.colorsList[index]}
+									filled={teamScore.score}
+									showPercentage={false}
+									topScore={this.state.teamScores[0].score}
+								/>
+								<span>{`${teamScore.name}`}</span>
 							</div>
-						),
-					)}
-				</div>
-			);
+						</div>
+					),
+				)}
+			</div>
+		);
 		}
 	}
 
 	public render() {
 		return (
-			<section id={this.props.id} className="widget study">
+			<section id={this.props.id} className="widget leaderboard">
 				<div className="heading">
-					<h2>UQ Study Spaces</h2>
+					<h2>Game Leaderboard</h2>
 					<figure></figure>
 				</div>
-				<div className="content">{this.renderTimings()}</div>
+				<div className="content">
+					{this.renderTimings()}
+				</div>
 			</section>
 		);
 	}
 }
 
-export default StudyWidget;
+export default LeaderboardWidget;

@@ -10,8 +10,9 @@ import busRoutes = require('./routes/bus');
 import exampleRoutes = require('./routes/example');
 import pollRoutes = require('./routes/poll');
 import screenRoutes = require('./routes/screen');
-import StudySpaceRoutes = require('./routes/study-space');
+import studyspaceRoutes = require('./routes/study-space');
 import weatherRoutes = require('./routes/weather');
+import leaderboardRoutes = require('./routes/leaderboard');
 
 /* 
 This is the entry point for the server application which 
@@ -39,8 +40,9 @@ app.use('/api/example', exampleRoutes);
 app.use('/api/poll', pollRoutes);
 app.use('/api/screen', screenRoutes);
 app.use('/api/bus', busRoutes);
-app.use('/api/studyspace', StudySpaceRoutes);
+app.use('/api/studyspace', studyspaceRoutes);
 app.use('/api/weather', weatherRoutes);
+app.use('/api/leaderboard', leaderboardRoutes);
 
 /* Spin up REST Server. */
 const server = app.listen(PORT, function () {

@@ -5,6 +5,8 @@ interface ProgressBarProps {
 	key: number;
 	color: string;
 	filled: any;
+	showPercentage: boolean;
+	topScore: any;
 }
 
 /* ########################################################*/
@@ -14,6 +16,7 @@ class ProgressBarComponent extends React.Component<ProgressBarProps> {
 	public componentDidMount(): void {
 		const progressBarColor = this.props.color;
 		const progressBarFilled = this.props.filled;
+		const showPercentage = this.props.showPercentage;
 
 		var bar = new ProgressBar.Circle(this.ed, {
 			color: progressBarColor,
@@ -31,10 +34,10 @@ class ProgressBarComponent extends React.Component<ProgressBarProps> {
 				circle.path.setAttribute('stroke', state.color);
 				circle.path.setAttribute('stroke-width', state.width);
 
-				if (progressBarFilled === 0) {
-					circle.setText('');
-				} else {
+				if (showPercentage) {
 					circle.setText(`${progressBarFilled}%`);
+				} else {
+					circle.setText(progressBarFilled);
 				}
 			},
 		});
@@ -42,7 +45,13 @@ class ProgressBarComponent extends React.Component<ProgressBarProps> {
 		bar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
 		bar.text.style.fontSize = '2rem';
 
-		bar.animate(progressBarFilled / 100);
+		if (showPercentage) {
+			bar.animate(progressBarFilled / 100);
+		} else {
+			console.log(progressBarFilled / this.props.topScore);
+			
+			bar.animate(progressBarFilled / this.props.topScore);
+		}
 	}
 
 	public render() {

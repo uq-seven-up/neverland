@@ -156,27 +156,27 @@ class StudyWidget extends React.Component<
 			return (
 				<div>
 					<div className="library">
-						<ProgressBarComponent key={0} color="#7EFAFA" filled={48} />
+						<ProgressBarComponent key={0} color="#7EFAFA" filled={48} showPercentage={true} topScore={-1} />
 						<span>{`Arch Music`}</span>
 					</div>
 					<div className="library">
-						<ProgressBarComponent key={1} color="#FCB1FC" filled={44} />
+						<ProgressBarComponent key={1} color="#FCB1FC" filled={44} showPercentage={true} topScore={-1} />
 						<span>{`Biol Sci`}</span>
 					</div>
 					<div className="library">
-						<ProgressBarComponent key={2} color="#BCFA7E" filled={36} />
+						<ProgressBarComponent key={2} color="#BCFA7E" filled={36} showPercentage={true} topScore={-1} />
 						<span>{`Central`}</span>
 					</div>
 					<div className="library">
-						<ProgressBarComponent key={3} color="#FBB03B" filled={49} />
+						<ProgressBarComponent key={3} color="#FBB03B" filled={49} showPercentage={true} topScore={-1} />
 						<span>{`DHEngSci`}</span>
 					</div>
 					<div className="library">
-						<ProgressBarComponent key={4} color="#EDE57E" filled={45} />
+						<ProgressBarComponent key={4} color="#EDE57E" filled={45} showPercentage={true} topScore={-1} />
 						<span>{`DuhigStudy`}</span>
 					</div>
 					<div className="library">
-						<ProgressBarComponent key={5} color="#00D6CA" filled={32} />
+						<ProgressBarComponent key={5} color="#00D6CA" filled={32} showPercentage={true} topScore={-1} />
 						<span>{`Law Library`}</span>
 					</div>
 				</div>
@@ -192,8 +192,10 @@ class StudyWidget extends React.Component<
 										key={index}
 										color={this.colorsList[index]}
 										filled={this.state.spaceAvailability[key]}
+										showPercentage={true}
+										topScore={-1}
 									/>
-									<span>{`${key} `}</span>
+									<span>{`${key}`}</span>
 								</div>
 							</div>
 						),

@@ -11,15 +11,6 @@
 	animation-direction: alternate-reverse;
 }
 
-#g_cellbox_3.class-container {
-	transform-style: preserve-3d;
-	animation-name: showthecard;
-	animation-duration: 5s;
-	animation-iteration-count: infinite;
-	animation-timing-function: ease-in-out;
-	animation-direction: alternate-reverse;
-}
-
 .card-front,
 .card-back {
 	position: absolute;

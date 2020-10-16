@@ -174,10 +174,9 @@ class PollWidget extends React.Component<PollWidgetProp, PollWidgetState> {
                 {stats.map((answer:AnswerStat) => (
                     <div key={answer.key} className="bar">
 						<div className="outer">
-							 {`${answer.votes} votes`}
 							<div className="inner" style={{width:`${Math.round(answer.percentage)}%`}}></div>
 						</div>
-						<h3>{answer.label}</h3>						
+						<h3>{answer.label} {`-`} {`${answer.votes} votes`}</h3>						
 					</div>				
                 ))}
 			</div>

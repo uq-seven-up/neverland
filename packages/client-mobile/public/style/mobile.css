@@ -18,9 +18,7 @@ body
 	height:100vh;
 	box-sizing: border-box;	
 	background: rgb(92,51,179);
-	/* Increae ID on poll button */
-	counter-reset: id-counter;
-	
+		
 	/* Disable the select, copy, define, menus from popping up on mobile devices on long touches. e.g. holding down a dirction button in the game controller. */
 	-webkit-touch-callout:none;
 	-webkit-user-select:none;
@@ -41,15 +39,14 @@ body
 	height: 80vh;
 }
 
+
 .header #question {
 	font-size: 2em;
 	font-weight: 500;
 }
 
-
-
 .header h1 {
-	padding: 20px;
+	padding: 5px;
 }
 
 .header figure {
@@ -67,6 +64,7 @@ body
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
+	margin-top: 2em;
 }
 
 /* Change logo when screen wider than 400px */
@@ -77,13 +75,9 @@ body
 		background-image: url('../gfx/logo.png');
 		background-size: contain;
 		background-repeat: no-repeat;
-		margin-top: 20px;
+		margin: 20px;
 		background-position: center;
 	}
-}
-
-.header .content {
-	height: 55vh;
 }
 
 /* Mobile menu */
@@ -100,7 +94,7 @@ body
 
 .menu h1{
 	color:  rgb(80,41,132);
-	font-size: 3em;
+	font-size: 2em;
 	font-weight: bold;
 	text-transform: uppercase;
 }
@@ -117,7 +111,7 @@ body
 /* Poll logo */
 .poll figure {
 	width: 50vw;
-	height: 15vh;
+	height: 12vh;
 	background-image: url('../gfx/poll3.png');
 	background-size: contain;
 	background-repeat: no-repeat;
@@ -127,34 +121,29 @@ body
 /* Game logo */
 .game figure {
 	width: 50vw;
-	height: 15vh;
+	height: 12vh;
 	background-image: url('../gfx/game3.png');
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
 }
 
-h2
-{
-	font-family: 'Varta', sans-serif;	
-	font-weight:600;
-	font-size:28px;
-	color:white;
-}
-
+/* Poll options */
 section button{
 	font-weight:500;
-	font-size:15px;
-	margin-bottom:15px;
+	font-size: 1em;
+	margin: 0.5em;
 	box-sizing: border-box;
-	width: 80vw;
+	width: 70vw;
 	align-self: center;
+	background-color: white;
 }
 
+/* Border for generated poll alternatives */
 #button {
 	border-width: 5px;
 	color: rgb(80,41,132);
-	font-size: 20px;
+	font-size: 1.3em;
 	font-weight: 800;	
 }
 
@@ -174,14 +163,13 @@ section button{
 	border-color: #fcb1fc;	
 }
 
-
 .gamePad
 {
 	display:inline-grid;
 	grid-template-columns: auto auto auto;
 	grid-template-rows: auto auto auto;	
 	align-self: center;
-	padding: 20px;
+	padding-top: 5px;
 }
 
 .gamePad .trackpad{
@@ -189,9 +177,9 @@ section button{
 	display:flex;
 	width:80vw;
 	height:30vh;
-	font-size: 30px;
+	font-size: 1em;
 	font-weight: bold;
-	border:1px solid #3C1F63;
+	border:1px dashed white;
 	justify-content: center;
 	align-items: center;
 	background-color: rgba(0, 0, 0, 0);
@@ -216,6 +204,19 @@ section button{
 	animation-name: disappear;
 	animation-duration: 1.5s;
 	animation-fill-mode: forwards;
+}
+
+.gamebuttons{
+	flex-direction: row;
+}
+
+.gamebuttons button{
+	background-color: white;
+	font-weight:500;
+	font-size: 1em;
+	width: 30vw;
+	border-radius: 10px;
+	
 }
 
 @keyframes disappear{

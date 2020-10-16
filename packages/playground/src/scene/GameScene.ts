@@ -4,25 +4,30 @@ import {AssetItem} from "./AbstractScene"
 import {EndSceneConfig} from "./EndScene"
 import CandyGame from "../CandyGame";
 import Player from "../lib/Player"
-import { Bounds } from "matter";
 
 /* Define assets which need to be loaded for this scene. */
 const ASSET:Map<string,AssetItem> = new Map();
+ASSET.set('cat',{type:'image',src:require('../assets/my_cat.png')});
 ASSET.set('cookie',{type:'image',src:require('../assets/cookie.png')});
+ASSET.set('dog',{type:'image',src:require('../assets/my_dog.png')});
 ASSET.set('donut',{type:'image',src:require('../assets/donut.png')});
 ASSET.set('icecream',{type:'image',src:require('../assets/icecream.png')});
 ASSET.set('lolly',{type:'image',src:require('../assets/lolly.png')});
 ASSET.set('muffin',{type:'image',src:require('../assets/muffin.png')});
-ASSET.set('swirl',{type:'image',src:require('../assets/swirl.png')});
+ASSET.set('palm',{type:'image',src:require('../assets/palm.png')});
 ASSET.set('puck',{type:'image',src:require('../assets/puck.png')});
-ASSET.set('particle',{type:'image',src:require('../assets/muzzleflash3.png')});
 ASSET.set('rain',{type:'image',src:require('../assets/rain.png')});
+ASSET.set('swirl',{type:'image',src:require('../assets/swirl.png')});
+ASSET.set('trail_0',{type:'image',src:require('../assets/muzzleflash3.png')});
+ASSET.set('tree',{type:'image',src:require('../assets/tree.png')});
 ASSET.set('tiles',{type:'image',src:require('../assets/final tiles.png')});
-ASSET.set('knight',{type:'image',src:require('../assets/my-knight-0.png')});
-ASSET.set('player',{type:'atlas',src:require('../assets/my-knight.json'),ref:'knight'});
-ASSET.set('level_2',{type:'map',src:require('../assets/level2.json')});
-ASSET.set('level_3',{type:'map',src:require('../assets/level3.json')});
-ASSET.set('level_4',{type:'map',src:require('../assets/level4.json')});
+ASSET.set('umbrella1',{type:'image',src:require('../assets/umbrella1.png')});
+ASSET.set('umbrella2',{type:'image',src:require('../assets/umbrella2.png')});
+ASSET.set('player_cat',{type:'atlas',src:require('../assets/my_cat.json'),ref:'cat'});
+ASSET.set('player_dog',{type:'atlas',src:require('../assets/my_dog.json'),ref:'dog'});
+ASSET.set('level_2',{type:'map',src:require('../assets/level2.json')}); //field
+ASSET.set('level_3',{type:'map',src:require('../assets/level3.json')}); //ice
+ASSET.set('level_4',{type:'map',src:require('../assets/level4.json')}); //beach
 
 
 /**
@@ -30,7 +35,8 @@ ASSET.set('level_4',{type:'map',src:require('../assets/level4.json')});
  */
 export default class GameScene extends AbstractScene  
 {
-	/** The duration of a single game in seconds. */
+
+ 	/** The duration of a single game in seconds. */
 	private static ROUND_TIME = 120;
 	
 	/** The id used by the player using the keyboard connected to the game screen. (debug player) */
@@ -56,6 +62,9 @@ export default class GameScene extends AbstractScene
 	
 	/** Candy that can be collected by players.*/
 	private candyGroup!:Phaser.Physics.Arcade.Group;
+
+	/** Obstacles that players must walk around.*/
+	private obstacleGroup!:Phaser.Physics.Arcade.Group;
 	
 	/** Timer Object for counting down remaining game time. */
 	private timeEvent!:Phaser.Time.TimerEvent;
@@ -94,7 +103,9 @@ export default class GameScene extends AbstractScene
 		this.player = [];	
 		this.puck = [];
 		this.scoreText = [];
-		this.teamScore = [0,0];	
+		this.teamScore = [0,0];
+		window.localStorage.setItem('game_team1',this.teamScore[0].toString());
+		window.localStorage.setItem('game_team2',this.teamScore[1].toString());
 
 		/* Pressing "1" on the keyboard places the local player into the game. (debug player.) */
 		var one_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
@@ -107,9 +118,20 @@ export default class GameScene extends AbstractScene
 
 		/* Prevent objects from leaving the map. */
 		this.physics.world.setBoundsCollision(true,true,true,true);
-
+		
 		/* Render the game map created with tiled. (the tile map). */
 		let mapName = 'level_' + (Math.floor(Math.random() * 3) + 2);
+
+		/* change the map based on the weather */
+		let weatherTemp = (window.localStorage.getItem("temp") as any) as number;
+		if (weatherTemp <= 18) {
+			mapName = 'level_3';
+		} else if (weatherTemp > 18 && weatherTemp <= 25) {
+			mapName = 'level_2';
+		} else {
+			mapName = 'level_4';
+		}mapName = 'level_4';
+
 		this.map = this.make.tilemap({key:mapName});
 		const tileset = this.map.addTilesetImage('my_simple_game','tiles');		
 		this.map.createStaticLayer('ground', tileset, 0, 0);
@@ -124,6 +146,18 @@ export default class GameScene extends AbstractScene
 		candyObjects.forEach(candyObject => {
 			this.candyGroup.create(candyObject.x!, candyObject.y! - candyObject.height!,candyObject.type).setOrigin(0,0);
 		  });
+		  
+		/* Render the obstacle layer in the game world. */
+		this.obstacleGroup = this.physics.add.group({
+			allowGravity: false,
+			immovable: true
+		  });
+
+		const obstacleObjects = this.map.getObjectLayer('obstacle')['objects'];
+		obstacleObjects.forEach(obstacleObject => {
+			this.obstacleGroup.create(obstacleObject.x!, obstacleObject.y! - obstacleObject.height!,obstacleObject.type).setOrigin(0,0);
+		  });
+		 
 
 		/* Place pucks onto the game board. */
 		this.addPuck(250,90);
@@ -138,26 +172,18 @@ export default class GameScene extends AbstractScene
 		/* Rain effect emitter. */
 		var rainParticle = this.add.particles('rain');	  
 		this.rainEmitter = rainParticle.createEmitter({
-				y: 0,
-				x: { min: 0, max: this.game.canvas.width},
-				accelerationX:0,
-				accelerationY:0,
-				gravityY:500,
-				lifespan:2200,
-				bounce:0.3,
-				scaleX:[0.3,0.5],
-				scaleY:[0.5,1],
-				bounds:{x:0,y:0,w:this.game.canvas.width,h:this.game.canvas.height}
-			});
-		/* 
-			var particles = this.add.particles('red');	  
-			var emitter = particles.createEmitter({
-				speed: 100,
-				scale: { start: 1, end: 0 },
-				blendMode: 'ADD'
-			});
-			emitter.startFollow(this.player[0].sprite,-100);	
-		*/
+			y: 0,
+			x: { min: 0, max: this.game.canvas.width},
+			accelerationX:0,
+			accelerationY:0,
+			gravityY:500,
+			lifespan:2200,
+			bounce:0.3,
+			scaleX:[0.3,0.5],
+			scaleY:[0.5,1],
+			bounds:{x:0,y:0,w:this.game.canvas.width,h:this.game.canvas.height}
+		});	
+		
 
 		/* Switch to the end game scene after this scene has faded out. */
 		let that = this;
@@ -206,9 +232,12 @@ export default class GameScene extends AbstractScene
 			/* Player can collide with pucks. (push pucks around) */
 			this.physics.collide(this.player[i].sprite,this.puck,() => {return;});/* player collided with puck */
 			
+			/* Player can collide with obstacles. (must walk around obstacles) */
+			this.physics.collide(this.player[i].sprite,this.obstacleGroup,undefined);
+
 			/* Player can collide with candy. (to collect candy) */
 			this.physics.overlap(this.player[i].sprite,this.candyGroup,this.handlePlayerOverlapsCandy,undefined,this);			
-
+			
 			/* Update player position on the map. */
 			this.player[i].update();
 		}		
@@ -216,6 +245,7 @@ export default class GameScene extends AbstractScene
 		/* Manage object collisions in the game world.*/
 		this.physics.collide(this.puck,this.puck,() => {return;});/* pucks collided */
 		this.physics.collide(this.puck,this.candyGroup,() => {return;});/* pucks collided with candy. */
+		this.physics.collide(this.puck,this.obstacleGroup,() => {return;});/* puck collided with obstacle. */
 		
 		/* Manage the local player. (Debug Player) */
 		this.updateLocalPlayer()
@@ -232,12 +262,12 @@ export default class GameScene extends AbstractScene
 	private addPlayer(id:string)
 	{
 		if(this.getPlayerById(id)) return;/* prevent adding a player into the game more than once. */
+		let team = (this.player.length) % 2;
+		let player = new Player(id, team, this);
 		
-
-		let player = new Player(id,this);
 		/* Give each player a different start position, to prevent players overlapping on game start. */
+		player.team = team;
 		player.sprite.x = player.sprite.x + (player.sprite.width * this.player.length);
-		player.team = (this.player.length + 2) % 2;
 		
 		/* Start tracking this player in the game. */
 		this.player.push(player);	
@@ -378,33 +408,45 @@ export default class GameScene extends AbstractScene
 		{
 			/* Determine the amount of points to award based on the type of candy the player collided with. */
 			let points = 0
+			let calories = 0
 			let candySprite = candyObj as Phaser.Physics.Arcade.Sprite;
 			switch(candySprite.texture.key)
 			{
 				case 'cookie':
 					points = 25
+					calories = 5
 					break
 				case 'donut':
 					points = 50
+					calories = 5
 					break
 				case 'icecream':
 					points = 50
+					calories = 5
 					break
 				case 'lolly':
 					points = 10
+					calories = 5
 					break
 				case 'muffin':
 					points = 5
+					calories = 5
 					break 
 				case 'swirl':
 					points = 10
+					calories = 5
 					break;
 			}
 			
 			/* Update the players and the teams score. */
+			player.calories += calories;
 			player.score += points;
-			this.teamScore[player.team] =+ player.score;
+			this.teamScore[player.team] += points;
   
+			/* Update score in local storage for sharing with other widgets. */
+			window.localStorage.setItem('game_team1',this.teamScore[0].toString());
+			window.localStorage.setItem('game_team2',this.teamScore[1].toString());
+			
 			/* Update the game score board text. */
 			this.scoreText[0].text = 'Team 1: ' + this.teamScore[0];
 			this.scoreText[1].text = 'Team 2: ' + this.teamScore[1];
@@ -428,7 +470,7 @@ export default class GameScene extends AbstractScene
 		if (this.cursors.right.isDown){player.move('e');return;}
 		if (this.cursors.down.isDown){player.move('s');return;}
 		if (this.cursors.left.isDown){player.move('w');return;}
-		//player.stop();	
+		player.stop();	
 	}
 
 	/**
@@ -437,10 +479,10 @@ export default class GameScene extends AbstractScene
 	private addPuck(x:number,y:number)
 	{
 		this.puck.push(this.physics.add.sprite(x,y,'puck'));
-		this.puck[0].setCollideWorldBounds(true);
-		this.puck[0].setBounce(0.9,0.9);
-		this.puck[0].setFriction(20);
-		this.puck[0].body.isCircle = true;
+		this.puck[this.puck.length - 1].setCollideWorldBounds(true);
+		this.puck[this.puck.length - 1].setBounce(0.9,0.9);
+		this.puck[this.puck.length - 1].setFriction(20);
+		this.puck[this.puck.length - 1].body.isCircle = true;
 	}
 
 	/**

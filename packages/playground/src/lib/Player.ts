@@ -21,23 +21,32 @@ export default class Player{
 	
 	/** The total points accumalated by this player. */
 	private _score:number;
+
+	/** Tracks how much calories of candy the player has consumed. */
+	private _calories:number;
 	
 	/** The team that this player is on. 0=Team 1, 1=Team 2. */
 	private _team:number;
 
-	constructor(id:string,scene:Phaser.Scene)
+	/** The trail of particles following a player as they move. */
+	private _trail:Phaser.GameObjects.Particles.ParticleEmitter
+	
+	constructor(id:string,team:number,scene:Phaser.Scene)
 	{
 		this._id = id;
 		this._speed_x = 0;
 		this._speed_y = 0;
 		this._score = 0;
-		this._team = 0;
+		this._calories = 0;
+		this._team = team;
 
 		/* Configure the animation used for this player character.*/
+		let playersprite = team === 1? "player_cat": "player_dog";
+		let walkinganimal = team === 1? "walk_cat": "walk_dog"
 		scene.anims.create({
-			key: "walk",
+			key: walkinganimal,
 			frameRate: 7,
-			frames: scene.anims.generateFrameNames("player", {
+			frames: scene.anims.generateFrameNames(playersprite, {
 				prefix: "Walk_",
 				suffix: ".png",
 				start: 1,
@@ -47,8 +56,24 @@ export default class Player{
 			repeat: -1
 		});
 
+		/* 
+		Make particle trails, when player walks. 
+		note: 
+		The particles must be added to the scene before the sprite, otherwise
+		the particles will render over the top of the sprite. i.e. The order
+		in which game object are added to the scene determines the z-index.
+		*/
+		var particles = scene.add.particles('trail_0');	  
+		this._trail = particles.createEmitter({
+			speed: 50,
+			scale: { start: 0, end: 1 },
+			angle:{ min: 180, max: 360 },
+			lifespan:300,
+			blendMode:Phaser.BlendModes.ADD
+		});
+
 		/* Place the player into the scene.*/
-		this._sprite = scene.physics.add.sprite(50,200,'player');		
+		this._sprite = scene.physics.add.sprite(50,200,playersprite);		
 		
 		/* Allow the player to be identified from the sprite. */
 		this._sprite.setName(this._id);
@@ -57,7 +82,10 @@ export default class Player{
 		this._sprite.setCollideWorldBounds(true);
 		
 		/* Start the walk animation. */
-		this._sprite.play("walk");
+		this._sprite.play(walkinganimal);
+
+		
+		
 	}
 
 	public get id():string {
@@ -92,14 +120,22 @@ export default class Player{
 		return this._speed;
 	}
 
+	public set calories(value:number) {
+		this._calories = value;
+	}
+
+	public get calories() {
+		return this._calories;
+	}
+
 	public set team(value:number) {
 		this._team = value;
 		
 		/* For now tint the players which are on the 'other' team. */
-		if(this._team % 2 === 1)
-		{
-			this._sprite.tint = 0xCCCC00;
-		}
+		// if(this._team % 2 === 1)
+		// {
+		// 	this._sprite.tint = 0xCCCC00;
+		// }
 	}
 
 	public get team() {
@@ -111,6 +147,7 @@ export default class Player{
 	 * @param heading Compass directions.(n,ne,e,se,s,sw,w,nw)
 	 */
 	public move(heading:string){
+		
 		switch(heading)
 		{
 			case 'n':
@@ -150,11 +187,17 @@ export default class Player{
 				this._speed_x = -1;
 				this._speed_y = -1;
 				this._sprite.flipX = true;
+				
 				break;
 			default:
 				this._speed_x = 0;
 				this._speed_y = 0;
 		}
+
+		//this._trail.startFollow(this._sprite,this._speed_x * -20,this._speed_y * -20,true);
+		this._trail.startFollow(this._sprite,0,28,true);
+		this._trail.resume();
+		this._trail.visible = true;
 	}
 
 	/**
@@ -163,6 +206,9 @@ export default class Player{
 	public stop(){
 		this._speed_x = 0;
 		this._speed_y = 0;
+		this._trail.visible = false;
+		this._trail.pause();
+
 	}
 
 	/** Called when the player is taken out of the game. */
@@ -175,5 +221,14 @@ export default class Player{
 		/* Move the player inside of the game world.*/
 		this._sprite.body.velocity.x = this._speed_x * this._speed;
 		this._sprite.body.velocity.y = this._speed_y * this._speed;
+		if(this._calories > 40)
+		{
+			this._sprite.scale = 2;
+		}else if (this.calories > 20)
+		{
+			this._sprite.scale = 1.5;
+		}else{
+			this._sprite.scale = 1;
+		}
 	}
 }

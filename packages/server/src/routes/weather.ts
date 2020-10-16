@@ -2,7 +2,7 @@ import * as express from 'express';
 import { Request, Response } from "express";
 import dotenv from "dotenv";
 import {DB} from '../controller/db'
-import { IWeather } from '../models/weather';
+import { IWeather, Weather } from '../models/weather';
 import fetch from "node-fetch";
 //const fetch = require('node-fetch');
 
@@ -38,7 +38,7 @@ router.get('/weather', async (req: Request, res: Response) => {
 			}
 		}else
 		{
-			weatherData = await new DB.Models.Weather({_id:WEATHER_ID});
+			weatherData =  new DB.Models.Weather({ _id: WEATHER_ID });
 		}						
 	} catch(error)
 	{
@@ -53,6 +53,8 @@ router.get('/weather', async (req: Request, res: Response) => {
 			.then((result:any) => {				
 				weatherData!.temp = result.main.temp as number;
 				weatherData!.status = result.weather[0].main as string;
+				let date = new Date();
+				weatherData!.fetch_date = date;
 			});
 	} catch (error) {
 		console.log('Some error occured fetching data from the Weather API.');
@@ -65,9 +67,34 @@ router.get('/weather', async (req: Request, res: Response) => {
 			res.status(500).send({success:false,'msg':'Mongoose save error.',error:err})
 			return;
 		}
-		res.send({success:true,data:object,cached:false})
+		res.send({success:true,data:object,cached:true})
 	});
 });
 
+
+router.patch('/weather', async (req: Request, res: Response) => {
+	let weatherData: IWeather | null;
+	let date = new Date();
+	try {
+		weatherData = await DB.Models.Weather.findById("UQ_WEATHER_CACHE");
+		weatherData!.temp = req.body.temp;
+		weatherData!.fetch_date = date;
+		// weatherData!.updateOne({ _id: "UQ_WEATHER_CACHE" }, {temp: req.body.temp});
+		
+	} catch(error)
+	{
+		console.log('Error fetching WEATHER cache.');
+		res.status(500).send({success:false,'msg':'Error fetching WEATHER cache.'})
+	}
+
+	await weatherData!.save((err: any, object: IWeather) => {
+		if (err){
+			res.status(500).send({success:false,'msg':'Mongoose save error.',error:err})
+			return;
+		}
+		res.send({success: true, data: object, cached: true})
+
+	});
+});
 
 export = router;

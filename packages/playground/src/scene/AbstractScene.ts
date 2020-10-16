@@ -48,6 +48,7 @@ export default class AbstractScene extends Phaser.Scene
 				break;
 
 				case 'sheet':
+					debugger;
 					this.load.spritesheet(key,item.src,{frameWidth: 64, frameHeight: 64});
 				break;
 			}

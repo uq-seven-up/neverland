@@ -1,13 +1,13 @@
 import React from 'react';
 
-import WeatherWidget from './component/WeatherWidget';
-
-import ClockWidget from './component/ClockWidget';
-import QRCodeWidget from './component/QRCodeWidget';
-import PollWidget from './component/PollWidget';
 import BusWidget from './component/BusWidget';
+import ClockWidget from './component/ClockWidget';
+import PollWidget from './component/PollWidget';
+import QRCodeWidget from './component/QRCodeWidget';
+import ScoreWidget from './component/ScoreWidget';
 import StudyWidget from './component/StudyWidget';
 import LeaderboardWidget from './component/LeaderboardWidget'
+import WeatherWidget from './component/WeatherWidget';
 
 function App() {
 	let mobilePort =  process.env.NODE_ENV === 'development' ? ':3010' : '';
@@ -46,6 +46,7 @@ function App() {
 			</div> */}
 
 			<div id="g_cellbox_4" className="g_cell">
+				<ScoreWidget id="widget_score"/>
 				<PollWidget id="widget_poll" />
 				<QRCodeWidget id="widget_qr" qrCodeUrl={mobileSiteURL} />
 			</div>

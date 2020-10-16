@@ -56,6 +56,22 @@ export default class Player{
 			repeat: -1
 		});
 
+		/* 
+		Make particle trails, when player walks. 
+		note: 
+		The particles must be added to the scene before the sprite, otherwise
+		the particles will render over the top of the sprite. i.e. The order
+		in which game object are added to the scene determines the z-index.
+		*/
+		var particles = scene.add.particles('trail_0');	  
+		this._trail = particles.createEmitter({
+			speed: 50,
+			scale: { start: 0, end: 1 },
+			angle:{ min: 180, max: 360 },
+			lifespan:300,
+			blendMode:Phaser.BlendModes.ADD
+		});
+
 		/* Place the player into the scene.*/
 		this._sprite = scene.physics.add.sprite(50,200,playersprite);		
 		
@@ -68,13 +84,8 @@ export default class Player{
 		/* Start the walk animation. */
 		this._sprite.play(walkinganimal);
 
-		/* Make particle trails, when player walks. */
-		var particles = scene.add.particles('trail_0');	  
-		this._trail = particles.createEmitter({
-			speed: 100,
-			scale: { start: 1, end: 0 },
-			blendMode: 'ADD'
-		});
+		
+		
 	}
 
 	public get id():string {
@@ -183,7 +194,8 @@ export default class Player{
 				this._speed_y = 0;
 		}
 
-		this._trail.startFollow(this._sprite,this._speed_x * -60,this._speed_y * -60,true);
+		//this._trail.startFollow(this._sprite,this._speed_x * -20,this._speed_y * -20,true);
+		this._trail.startFollow(this._sprite,0,28,true);
 		this._trail.resume();
 		this._trail.visible = true;
 	}

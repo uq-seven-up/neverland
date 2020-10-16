@@ -45,7 +45,6 @@ router.post('/scores', async (req: Request, res: Response) => {
 
 	await leaderboard.save((error:any, object:ILeaderboard) => {		
 		if(error){
-			console.log(error)			
 			res.status(500).send({success:false,'msg':'Error adding team details.'})
 			return;
 		}

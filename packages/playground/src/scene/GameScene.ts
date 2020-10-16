@@ -121,7 +121,6 @@ export default class GameScene extends AbstractScene
 		
 		/* Render the game map created with tiled. (the tile map). */
 		let mapName = 'level_' + (Math.floor(Math.random() * 3) + 2);
-
 		/* change the map based on the weather */
 		let weatherTemp = (window.localStorage.getItem("temp") as any) as number;
 		if (weatherTemp <= 18) {
@@ -130,8 +129,8 @@ export default class GameScene extends AbstractScene
 			mapName = 'level_2';
 		} else {
 			mapName = 'level_4';
-		}mapName = 'level_4';
-
+		}
+		
 		this.map = this.make.tilemap({key:mapName});
 		const tileset = this.map.addTilesetImage('my_simple_game','tiles');		
 		this.map.createStaticLayer('ground', tileset, 0, 0);
@@ -198,9 +197,13 @@ export default class GameScene extends AbstractScene
 
 		/* Broadcast the start of the game to all players (mobile-clients) */
 		this.sendEventToAllPlayers(90);
-
-		this.rain(true);
-
+		let status = (window.localStorage.getItem("status") as any) as string;
+		
+		if (status === "Rain" || status === "Thunderstorm") {
+			this.rain(true);
+		} else {
+			this.rain(false);
+		}
 		/* Start the game countdown. */
 		this.timeEvent = this.time.addEvent({delay:1000, 
 											repeat:GameScene.ROUND_TIME,
@@ -495,7 +498,7 @@ export default class GameScene extends AbstractScene
 			this.rainEmitter.start();
 		}else
 		{
-			this.rainEmitter.pause;
+			this.rainEmitter.pause();
 		}
 	}
 	

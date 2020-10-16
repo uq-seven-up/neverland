@@ -146,7 +146,8 @@ main {
 
 .weather-box .sunny-icon,
 .weather-box .rainy-icon,
-.weather-box .cloudy-icon {
+.weather-box .cloudy-icon,
+.weather-box .thunder-icon {
 	background-size: contain;
 	background-repeat: no-repeat;
 	margin: 5px 2px;
@@ -165,6 +166,11 @@ main {
 
 .weather-box .cloudy-icon {
 	background-image: url('../gfx/Cloudy-icon.png');
+	filter: drop-shadow(2px 2px 2px #555555);
+}
+
+.weather-box .thunder-icon {
+	background-image: url('../gfx/Thunder-icon.png');
 	filter: drop-shadow(2px 2px 2px #555555);
 }
 

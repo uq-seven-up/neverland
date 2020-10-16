@@ -133,13 +133,16 @@ class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetStat
 
 		let iconName = ''				
 		if (this.state.weather.status === "Clouds") {
-      iconName = 'cloudy-icon'	
+			iconName = 'cloudy-icon';	
     } else if (this.state.weather.status === 'Clear') {
-      iconName = 'sunny-icon'
-    } else {
-      iconName = 'rainy-icon'
-    }
-		window.localStorage.setItem("temp", (this.state.weather.temp as any) as string)
+			iconName = 'sunny-icon';
+    } else if (this.state.weather.status === 'Thunderstorm') {
+			iconName = 'thunder-icon';
+		} else if (this.state.weather.status === 'Rain') {
+			iconName = 'rainy-icon';
+		}
+		window.localStorage.setItem("temp", (this.state.weather.temp as any) as string);
+		window.localStorage.setItem("status", (this.state.weather.status as any) as string);
     return (
       <section id={this.props.id} className="widget weather">						
 		<div className="date">{this.dateBuilder(new Date())}</div>				

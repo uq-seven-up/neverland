@@ -79,6 +79,7 @@ router.patch('/weather', async (req: Request, res: Response) => {
 		weatherData = await DB.Models.Weather.findById("UQ_WEATHER_CACHE");
 		weatherData!.temp = req.body.temp;
 		weatherData!.fetch_date = date;
+		weatherData!.status = req.body.status;
 		// weatherData!.updateOne({ _id: "UQ_WEATHER_CACHE" }, {temp: req.body.temp});
 		
 	} catch(error)

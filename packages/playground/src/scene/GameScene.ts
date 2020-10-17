@@ -133,15 +133,17 @@ export default class GameScene extends AbstractScene
 		this.physics.world.setBoundsCollision(true,true,true,true);
 		
 		/* Render the game map created with tiled. (the tile map). */
-		let mapName = 'level_' + (Math.floor(Math.random() * 3) + 2);
+		let mapName = ' ';
 		/* change the map based on the weather */
 		let weatherTemp = (window.localStorage.getItem("temp") as any) as number;
 		if (weatherTemp <= 18) {
 			mapName = 'level_3';
 		} else if (weatherTemp > 18 && weatherTemp <= 25) {
 			mapName = 'level_2';
-		} else {
+		} else if(weatherTemp > 25) {
 			mapName = 'level_4';
+		} else {
+			mapName = 'level_' + (Math.floor(Math.random() * 3) + 2);
 		}
 		
 		this.map = this.make.tilemap({key:mapName});

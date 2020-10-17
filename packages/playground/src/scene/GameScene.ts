@@ -131,7 +131,7 @@ export default class GameScene extends AbstractScene
 		this.physics.world.setBoundsCollision(true,true,true,true);
 		
 		/* Render the game map created with tiled. (the tile map). */
-		let mapName = ' '
+		let mapName = ' ';
 		/* change the map based on the weather */
 		let weatherTemp = (window.localStorage.getItem("temp") as any) as number;
 		if (weatherTemp <= 18) {

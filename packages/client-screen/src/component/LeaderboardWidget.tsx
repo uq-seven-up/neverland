@@ -25,6 +25,7 @@ class LeaderboardWidget extends React.Component<
 	teamScoresState
 > {
 	colorsList: string[];
+	prevResults: any;
 
 	constructor(props: LeaderboardWidgetProp) {
 		super(props);
@@ -35,6 +36,7 @@ class LeaderboardWidget extends React.Component<
 			'#BCFA7E',
 			'#BCFA7E',
 		];
+		
 		this.state = {
 			teamScores: [],
 		};
@@ -45,8 +47,23 @@ class LeaderboardWidget extends React.Component<
 	public componentDidMount(): void {
 		console.log('Leaderboard Widget Component Did Mount');
 		this.callAPI('', 'GET', '/leaderboard/scores');
+		this.callTimeInterval();
 	}
 	/* ########################################################*/
+
+	/* ########################################################*/
+	/* Toggle ProgressBar Visibility*/
+	/**
+	 * Toggles visibility of the first 3 and the last 3 libraries
+	 * in intervals by toggling their class
+	 */
+	private callTimeInterval() {
+		setInterval(() => {
+			this.callAPI('', 'GET', '/leaderboard/scores');
+		}, 5000);
+	}
+	/* ########################################################*/
+
 
 	/* ########################################################*/
 	/* Working methods. */
@@ -104,13 +121,16 @@ class LeaderboardWidget extends React.Component<
 		endpoint: string,
 		result: any,
 	): void => {
-		const sortedData = result.data.sort((a: any, b: any) => a.score > b.score ? -1: 1);
-		const slicedData = sortedData.slice(0, 5);
-		slicedData[0].name += " 👑";
-		slicedData[1].name += " 🥈";
-		slicedData[2].name += " 🥉";
-		
-		this.setState({ teamScores: slicedData });
+		if (this.prevResults !== result.data) {
+			const sortedData = result.data.sort((a: any, b: any) => a.score > b.score ? -1: 1);
+			const slicedData = sortedData.slice(0, 5);
+			slicedData[0].name += " 👑";
+			slicedData[1].name += " 🥈";
+			slicedData[2].name += " 🥉";
+			
+			this.setState({ teamScores: slicedData });
+			this.prevResults = result.data;
+		}
 	};
 	/* ########################################################*/
 
@@ -128,10 +148,10 @@ class LeaderboardWidget extends React.Component<
 			<div>
 				{this.state.teamScores.map(
 					(teamScore: any, index: number) => (
-						<div className="team-score">
+						<div className="team-score" key={teamScore._id}>
 							<div>
 								<ProgressBarComponent
-									key={index}
+									key={teamScore._id}
 									color={this.colorsList[index]}
 									filled={teamScore.score}
 									showPercentage={false}

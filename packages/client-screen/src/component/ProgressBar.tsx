@@ -2,7 +2,7 @@ import React from 'react';
 const ProgressBar = require('progressbar.js');
 
 interface ProgressBarProps {
-	key: number;
+	key: any;
 	color: string;
 	filled: any;
 	showPercentage: boolean;

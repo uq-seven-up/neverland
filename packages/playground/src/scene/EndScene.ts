@@ -34,10 +34,10 @@ export default class EndScene extends AbstractScene
 		if(data.teamScore[0] > 1)
 		{
 			this.storeTeamDetails(`${data.teamOneName}`, data.teamScore[0]);
-			this.add.text(400, 400, `${data.teamOneName} is the Winner`, {fontSize: '40px', fill: '#fff'});			
+			this.add.text(350, 400, `Team ${data.teamOneName} is the Winner`, {fontSize: '40px', fill: '#fff'});			
 		}else{
 			this.storeTeamDetails(`${data.teamOneName}`, data.teamScore[1]);
-			this.add.text(400, 400, `${data.teamTwoName} is the Winner`, {fontSize: '40px', fill: '#fff'});
+			this.add.text(350, 400, `Team ${data.teamTwoName} is the Winner`, {fontSize: '40px', fill: '#fff'});
 		}
 		
 		/* Switch to the intro scene after this scene has faded out. */
@@ -100,7 +100,7 @@ export default class EndScene extends AbstractScene
 					data,
 					);
 				};
-				/* ########################################################*/
+		/* ########################################################*/
 								
 		private restart() {
 			/* The end of the fade triggers a camera event, defined inside of the create method */

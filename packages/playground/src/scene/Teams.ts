@@ -315,7 +315,6 @@ const teamNames: string[] = [
   "Fusion",
   "G-Force",
   "Galaxy",
-  "Gamecocks",
   "Gargoyles",
   "Gatling Guns",
   "Gators",

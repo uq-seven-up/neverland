@@ -48,7 +48,6 @@ class StudyWidget extends React.Component<
 	public componentDidMount(): void {
 		console.log('Study Widget Component Did Mount');
 		this.callAPI('', 'GET', '/studyspace/availability-data');
-		// this.callTimeInterval();
 	}
 	/* ########################################################*/
 
@@ -89,36 +88,6 @@ class StudyWidget extends React.Component<
 			data,
 		);
 	};
-	/* ########################################################*/
-
-	/* ########################################################*/
-	/* Toggle ProgressBar Visibility*/
-	/**
-	 * Toggles visibility of the first 3 and the last 3 libraries
-	 * in intervals by toggling their class
-	 */
-	private callTimeInterval() {
-		// Not Called
-		setInterval(() => {
-			const libraryElements = document.querySelectorAll('.library');
-			libraryElements.forEach((library: any, index: number) => {
-				if (this.libraryVisibilityToggle) {
-					if (index < 3) {
-						library.classList.add('hide');
-					} else {
-						library.classList.remove('hide');
-					}
-				} else {
-					if (index < 3) {
-						library.classList.remove('hide');
-					} else {
-						library.classList.add('hide');
-					}
-				}
-			});
-			this.libraryVisibilityToggle = !this.libraryVisibilityToggle;
-		}, 4000);
-	}
 	/* ########################################################*/
 
 	/* ########################################################*/
@@ -186,7 +155,7 @@ class StudyWidget extends React.Component<
 				<div>
 					{Object.keys(this.state.spaceAvailability).map(
 						(key: any, index: number) => (
-							<div className="library">
+							<div className="library" key={index}>
 								<div>
 									<ProgressBarComponent
 										key={index}

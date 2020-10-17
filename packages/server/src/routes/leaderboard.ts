@@ -4,6 +4,34 @@ import dotenv from 'dotenv';
 import {DB} from '../controller/db'
 import { ILeaderboard } from '../models/leaderboard';
 
+var seedingData = [
+	{ 
+		name: "7Up",
+		score: 10
+	},
+
+	{ 
+		name: "Inconcievables",
+		score: 15
+	},
+
+	{ 
+		name: "Dealbreakers",
+		score: 5
+	},
+	
+	{ 
+		name: "Hotshots",
+		score: 25
+	},
+
+	{ 
+		name: "Avengers",
+		score: 40
+	},
+];
+
+
 /**
  * Leaderboard Model
  */
@@ -20,6 +48,24 @@ dotenv.config();
  * Retrieves all the team names and scores
  */
 router.get('/scores', async (req: Request, res: Response) => {
+	let dataCount = await Leaderboard.countDocuments([], (err, count) => count);
+	
+	// Seeds data to the leaderboard collection if it is empty
+	if (dataCount == 0) {
+		seedingData.forEach((seedTeam)=> {
+			let leaderboard = new Leaderboard();
+
+			leaderboard.name = seedTeam.name;
+			leaderboard.score = seedTeam.score;
+					
+			leaderboard.save((error:any, object:ILeaderboard) => {		
+				if(error){
+					res.status(500).send({success:false,'msg':'Error adding seeding team.'})
+				}	
+			});
+		})
+	}
+
 	try {
 		await Leaderboard.find({}, (err: any, foundTeamScores: any) => {
 			if (err) {

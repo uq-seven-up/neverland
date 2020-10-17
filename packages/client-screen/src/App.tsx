@@ -6,6 +6,7 @@ import PollWidget from './component/PollWidget';
 import QRCodeWidget from './component/QRCodeWidget';
 import ScoreWidget from './component/ScoreWidget';
 import StudyWidget from './component/StudyWidget';
+import LeaderboardWidget from './component/LeaderboardWidget'
 import WeatherWidget from './component/WeatherWidget';
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
 				<WeatherWidget id="widget_weather" name="Weather Widget PoC" />
 			</div>
 			<div className="flip-card">
-				<div id="g_cellbox_2">
+				<div id="g_cellbox_2" className="class-container">
 					<div className="g_cell card-front">
 						<BusWidget id="widget_bus_uq" name="UQ Lakes" />
 					</div>
@@ -29,10 +30,20 @@ function App() {
 					</div>
 				</div>
 			</div>
-
-			<div id="g_cellbox_3" className="g_cell">
-				<StudyWidget id="widget_study" />
+			<div className="flip-card">
+				<div id="g_cellbox_3" className="class-container">
+				<div className="g_cell card-front">
+						<LeaderboardWidget id="widget_leaderboard" />
+					</div>
+					<div className="g_cell card-back">
+						<StudyWidget id="widget_study" />
+					</div>
+				</div>
 			</div>
+
+			{/* <div id="g_cellbox_3" className="g_cell">
+				<StudyWidget id="widget_study" />
+			</div> */}
 
 			<div id="g_cellbox_4" className="g_cell">
 				<ScoreWidget id="widget_score"/>

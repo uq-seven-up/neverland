@@ -5,6 +5,7 @@ import { Poll, PollModel } from '../models/poll';
 import { RssFeed, RssFeedModel } from '../models/rss';
 import { BusTime, BusTimeModel } from '../models/bus-time';
 import { Weather, WeatherModel } from '../models/weather';
+import { Leaderboard, LeaderboardModel } from '../models/leaderboard';
 
 /* Retrieve mongo db credentials from environment variables. */
 const _env = dotenv.config()
@@ -21,7 +22,8 @@ declare interface IModels {
 	RssFeed:RssFeedModel,
 	Poll:PollModel,
     BusTime: BusTimeModel,
-    Weather: WeatherModel
+    Weather: WeatherModel,
+    Leaderboard: LeaderboardModel
 }
 
 /**
@@ -45,7 +47,8 @@ export class DB {
 			Poll: new Poll().model,
 			RssFeed: new RssFeed().model,
             BusTime: new BusTime().model,
-            Weather: new Weather().model
+            Weather: new Weather().model,
+            Leaderboard: new Leaderboard().model
 		}
     }
 

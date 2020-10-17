@@ -183,44 +183,27 @@ main {
 	text-shadow: 1px 1px rgba(203, 203, 238, 0.5);
 }
 
-/* Study Widget */
+/* Study & Leaderboard Widget */
 
-.widget.study {
+.widget.study,
+.widget.leaderboard {
 	text-align: center;
-}
-
-.widget.study {
 	color: white;
 }
 
-.widget.study h2 {
+.widget.study h2,
+.widget.leaderboard h2 {
 	font-size: 1.5rem;
 }
 
-.widget.study .library {
-	display: inline-block;
-	/* animation-name: visibility;
-	animation-duration: 4s; */
+#g_cellbox_3.class-container {
+	animation-delay: -5s;
 }
 
-/* .widget.study .library.hide {
-	display: none;
-} */
-
-/* @keyframes visibility {
-	0% {
-		opacity: 0;
-	}
-	25% {
-		opacity: 1;
-	}
-	75% {
-		opacity: 1;
-	}
-	100% {
-		opacity: 0;
-	}
-} */
+.library,
+.team-score {
+	display: inline-block;
+}
 
 .progress-bar {
 	margin: 20px;

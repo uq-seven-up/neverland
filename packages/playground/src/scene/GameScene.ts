@@ -3,7 +3,9 @@ import AbstractScene from "./AbstractScene"
 import {AssetItem} from "./AbstractScene"
 import {EndSceneConfig} from "./EndScene"
 import CandyGame from "../CandyGame";
-import Player from "../lib/Player"
+import Player from "../lib/Player";
+import Puck from "../lib/Puck";
+import teamNames from './Teams';
 
 /* Define assets which need to be loaded for this scene. */
 const ASSET:Map<string,AssetItem> = new Map();
@@ -37,7 +39,7 @@ export default class GameScene extends AbstractScene
 {
 
  	/** The duration of a single game in seconds. */
-	private static ROUND_TIME = 120;
+	private static ROUND_TIME = 10;
 	
 	/** The id used by the player using the keyboard connected to the game screen. (debug player) */
 	private static LOCAL_PLAYER_ID = 'local_player';
@@ -58,7 +60,8 @@ export default class GameScene extends AbstractScene
 	private clockText!:Phaser.GameObjects.Text;
 	
 	/** Pucks that can be pushed around the map. */
-	private puck:Phaser.Physics.Arcade.Sprite[];
+	private puck:Puck[];
+	private puckSprite:Phaser.Physics.Arcade.Sprite[];
 	
 	/** Candy that can be collected by players.*/
 	private candyGroup!:Phaser.Physics.Arcade.Group;
@@ -74,6 +77,10 @@ export default class GameScene extends AbstractScene
 	
 	/** The score for each team. Team 1 = 0, Team 2 = 1. */
 	private teamScore:number[];
+
+	/** Names of both the teams */
+	private teamOneName:string;
+	private teamTwoName:string;
 	
 	constructor(config:Phaser.Types.Scenes.SettingsConfig,baseUrl:string)
 	{
@@ -81,8 +88,11 @@ export default class GameScene extends AbstractScene
 		
 		this.player = [];	
 		this.puck = [];
+		this.puckSprite = [];
 		this.scoreText = [];
-		this.teamScore = [0,0];		
+		this.teamScore = [0,0];
+		this.teamOneName = "Team " + teamNames[Math.floor(Math.random() * teamNames.length)];
+		this.teamTwoName = "Team " + teamNames[Math.floor(Math.random() * teamNames.length)];
 	}
 
 	/**
@@ -102,6 +112,7 @@ export default class GameScene extends AbstractScene
 		/* Ensure game properties are reset when the scene is restarted (for the next new game). */
 		this.player = [];	
 		this.puck = [];
+		this.puckSprite = [];
 		this.scoreText = [];
 		this.teamScore = [0,0];
 		window.localStorage.setItem('game_team1',this.teamScore[0].toString());
@@ -166,8 +177,8 @@ export default class GameScene extends AbstractScene
 		this.addPuck(850,90);
 		
 		/* Position the text for displaying the team score and remaining game time.*/
-		this.scoreText[0] = this.add.text(10, 10, 'Team 1: 0', {fontSize: '20px', fill: '#000'});
-		this.scoreText[1] = this.add.text(10, 40, 'Team 2: 0', {fontSize: '20px', fill: '#000'});
+		this.scoreText[0] = this.add.text(10, 10, `${this.teamOneName}: 0`, {fontSize: '20px', fill: '#000'});
+		this.scoreText[1] = this.add.text(10, 40, `${this.teamTwoName}: 0`, {fontSize: '20px', fill: '#000'});
 		this.clockText = this.add.text(1280, 10, GameScene.ROUND_TIME.toString(), {fontSize: '60px', fill: '#000'});
 		
 		/* Rain effect emitter. */
@@ -191,7 +202,9 @@ export default class GameScene extends AbstractScene
 		this.cameras.main.on('camerafadeoutcomplete', function () {
 			/* Pass the team score to the end game scene. */
 			let config:EndSceneConfig = {
-				teamScore:that.teamScore
+				teamScore:that.teamScore,
+				teamOneName:that.teamOneName,
+				teamTwoName:that.teamTwoName
 			};
 
 			that.scene.start('end_scene',config);
@@ -221,7 +234,6 @@ export default class GameScene extends AbstractScene
 	 * https://photonstorm.github.io/phaser3-docs/Phaser.Scene.html#update
 	 */
 	public update(){		
-
 		/* Manage world interaction for each player currently in the game.*/
 		for(var i=0;i<this.player.length;i++)
 		{
@@ -235,7 +247,7 @@ export default class GameScene extends AbstractScene
 			}
 
 			/* Player can collide with pucks. (push pucks around) */
-			this.physics.collide(this.player[i].sprite,this.puck,() => {return;});/* player collided with puck */
+			this.physics.collide(this.player[i].sprite,this.puckSprite,this.handlePLayerHitByPuck,undefined,this);/* player collided with puck */
 			
 			/* Player can collide with obstacles. (must walk around obstacles) */
 			this.physics.collide(this.player[i].sprite,this.obstacleGroup,undefined);
@@ -245,12 +257,17 @@ export default class GameScene extends AbstractScene
 			
 			/* Update player position on the map. */
 			this.player[i].update();
-		}		
+		}
+
+		for(var i=0;i<this.puck.length;i++)
+		{
+			this.puck[i].update();
+		}
 		
 		/* Manage object collisions in the game world.*/
-		this.physics.collide(this.puck,this.puck,() => {return;});/* pucks collided */
-		this.physics.collide(this.puck,this.candyGroup,() => {return;});/* pucks collided with candy. */
-		this.physics.collide(this.puck,this.obstacleGroup,() => {return;});/* puck collided with obstacle. */
+		this.physics.collide(this.puckSprite,this.puckSprite,() => {return;});/* pucks collided */
+		this.physics.collide(this.puckSprite,this.candyGroup,() => {return;});/* pucks collided with candy. */
+		this.physics.collide(this.puckSprite,this.obstacleGroup,() => {return;});/* puck collided with obstacle. */
 		
 		/* Manage the local player. (Debug Player) */
 		this.updateLocalPlayer()
@@ -372,32 +389,32 @@ export default class GameScene extends AbstractScene
 		switch(tile.index)
 		{
 			case 1:
-				player.speed = 250;
+				player.speed = 350;
 				break;
 			case 2:
-				player.speed = 350;
+				player.speed = 450;
 				break;	
 			case 3:
 			case 4:
 			case 5:
 			case 6:
 			case 13:
-				player.speed = 100;
+				player.speed = 200;
 				break;
 			case 7:
-				player.speed = 350;
+				player.speed = 450;
 				break;
 			case 8:
-				player.speed = 200;
+				player.speed = 300;
 				break;
 			case 9:
-				player.speed = 400;
+				player.speed = 500;
 				break;
 			case 14:
-				player.speed = 200;
+				player.speed = 300;
 				break;
 			default:
-				player.speed = 250;
+				player.speed = 350;
 		}
 	}
 
@@ -453,8 +470,8 @@ export default class GameScene extends AbstractScene
 			window.localStorage.setItem('game_team2',this.teamScore[1].toString());
 			
 			/* Update the game score board text. */
-			this.scoreText[0].text = 'Team 1: ' + this.teamScore[0];
-			this.scoreText[1].text = 'Team 2: ' + this.teamScore[1];
+			this.scoreText[0].text = `${this.teamOneName}: ` + this.teamScore[0];
+			this.scoreText[1].text = `${this.teamTwoName}: ` + this.teamScore[1];
 			
 			/* Remove the candy from the game board. */
 			candyObj.destroy();	
@@ -462,6 +479,20 @@ export default class GameScene extends AbstractScene
 			/* Send a "candy collected" event to the mobile client of the player that just collected candy. */
 			(this.game as CandyGame).sendEventToPlayer(player.id,200);
 		}
+	}
+
+	private handlePLayerHitByPuck(playerObj:Phaser.Types.Physics.Arcade.GameObjectWithBody,puckObj:Phaser.Types.Physics.Arcade.GameObjectWithBody)
+	{
+		let player = this.getPlayerById(playerObj.name);
+		let puck = this.puck[parseInt(puckObj.name,10)];
+		
+		if(player === null || player.id === puck.lastPlayerId) return;
+		
+		if(puck.lastPlayerId !== ''){
+			console.log('Player', player?.id, 'was hit by',puck.lastPlayerId);
+		}
+		
+		puck.lastPlayerId = player?.id;
 	}
   
 	/**
@@ -483,11 +514,9 @@ export default class GameScene extends AbstractScene
 	 */
 	private addPuck(x:number,y:number)
 	{
-		this.puck.push(this.physics.add.sprite(x,y,'puck'));
-		this.puck[this.puck.length - 1].setCollideWorldBounds(true);
-		this.puck[this.puck.length - 1].setBounce(0.9,0.9);
-		this.puck[this.puck.length - 1].setFriction(20);
-		this.puck[this.puck.length - 1].body.isCircle = true;
+		let puck = new Puck(this.puck.length,this,x,y)
+		this.puck.push(puck);
+		this.puckSprite.push(puck.sprite);
 	}
 
 	/**

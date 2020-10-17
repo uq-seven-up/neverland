@@ -75,6 +75,10 @@ export default class Player{
 		/* Place the player into the scene.*/
 		this._sprite = scene.physics.add.sprite(50,200,playersprite);		
 		
+		this._sprite.setMass(2);
+		this._sprite.setFriction(1);
+		this._sprite.setBounce(0);
+
 		/* Allow the player to be identified from the sprite. */
 		this._sprite.setName(this._id);
 		
@@ -83,9 +87,6 @@ export default class Player{
 		
 		/* Start the walk animation. */
 		this._sprite.play(walkinganimal);
-
-		
-		
 	}
 
 	public get id():string {

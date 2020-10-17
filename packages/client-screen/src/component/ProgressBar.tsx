@@ -48,8 +48,6 @@ class ProgressBarComponent extends React.Component<ProgressBarProps> {
 		if (showPercentage) {
 			bar.animate(progressBarFilled / 100);
 		} else {
-			console.log(progressBarFilled / this.props.topScore);
-			
 			bar.animate(progressBarFilled / this.props.topScore);
 		}
 	}

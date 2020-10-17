@@ -5,6 +5,7 @@ import {EndSceneConfig} from "./EndScene"
 import CandyGame from "../CandyGame";
 import Player from "../lib/Player";
 import Puck from "../lib/Puck";
+import teamNames from './Teams';
 
 /* Define assets which need to be loaded for this scene. */
 const ASSET:Map<string,AssetItem> = new Map();
@@ -38,7 +39,7 @@ export default class GameScene extends AbstractScene
 {
 
  	/** The duration of a single game in seconds. */
-	private static ROUND_TIME = 120;
+	private static ROUND_TIME = 10;
 	
 	/** The id used by the player using the keyboard connected to the game screen. (debug player) */
 	private static LOCAL_PLAYER_ID = 'local_player';
@@ -76,6 +77,10 @@ export default class GameScene extends AbstractScene
 	
 	/** The score for each team. Team 1 = 0, Team 2 = 1. */
 	private teamScore:number[];
+
+	/** Names of both the teams */
+	private teamOneName:string;
+	private teamTwoName:string;
 	
 	constructor(config:Phaser.Types.Scenes.SettingsConfig,baseUrl:string)
 	{
@@ -85,7 +90,9 @@ export default class GameScene extends AbstractScene
 		this.puck = [];
 		this.puckSprite = [];
 		this.scoreText = [];
-		this.teamScore = [0,0];		
+		this.teamScore = [0,0];
+		this.teamOneName = "Team " + teamNames[Math.floor(Math.random() * teamNames.length)];
+		this.teamTwoName = "Team " + teamNames[Math.floor(Math.random() * teamNames.length)];
 	}
 
 	/**
@@ -168,8 +175,8 @@ export default class GameScene extends AbstractScene
 		this.addPuck(850,90);
 		
 		/* Position the text for displaying the team score and remaining game time.*/
-		this.scoreText[0] = this.add.text(10, 10, 'Team 1: 0', {fontSize: '20px', fill: '#000'});
-		this.scoreText[1] = this.add.text(10, 40, 'Team 2: 0', {fontSize: '20px', fill: '#000'});
+		this.scoreText[0] = this.add.text(10, 10, `${this.teamOneName}: 0`, {fontSize: '20px', fill: '#000'});
+		this.scoreText[1] = this.add.text(10, 40, `${this.teamTwoName}: 0`, {fontSize: '20px', fill: '#000'});
 		this.clockText = this.add.text(1280, 10, GameScene.ROUND_TIME.toString(), {fontSize: '60px', fill: '#000'});
 		
 		/* Rain effect emitter. */
@@ -193,7 +200,9 @@ export default class GameScene extends AbstractScene
 		this.cameras.main.on('camerafadeoutcomplete', function () {
 			/* Pass the team score to the end game scene. */
 			let config:EndSceneConfig = {
-				teamScore:that.teamScore
+				teamScore:that.teamScore,
+				teamOneName:that.teamOneName,
+				teamTwoName:that.teamTwoName
 			};
 
 			that.scene.start('end_scene',config);
@@ -223,7 +232,6 @@ export default class GameScene extends AbstractScene
 	 * https://photonstorm.github.io/phaser3-docs/Phaser.Scene.html#update
 	 */
 	public update(){		
-
 		/* Manage world interaction for each player currently in the game.*/
 		for(var i=0;i<this.player.length;i++)
 		{
@@ -460,8 +468,8 @@ export default class GameScene extends AbstractScene
 			window.localStorage.setItem('game_team2',this.teamScore[1].toString());
 			
 			/* Update the game score board text. */
-			this.scoreText[0].text = 'Team 1: ' + this.teamScore[0];
-			this.scoreText[1].text = 'Team 2: ' + this.teamScore[1];
+			this.scoreText[0].text = `${this.teamOneName}: ` + this.teamScore[0];
+			this.scoreText[1].text = `${this.teamTwoName}: ` + this.teamScore[1];
 			
 			/* Remove the candy from the game board. */
 			candyObj.destroy();	

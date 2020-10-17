@@ -6,7 +6,6 @@ import CandyGame from "../CandyGame";
 import Player from "../lib/Player";
 import Puck from "../lib/Puck";
 import teamNames from './Teams';
-import { Bounds } from "matter";
 
 /* Define assets which need to be loaded for this scene. */
 const ASSET:Map<string,AssetItem> = new Map();
@@ -91,9 +90,9 @@ export default class GameScene extends AbstractScene
 		this.puck = [];
 		this.puckSprite = [];
 		this.scoreText = [];
+		this.teamScore = [0,0];
 		this.teamOneName = "";
 		this.teamTwoName = "";
-		this.teamScore = [0,0];
 	}
 
 	/**
@@ -115,9 +114,9 @@ export default class GameScene extends AbstractScene
 		this.puck = [];
 		this.puckSprite = [];
 		this.scoreText = [];
+		this.teamScore = [0,0];
 		this.teamOneName = teamNames[Math.floor(Math.random() * teamNames.length)];
 		this.teamTwoName = teamNames[Math.floor(Math.random() * teamNames.length)];
-		this.teamScore = [0,0];
 		window.localStorage.setItem('game_team1',this.teamScore[0].toString());
 		window.localStorage.setItem('game_team2',this.teamScore[1].toString());
 

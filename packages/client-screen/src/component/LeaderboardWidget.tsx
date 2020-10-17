@@ -148,7 +148,7 @@ class LeaderboardWidget extends React.Component<
 			<div>
 				{this.state.teamScores.map(
 					(teamScore: any, index: number) => (
-						<div className="team-score" key={teamScore._id}>
+						<div className="team-score" key={index}>
 							<div>
 								<ProgressBarComponent
 									key={teamScore._id}

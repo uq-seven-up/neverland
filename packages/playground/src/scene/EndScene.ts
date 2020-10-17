@@ -90,7 +90,7 @@ export default class EndScene extends AbstractScene
 					endpoint,
 					(response: AxiosResponse<any>) => {
 						if (response.status === 200) {
-							console.log(response.data);
+							// console.log(response.data);
 						} else if (response.status === 500) {
 							alert('Server Error: 500');
 						} else {

@@ -43,11 +43,20 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		NOTE: REACT call a constructor twice in strict mode. Which is why the websocket code is not here.
 		https://github.com/facebook/react/issues/12856#issuecomment-613145789
 		*/
+
+		/* ensure that a player keeps the same player id, even if they refresh the page, or switch app routes.*/
+		let playerId = window.localStorage.getItem('playerId');
+		if(playerId === null)
+		{
+			playerId = CFKitUtil.createGUID();
+			window.localStorage.setItem('playerId',playerId);
+		}
+
 		this.state = {
 			game:GameState.WAITING,
 			enableMusic:false,
 			enableSound:false,
-			playerId:CFKitUtil.createGUID(),
+			playerId:playerId,
 			tracking: false,
 			comment: "No comment"
         }

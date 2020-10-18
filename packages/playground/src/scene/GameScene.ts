@@ -13,6 +13,7 @@ ASSET.set('cat',{type:'image',src:require('../assets/my_cat.png')});
 ASSET.set('cookie',{type:'image',src:require('../assets/cookie.png')});
 ASSET.set('dog',{type:'image',src:require('../assets/my_dog.png')});
 ASSET.set('donut',{type:'image',src:require('../assets/donut.png')});
+ASSET.set('goal',{type:'image',src:require('../assets/goal.png')});
 ASSET.set('icecream',{type:'image',src:require('../assets/icecream.png')});
 ASSET.set('lolly',{type:'image',src:require('../assets/lolly.png')});
 ASSET.set('muffin',{type:'image',src:require('../assets/muffin.png')});
@@ -31,6 +32,12 @@ ASSET.set('level_2',{type:'map',src:require('../assets/level2.json')}); //field
 ASSET.set('level_3',{type:'map',src:require('../assets/level3.json')}); //ice
 ASSET.set('level_4',{type:'map',src:require('../assets/level4.json')}); //beach
 
+declare type coordinate = {
+	x:number,
+	y:number
+}
+
+declare type TeamGoal = coordinate[];
 
 /**
  * Manages the scene in which the game is played.
@@ -81,18 +88,148 @@ export default class GameScene extends AbstractScene
 	/** Names of both the teams */
 	private teamOneName:string;
 	private teamTwoName:string;
+
+	/** Spanw Points */
+	private spawnPoint:coordinate[];
+
+	/** The score for each team. Team 1 = 0, Team 2 = 1. */
+	private goal:TeamGoal[];
 	
 	constructor(config:Phaser.Types.Scenes.SettingsConfig,baseUrl:string)
 	{
 		super(config,baseUrl);
 		
 		this.player = [];	
+		this.spawnPoint = [];
+		this.goal = [[],[]];
 		this.puck = [];
 		this.puckSprite = [];
 		this.scoreText = [];
 		this.teamScore = [0,0];
 		this.teamOneName = "";
 		this.teamTwoName = "";
+	}
+
+	/**
+	 * Reset all game variables for the start of a new game.
+	 */
+	private reset()
+	{
+		/* Ensure game properties are reset when the scene is restarted (for the next new game). */
+		this.player = [];	
+		this.spawnPoint = [];
+		this.goal = [[],[]];
+		this.puck = [];
+		this.puckSprite = [];
+		this.scoreText = [];
+		this.teamScore = [0,0];
+		this.teamOneName = teamNames[Math.floor(Math.random() * teamNames.length)];
+		this.teamTwoName = teamNames[Math.floor(Math.random() * teamNames.length)];
+		window.localStorage.setItem('game_team1',this.teamScore[0].toString());
+		window.localStorage.setItem('game_team2',this.teamScore[1].toString());
+	}
+
+	/**
+	 * Returns the name of the game map which should be used.
+	 */
+	private getMapName():string
+	{
+		let mapName = ' ';
+		/* change the map based on the weather */
+		let weatherTemp = (window.localStorage.getItem("temp") as any) as number;
+		if (weatherTemp <= 18) {
+			mapName = 'level_3';
+		} else if (weatherTemp > 18 && weatherTemp <= 25) {
+			mapName = 'level_2';
+		} else if(weatherTemp > 25) {
+			mapName = 'level_4';
+		} else {
+			mapName = 'level_' + (Math.floor(Math.random() * 3) + 2);
+		}
+
+		return mapName;
+	}
+
+	
+	/**
+	 * Adds a tile map to the scene.
+	 * 
+	 * @param mapName The name of the game map which should be added to the scene.
+	 */
+	private createMap(mapName:string):void
+	{
+		/* Render the game map created with tiled. (the tile map). */
+		this.map = this.make.tilemap({key:mapName});
+		const tileset = this.map.addTilesetImage('my_simple_game','tiles');		
+		this.map.createStaticLayer('ground', tileset, 0, 0);
+
+		/* Determine player spawn points, and tiles which a designated as being goals. */
+		const specialRegions = this.map.getObjectLayer('region')['objects'];
+		specialRegions.forEach(region => {
+			let tile = this.map.getTileAtWorldXY(region.x!,region.y!-32);
+			switch(region.type){
+				case 'spawn':
+					this.spawnPoint.push({x:region.x!,y:region.y! - region.height!})
+					break;
+				case 'team_1':					
+					this.goal[0].push({x:tile.x,y:tile.y});
+					break;
+				case 'team_2':
+					this.goal[1].push({x:tile.x,y:tile.y})
+					break;
+			}
+		});
+
+		/* Render the candy layer in the game world. */
+		this.candyGroup = this.physics.add.group({
+			allowGravity: false,
+			immovable: true
+		});
+
+		const candyObjects = this.map.getObjectLayer('candy')['objects'];
+		candyObjects.forEach(candyObject => {
+			this.candyGroup.create(candyObject.x!, candyObject.y! - candyObject.height!,candyObject.type).setOrigin(0,0);
+		});
+		
+		/* Render the obstacle layer in the game world. */
+		this.obstacleGroup = this.physics.add.group({
+			allowGravity: false,
+			immovable: true
+		});
+
+		const obstacleObjects = this.map.getObjectLayer('obstacle')['objects'];
+		obstacleObjects.forEach(obstacleObject => {
+			this.obstacleGroup.create(obstacleObject.x!, obstacleObject.y! - obstacleObject.height!,obstacleObject.type).setOrigin(0,0);
+		});
+	}
+
+	/**
+	 * Apply weather effects to the game map.
+	 */
+	private applyWeather():void
+	{
+		/* Rain effect emitter. */
+		var rainParticle = this.add.particles('rain');	  
+		this.rainEmitter = rainParticle.createEmitter({
+			y: 0,
+			x: { min: 0, max: this.game.canvas.width},
+			accelerationX:0,
+			accelerationY:0,
+			gravityY:500,
+			lifespan:2200,
+			bounce:0.3,
+			scaleX:[0.3,0.5],
+			scaleY:[0.5,1],
+			bounds:{x:0,y:0,w:this.game.canvas.width,h:this.game.canvas.height}
+		});	
+		
+		
+		let status = (window.localStorage.getItem("status") as any) as string;
+		if (status === "Rain" || status === "Thunderstorm") {
+			this.rain(true);
+		} else {
+			this.rain(false);
+		}
 	}
 
 	/**
@@ -109,16 +246,7 @@ export default class GameScene extends AbstractScene
 	 * https://photonstorm.github.io/phaser3-docs/Phaser.Types.Scenes.html#.SceneCreateCallback
 	 */
 	public create() {
-		/* Ensure game properties are reset when the scene is restarted (for the next new game). */
-		this.player = [];	
-		this.puck = [];
-		this.puckSprite = [];
-		this.scoreText = [];
-		this.teamScore = [0,0];
-		this.teamOneName = teamNames[Math.floor(Math.random() * teamNames.length)];
-		this.teamTwoName = teamNames[Math.floor(Math.random() * teamNames.length)];
-		window.localStorage.setItem('game_team1',this.teamScore[0].toString());
-		window.localStorage.setItem('game_team2',this.teamScore[1].toString());
+		this.reset();''
 
 		/* Pressing "1" on the keyboard places the local player into the game. (debug player.) */
 		var one_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
@@ -131,74 +259,22 @@ export default class GameScene extends AbstractScene
 
 		/* Prevent objects from leaving the map. */
 		this.physics.world.setBoundsCollision(true,true,true,true);
-		
-		/* Render the game map created with tiled. (the tile map). */
-		let mapName = ' ';
-		/* change the map based on the weather */
-		let weatherTemp = (window.localStorage.getItem("temp") as any) as number;
-		if (weatherTemp <= 18) {
-			mapName = 'level_3';
-		} else if (weatherTemp > 18 && weatherTemp <= 25) {
-			mapName = 'level_2';
-		} else if(weatherTemp > 25) {
-			mapName = 'level_4';
-		} else {
-			mapName = 'level_' + (Math.floor(Math.random() * 3) + 2);
-		}
-		
-		this.map = this.make.tilemap({key:mapName});
-		const tileset = this.map.addTilesetImage('my_simple_game','tiles');		
-		this.map.createStaticLayer('ground', tileset, 0, 0);
-		
-		/* Render the candy layer in the game world. */
-		this.candyGroup = this.physics.add.group({
-			allowGravity: false,
-			immovable: true
-		  });
+	
+		/* Add map to scene. */
+		let mapName = this.getMapName();
+		this.createMap(mapName);
 
-		const candyObjects = this.map.getObjectLayer('candy')['objects'];
-		candyObjects.forEach(candyObject => {
-			this.candyGroup.create(candyObject.x!, candyObject.y! - candyObject.height!,candyObject.type).setOrigin(0,0);
-		  });
-		  
-		/* Render the obstacle layer in the game world. */
-		this.obstacleGroup = this.physics.add.group({
-			allowGravity: false,
-			immovable: true
-		  });
+		/* Apply weather effects to the game world. */
+		this.applyWeather();
 
-		const obstacleObjects = this.map.getObjectLayer('obstacle')['objects'];
-		obstacleObjects.forEach(obstacleObject => {
-			this.obstacleGroup.create(obstacleObject.x!, obstacleObject.y! - obstacleObject.height!,obstacleObject.type).setOrigin(0,0);
-		  });
-		 
+		/* Place puck(s) onto the game board. */
+		this.addPuck(400,400);
 
-		/* Place pucks onto the game board. */
-		this.addPuck(250,90);
-		this.addPuck(700,100);
-		this.addPuck(850,90);
-		
 		/* Position the text for displaying the team score and remaining game time.*/
 		this.scoreText[0] = this.add.text(10, 10, `Team ${this.teamOneName}: 0`, {fontSize: '20px', fill: '#000'});
 		this.scoreText[1] = this.add.text(10, 40, `Team ${this.teamTwoName}: 0`, {fontSize: '20px', fill: '#000'});
 		this.clockText = this.add.text(1280, 10, GameScene.ROUND_TIME.toString(), {fontSize: '60px', fill: '#000'});
 		
-		/* Rain effect emitter. */
-		var rainParticle = this.add.particles('rain');	  
-		this.rainEmitter = rainParticle.createEmitter({
-			y: 0,
-			x: { min: 0, max: this.game.canvas.width},
-			accelerationX:0,
-			accelerationY:0,
-			gravityY:500,
-			lifespan:2200,
-			bounce:0.3,
-			scaleX:[0.3,0.5],
-			scaleY:[0.5,1],
-			bounds:{x:0,y:0,w:this.game.canvas.width,h:this.game.canvas.height}
-		});	
-		
-
 		/* Switch to the end game scene after this scene has faded out. */
 		let that = this;
 		this.cameras.main.on('camerafadeoutcomplete', function () {
@@ -214,13 +290,7 @@ export default class GameScene extends AbstractScene
 
 		/* Broadcast the start of the game to all players (mobile-clients) */
 		this.sendEventToAllPlayers(90);
-		let status = (window.localStorage.getItem("status") as any) as string;
 		
-		if (status === "Rain" || status === "Thunderstorm") {
-			this.rain(true);
-		} else {
-			this.rain(false);
-		}
 		/* Start the game countdown. */
 		this.timeEvent = this.time.addEvent({delay:1000, 
 											repeat:GameScene.ROUND_TIME,
@@ -263,12 +333,13 @@ export default class GameScene extends AbstractScene
 
 		for(var i=0;i<this.puck.length;i++)
 		{
+			this.checkPuckInGoal(this.puck[i]);
 			this.puck[i].update();
 		}
 		
 		/* Manage object collisions in the game world.*/
 		this.physics.collide(this.puckSprite,this.puckSprite,() => {return;});/* pucks collided */
-		this.physics.collide(this.puckSprite,this.candyGroup,() => {return;});/* pucks collided with candy. */
+		// this.physics.collide(this.puckSprite,this.candyGroup,() => {return;});/* pucks collided with candy. */
 		this.physics.collide(this.puckSprite,this.obstacleGroup,() => {return;});/* puck collided with obstacle. */
 		
 		/* Manage the local player. (Debug Player) */
@@ -286,12 +357,14 @@ export default class GameScene extends AbstractScene
 	private addPlayer(id:string)
 	{
 		if(this.getPlayerById(id)) return;/* prevent adding a player into the game more than once. */
+		
+		/* Assign player to a team*/
 		let team = (this.player.length) % 2;
 		let player = new Player(id, team, this);
 		
-		/* Give each player a different start position, to prevent players overlapping on game start. */
-		player.team = team;
-		player.sprite.x = player.sprite.x + (player.sprite.width * this.player.length);
+		/* Spawn player on their designated spawn point. */
+		player.sprite.x = this.spawnPoint[this.player.length].x;
+		player.sprite.y = this.spawnPoint[this.player.length].y;
 		
 		/* Start tracking this player in the game. */
 		this.player.push(player);	
@@ -465,15 +538,7 @@ export default class GameScene extends AbstractScene
 			/* Update the players and the teams score. */
 			player.calories += calories;
 			player.score += points;
-			this.teamScore[player.team] += points;
-  
-			/* Update score in local storage for sharing with other widgets. */
-			window.localStorage.setItem('game_team1',this.teamScore[0].toString());
-			window.localStorage.setItem('game_team2',this.teamScore[1].toString());
-			
-			/* Update the game score board text. */
-			this.scoreText[0].text = `Team ${this.teamOneName}: ` + this.teamScore[0];
-			this.scoreText[1].text = `Team ${this.teamTwoName}: ` + this.teamScore[1];
+			this.scorePointsForTeam(player.team,points);
 			
 			/* Remove the candy from the game board. */
 			candyObj.destroy();	
@@ -481,6 +546,18 @@ export default class GameScene extends AbstractScene
 			/* Send a "candy collected" event to the mobile client of the player that just collected candy. */
 			(this.game as CandyGame).sendEventToPlayer(player.id,200);
 		}
+	}
+
+	private scorePointsForTeam(team:number,points:number):void{
+		this.teamScore[team] += points;
+  
+		/* Update score in local storage for sharing with other widgets. */
+		window.localStorage.setItem('game_team1',this.teamScore[0].toString());
+		window.localStorage.setItem('game_team2',this.teamScore[1].toString());
+		
+		/* Update the game score board text. */
+		this.scoreText[0].text = `Team ${this.teamOneName}: ` + this.teamScore[0];
+		this.scoreText[1].text = `Team ${this.teamTwoName}: ` + this.teamScore[1];
 	}
 
 	private handlePLayerHitByPuck(playerObj:Phaser.Types.Physics.Arcade.GameObjectWithBody,puckObj:Phaser.Types.Physics.Arcade.GameObjectWithBody)
@@ -496,6 +573,54 @@ export default class GameScene extends AbstractScene
 		
 		puck.lastPlayerId = player?.id;
 	}
+
+	/**
+	 * Checks if a puck is inside one of the defined goals and scores points.
+	 * @param puck The puck which is to be checked.
+	 */
+	private checkPuckInGoal(puck:Puck):void
+	{
+		/* Determine the tile that the puck is currently on. */
+		let tile = this.map.getTileAtWorldXY(puck.sprite.x,puck.sprite.y);
+		if(this.isGoal(0,tile))
+		{
+			puck.sprite.setX(400);
+			puck.sprite.setY(200);
+			puck.sprite.setVelocity(0);
+			this.scorePointsForTeam(1,50);		
+			return;
+		}
+		
+		if(this.isGoal(1,tile))
+		{
+			puck.sprite.setX(800);
+			puck.sprite.setY(200);
+			puck.sprite.setVelocity(0);	
+			this.scorePointsForTeam(0,50);		
+			return;
+		}
+	}
+
+	/**
+	 * Checks if the passed in tile is goal tile for the specified team.
+	 * Returns true if the tile is designated as goal tile for the specified team.
+	 * @param team The team that is being scored against.
+	 * @param tile The tile which should be checked for being a goal tile.
+	 */
+	private isGoal(team:number,tile:Phaser.Tilemaps.Tile):boolean
+	{
+		if(tile.index !== 12) return false;
+		
+		for(let i=0;i<this.goal[team].length;i++)
+		{
+			if(this.goal[team][i].x === tile.x && this.goal[team][i].y === tile.y)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}	
   
 	/**
 	 * Allow moving the local player (debug player) using the keyboard cursor keys.

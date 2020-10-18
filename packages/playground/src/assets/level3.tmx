@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="22" height="11" tilewidth="64" tileheight="64" infinite="0" nextlayerid="4" nextobjectid="26">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="22" height="11" tilewidth="64" tileheight="64" infinite="0" nextlayerid="6" nextobjectid="71">
+ <editorsettings>
+  <export target="level3.json" format="json"/>
+ </editorsettings>
  <tileset firstgid="1" name="my_simple_game" tilewidth="64" tileheight="64" tilecount="24" columns="6">
-  <image source="../../../../../../../Desktop/Design Computing Studio 3 Build/Game 4/final tiles.png" width="384" height="256"/>
+  <image source="final tiles.png" width="384" height="256"/>
  </tileset>
  <layer id="1" name="ground" width="22" height="11">
   <data encoding="base64">
-   CQAAAAkAAAAJAAAACQAAAAkAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAHAAAABwAAAAgAAAAIAAAACQAAAAkAAAAJAAAACQAAAAkAAAAJAAAACQAAAAkAAAAJAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAABwAAAAcAAAAIAAAACAAAAAkAAAAJAAAACQAAAAkAAAAJAAAACQAAAAkAAAAJAAAACQAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAcAAAAHAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAHAAAABwAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAHAAAABwAAAAcAAAAHAAAABwAAAAcAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAABwAAAAcAAAAHAAAABwAAAAcAAAAHAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAABwAAAAcAAAAHAAAABwAAAAcAAAAHAAAACAAAAAgAAAAIAAAACAAAAAcAAAAHAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAcAAAAHAAAABwAAAAcAAAAHAAAABwAAAAgAAAAIAAAACAAAAAgAAAAHAAAABwAAAAgAAAAIAAAACAAAAAkAAAAJAAAACQAAAAkAAAAJAAAACQAAAAgAAAAIAAAACAAAAAgAAAAIAAAABwAAAAcAAAAHAAAABwAAAAcAAAAHAAAABwAAAAcAAAAIAAAACAAAAAgAAAAJAAAACQAAAAkAAAAJAAAACQAAAAkAAAAIAAAACAAAAAgAAAAIAAAACAAAAAcAAAAHAAAABwAAAAcAAAAHAAAABwAAAAcAAAAHAAAACAAAAAgAAAAIAAAACQAAAAkAAAAJAAAACQAAAAkAAAAJAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAA=
+   CQAAAAkAAAAJAAAACQAAAAkAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAHAAAABwAAAAgAAAAIAAAACQAAAAkAAAAJAAAACQAAAAkAAAAJAAAACQAAAAkAAAAJAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAABwAAAAcAAAAIAAAACAAAAAkAAAAJAAAACQAAAAkAAAAJAAAACQAAAAkAAAAJAAAACQAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAcAAAAHAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAHAAAABwAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAwAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAHAAAABwAAAAcAAAAHAAAABwAAAAcAAAAIAAAACAAAAAgAAAAIAAAACAAAAAwAAAAMAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAABwAAAAcAAAAHAAAABwAAAAcAAAAHAAAACAAAAAgAAAAIAAAACAAAAAgAAAAMAAAABwAAAAcAAAAHAAAABwAAAAcAAAAHAAAACAAAAAgAAAAIAAAACAAAAAcAAAAHAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAcAAAAHAAAABwAAAAcAAAAHAAAABwAAAAgAAAAIAAAACAAAAAgAAAAHAAAABwAAAAgAAAAIAAAACAAAAAkAAAAJAAAACQAAAAkAAAAJAAAACQAAAAgAAAAIAAAACAAAAAgAAAAIAAAABwAAAAcAAAAHAAAABwAAAAcAAAAHAAAABwAAAAcAAAAIAAAACAAAAAgAAAAJAAAACQAAAAkAAAAJAAAACQAAAAkAAAAIAAAACAAAAAgAAAAIAAAACAAAAAcAAAAHAAAABwAAAAcAAAAHAAAABwAAAAcAAAAHAAAACAAAAAgAAAAIAAAACQAAAAkAAAAJAAAACQAAAAkAAAAJAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAA=
   </data>
  </layer>
  <objectgroup id="2" name="obstacle">
@@ -36,5 +39,31 @@
   <object id="23" type="muffin" gid="22" x="765.832" y="640.872" width="64" height="64"/>
   <object id="24" type="icecream" gid="24" x="1280.22" y="512.799" width="64" height="64"/>
   <object id="25" type="icecream" gid="24" x="-2.60619" y="701.759" width="64" height="64"/>
+ </objectgroup>
+ <objectgroup id="4" name="region">
+  <object id="37" name="0" type="spawn" gid="11" x="384" y="64" width="64" height="64"/>
+  <object id="38" name="2" type="spawn" gid="11" x="448" y="64" width="64" height="64"/>
+  <object id="39" name="4" type="spawn" gid="11" x="512" y="64" width="64" height="64"/>
+  <object id="40" name="8" type="spawn" gid="11" x="576" y="64" width="64" height="64"/>
+  <object id="41" name="1" type="spawn" gid="11" x="640" y="704" width="64" height="64"/>
+  <object id="42" name="3" type="spawn" gid="11" x="704" y="704" width="64" height="64"/>
+  <object id="43" name="5" type="spawn" gid="11" x="768" y="704" width="64" height="64"/>
+  <object id="44" name="7" type="spawn" gid="11" x="832" y="704" width="64" height="64"/>
+  <object id="49" gid="11" x="0" y="320" width="64" height="64"/>
+  <object id="50" gid="11" x="0" y="384" width="64" height="64"/>
+  <object id="51" gid="11" x="1344" y="320" width="64" height="64"/>
+  <object id="52" type="team_2" gid="11" x="1344" y="384" width="64" height="64"/>
+  <object id="53" type="team_2" gid="11" x="1344" y="320" width="64" height="64"/>
+  <object id="55" type="team_1" gid="11" x="0" y="320" width="64" height="64"/>
+  <object id="56" type="team_1" gid="11" x="0" y="384" width="64" height="64"/>
+  <object id="57" gid="11" x="0" y="320" width="64" height="64"/>
+  <object id="58" gid="11" x="0" y="384" width="64" height="64"/>
+  <object id="59" gid="11" x="0" y="320" width="64" height="64"/>
+  <object id="60" type="team_1" gid="11" x="0" y="384" width="64" height="64"/>
+  <object id="61" gid="11" x="1344" y="320" width="64" height="64"/>
+  <object id="62" gid="11" x="1344" y="384" width="64" height="64"/>
+  <object id="63" type="team_2" gid="11" x="1344" y="320" width="64" height="64"/>
+  <object id="64" type="team_2" gid="11" x="1344" y="384" width="64" height="64"/>
+  <object id="65" type="team_1" gid="11" x="0" y="320" width="64" height="64"/>
  </objectgroup>
 </map>

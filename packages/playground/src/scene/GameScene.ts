@@ -99,6 +99,9 @@ export default class GameScene extends AbstractScene
 
 	/** THe types of treats which will randomly re-spawn. */
 	private treats:string[];
+
+	/** Whether the fat princess mode is active */
+	private fatPrincess:boolean;
 	
 	constructor(config:Phaser.Types.Scenes.SettingsConfig,baseUrl:string)
 	{
@@ -114,6 +117,7 @@ export default class GameScene extends AbstractScene
 		this.teamOneName = "";
 		this.teamTwoName = "";
 		this.treats = [];
+		this.fatPrincess = true;
 	}
 
 	/**
@@ -579,13 +583,56 @@ export default class GameScene extends AbstractScene
 		let player = this.getPlayerById(playerObj.name);
 		let puck = this.puck[parseInt(puckObj.name,10)];
 		
-		if(player === null || player.id === puck.lastPlayerId) return;
+		if(player === null) return;
 		
+		if(this.fatPrincess){
+			this.dropCandies(player);
+		}
+
 		if(puck.lastPlayerId !== ''){
 			console.log('Player', player?.id, 'was hit by',puck.lastPlayerId);
 		}
 		
 		puck.lastPlayerId = player?.id;
+	}
+
+	/**
+	 * In fat princess mode, serves to drop candies around the player and reset calories
+	 * @param player 
+	 */
+	private dropCandies(player: Player) {
+		let candyCount = Math.floor(player.calories / 5);
+		var center = player.sprite.getCenter();
+
+		for(var i = 0; i < candyCount; i++) {
+			var direction = this.randRange((2 * Math.PI) / candyCount * i, (2 * Math.PI) / candyCount * (i + 1));
+			var power = this.randRange(100, 400);
+
+			var deltaX = power * Math.cos(direction);
+			var deltaY = power * Math.sin(direction);
+
+			let x = center.x + deltaX;
+			let y = center.y + deltaY;
+
+			if( x < 1){
+				x = 1
+			}
+			else if(x >= (this.map.width - 1) * 64) {
+				x = (this.map.width - 1) * 64;
+			}
+
+			if(y < 1) {
+				y = 1;
+			}
+			else if(y >= (this.map.height - 1) * 64) {
+				y = (this.map.height - 1) * 64;
+			}
+
+			let candyType = this.treats[this.treats.length * Math.random() | 0]
+			this.candyGroup.create(x, y,candyType).setOrigin(0,0);
+		}
+
+		player.calories = 0;
 	}
 
 	/**
@@ -730,7 +777,6 @@ export default class GameScene extends AbstractScene
 	 */
 	private checkEndOfGame()
 	{
-		
 		/* TODO: Make candy spawning run on its own timer. */
 		if(this.timeEvent.repeatCount % 5 === 0 && this.candyGroup.getLength() < 10)
 		{

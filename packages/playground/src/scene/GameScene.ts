@@ -46,9 +46,8 @@ declare type TeamGoal = coordinate[];
  * Manages the scene in which the game is played.
  */
 export default class GameScene extends AbstractScene  
-{
-
- 	/** The duration of a single game in seconds. */
+{	
+	/** The duration of a single game in seconds. */
 	private static ROUND_TIME = 120;
 	
 	/** The id used by the player using the keyboard connected to the game screen. (debug player) */
@@ -97,6 +96,9 @@ export default class GameScene extends AbstractScene
 
 	/** The score for each team. Team 1 = 0, Team 2 = 1. */
 	private goal:TeamGoal[];
+
+	/** THe types of treats which will randomly re-spawn. */
+	private treats:string[];
 	
 	constructor(config:Phaser.Types.Scenes.SettingsConfig,baseUrl:string)
 	{
@@ -111,6 +113,7 @@ export default class GameScene extends AbstractScene
 		this.teamScore = [0,0];
 		this.teamOneName = "";
 		this.teamTwoName = "";
+		this.treats = [];
 	}
 
 	/**
@@ -130,6 +133,7 @@ export default class GameScene extends AbstractScene
 		this.teamTwoName = teamNames[Math.floor(Math.random() * teamNames.length)];
 		window.localStorage.setItem('game_team1',this.teamScore[0].toString());
 		window.localStorage.setItem('game_team2',this.teamScore[1].toString());
+		this.treats = [];
 	}
 
 	/**
@@ -190,10 +194,15 @@ export default class GameScene extends AbstractScene
 		});
 
 		const candyObjects = this.map.getObjectLayer('candy')['objects'];
+		let candyTypes:string[] = [];
 		candyObjects.forEach(candyObject => {
+			candyTypes.push(candyObject.type);
 			this.candyGroup.create(candyObject.x!, candyObject.y! - candyObject.height!,candyObject.type).setOrigin(0,0);
 		});
-		
+
+		/* Remove duplicate candy types. */
+		this.treats = Array.from(new Set(candyTypes));
+
 		/* Render the obstacle layer in the game world. */
 		this.obstacleGroup = this.physics.add.group({
 			allowGravity: false,
@@ -205,6 +214,8 @@ export default class GameScene extends AbstractScene
 			this.obstacleGroup.create(obstacleObject.x!, obstacleObject.y! - obstacleObject.height!,obstacleObject.type).setOrigin(0,0);
 		});
 	}
+
+	
 
 	/**
 	 * Apply weather effects to the game map.
@@ -719,8 +730,20 @@ export default class GameScene extends AbstractScene
 	 */
 	private checkEndOfGame()
 	{
+		
+		/* TODO: Make candy spawning run on its own timer. */
+		if(this.timeEvent.repeatCount % 5 === 0 && this.candyGroup.getLength() < 10)
+		{
+			let x = this.randRange(1,this.map.width) - 1;
+			let y = this.randRange(1,this.map.height) - 1;
+			let tile = this.map.getTileAt(x,y);
+			let candyType = this.treats[this.treats.length * Math.random() | 0]
+			this.candyGroup.create(tile.getCenterX(), tile.getCenterY(),candyType).setOrigin(0,0);
+		}
+
+		
 		/* Currently the game signals the immenent game end by starting to slowly fade out the game with n seconds to go.*/
-		if(this.timeEvent.repeatCount === 6){
+		if(this.timeEvent.repeatCount === 6 || this.candyGroup.getLength() === 0){
 			this.endGame()
 		}
 	}
@@ -734,5 +757,14 @@ export default class GameScene extends AbstractScene
 		The game is over once the scene is faded out which fires the fade out event listeners attached to the camera. 
 		See the create() method. */
 		this.cameras.main.fadeOut(5000, 0, 0, 0);
+	}
+
+	/**
+	 * Creates a random number in a range. ()
+	 * @param From this integer.
+	 * @param To this integer.
+	 */
+	private randRange(min:number,max:number){
+		return Math.floor(Math.random() * (max - min + 1) + min);
 	}
 }

@@ -21,7 +21,10 @@ ASSET.set('palm',{type:'image',src:require('../assets/palm.png')});
 ASSET.set('puck',{type:'image',src:require('../assets/puck.png')});
 ASSET.set('rain',{type:'image',src:require('../assets/rain.png')});
 ASSET.set('swirl',{type:'image',src:require('../assets/swirl.png')});
-ASSET.set('trail_0',{type:'image',src:require('../assets/muzzleflash3.png')});
+ASSET.set('trail_0',{type:'image',src:require('../assets/trail_0.png')});
+ASSET.set('trail_1',{type:'image',src:require('../assets/trail_1.png')});
+ASSET.set('trail_2',{type:'image',src:require('../assets/trail_2.png')});
+ASSET.set('trail_3',{type:'image',src:require('../assets/trail_3.png')});
 ASSET.set('tree',{type:'image',src:require('../assets/tree.png')});
 ASSET.set('tiles',{type:'image',src:require('../assets/final tiles.png')});
 ASSET.set('umbrella1',{type:'image',src:require('../assets/umbrella1.png')});
@@ -360,7 +363,7 @@ export default class GameScene extends AbstractScene
 		
 		/* Assign player to a team*/
 		let team = (this.player.length) % 2;
-		let player = new Player(id, team, this);
+		let player = new Player(id,this.player.length, team, this);
 		
 		/* Spawn player on their designated spawn point. */
 		player.sprite.x = this.spawnPoint[this.player.length].x;

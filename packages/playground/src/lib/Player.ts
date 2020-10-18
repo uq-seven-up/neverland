@@ -7,6 +7,9 @@ export default class Player{
 	/** The unique identifier for this player. In practice this is the UUID set by the mobile-client. */
 	private _id:string;
 	
+	/** The players index position. */
+	private _idx:number;
+
 	/** Reference to the sprite representing this player in the game world. */
 	private _sprite!:Phaser.Physics.Arcade.Sprite;
 	
@@ -31,9 +34,10 @@ export default class Player{
 	/** The trail of particles following a player as they move. */
 	private _trail:Phaser.GameObjects.Particles.ParticleEmitter
 	
-	constructor(id:string,team:number,scene:Phaser.Scene)
+	constructor(id:string,idx:number,team:number,scene:Phaser.Scene)
 	{
 		this._id = id;
+		this._idx = idx;
 		this._speed_x = 0;
 		this._speed_y = 0;
 		this._score = 0;
@@ -63,13 +67,32 @@ export default class Player{
 		the particles will render over the top of the sprite. i.e. The order
 		in which game object are added to the scene determines the z-index.
 		*/
-		var particles = scene.add.particles('trail_0');	  
+		let texture = '';
+		switch(this._idx)
+		{
+			case 0:
+				texture = 'trail_0';
+				break;
+			case 1:
+				texture = 'trail_1';
+				break;
+			case 2:
+				texture = 'trail_2';
+				break;
+			case 3:
+				texture = 'trail_3';
+				break;
+			default:
+				texture = 'trail_0';
+		}
+		
+		
+		var particles = scene.add.particles(texture);
 		this._trail = particles.createEmitter({
 			speed: 50,
 			scale: { start: 0, end: 1 },
 			angle:{ min: 180, max: 360 },
-			lifespan:300,
-			blendMode:Phaser.BlendModes.ADD
+			lifespan:300
 		});
 
 		/* Place the player into the scene.*/

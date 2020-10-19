@@ -241,6 +241,27 @@ export default class Player{
 		if(this.calories === 0) return;
 		if(candyGroup.getLength() > 15) return;
 		
+		var explosion = candyGroup.scene.add.particles('explosion');
+		explosion.createEmitter({
+			frame: [ 'smoke-puff', 'cloud', 'smoke-puff' ],
+			angle: { min: 240, max: 300 },
+			speed: { min: 200, max: 300 },
+			quantity: 6,
+			lifespan: 2000,
+			alpha: { start: 1, end: 0 },
+			scale: { start: 1.5, end: 0.5 },
+			on: false
+		});
+		explosion.createEmitter({
+			frame: 'muzzleflash2',
+			lifespan: 200,
+			scale: { start: 2, end: 0 },
+			rotate: { start: 0, end: 180 },
+			on: false
+		});
+
+		explosion.emitParticleAt(this._sprite.x, this._sprite.y);
+
 		var particles = candyGroup.scene.add.particles('spritesheet');
 		var candyEmitter = particles.createEmitter({
 			frame: [18,19,20,21,22,23],
@@ -319,7 +340,5 @@ export default class Player{
 		/* Move the player inside of the game world.*/
 		this._sprite.body.velocity.x = this._speed_x * this._speed * speedScale;
 		this._sprite.body.velocity.y = this._speed_y * this._speed * speedScale;
-
-		this._trail.visible = true;
 	}
 }

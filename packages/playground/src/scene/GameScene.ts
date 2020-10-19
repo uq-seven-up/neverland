@@ -13,6 +13,7 @@ ASSET.set('cat',{type:'image',src:require('../assets/my_cat.png')});
 ASSET.set('cookie',{type:'image',src:require('../assets/cookie.png')});
 ASSET.set('dog',{type:'image',src:require('../assets/my_dog.png')});
 ASSET.set('donut',{type:'image',src:require('../assets/donut.png')});
+ASSET.set('explosionSheet',{type:'image',src:require('../assets/explosion.png')});
 ASSET.set('goal',{type:'image',src:require('../assets/goal.png')});
 ASSET.set('icecream',{type:'image',src:require('../assets/icecream.png')});
 ASSET.set('lolly',{type:'image',src:require('../assets/lolly.png')});
@@ -32,6 +33,7 @@ ASSET.set('umbrella1',{type:'image',src:require('../assets/umbrella1.png')});
 ASSET.set('umbrella2',{type:'image',src:require('../assets/umbrella2.png')});
 ASSET.set('player_cat',{type:'atlas',src:require('../assets/my_cat.json'),ref:'cat'});
 ASSET.set('player_dog',{type:'atlas',src:require('../assets/my_dog.json'),ref:'dog'});
+ASSET.set('explosion',{type:'atlas',src:require('../assets/explosion.json'),ref:'explosionSheet'});
 ASSET.set('level_2',{type:'map',src:require('../assets/level2.json')}); //field
 ASSET.set('level_3',{type:'map',src:require('../assets/level3.json')}); //ice
 ASSET.set('level_4',{type:'map',src:require('../assets/level4.json')}); //beach

@@ -583,7 +583,8 @@ export default class GameScene extends AbstractScene
 		let player = this.getPlayerById(playerObj.name);
 		let puck = this.puck[parseInt(puckObj.name,10)];
 		
-		if(player === null) return;
+		/* Ensure players can not hit themselves with a puck. */
+		if(player === null || player.id === puck.lastPlayerId) return;
 		
 		if(this.fatPrincess){
 			this.dropCandies(player);

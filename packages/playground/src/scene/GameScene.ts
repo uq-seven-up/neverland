@@ -27,6 +27,7 @@ ASSET.set('trail_2',{type:'image',src:require('../assets/trail_2.png')});
 ASSET.set('trail_3',{type:'image',src:require('../assets/trail_3.png')});
 ASSET.set('tree',{type:'image',src:require('../assets/tree.png')});
 ASSET.set('tiles',{type:'image',src:require('../assets/final tiles.png')});
+ASSET.set('spritesheet',{type:'sheet',src:require('../assets/final tiles.png')});
 ASSET.set('umbrella1',{type:'image',src:require('../assets/umbrella1.png')});
 ASSET.set('umbrella2',{type:'image',src:require('../assets/umbrella2.png')});
 ASSET.set('player_cat',{type:'atlas',src:require('../assets/my_cat.json'),ref:'cat'});
@@ -579,6 +580,8 @@ export default class GameScene extends AbstractScene
 		this.scoreText[1].text = `Team ${this.teamTwoName}: ` + this.teamScore[1];
 	}
 
+	
+
 	private handlePLayerHitByPuck(playerObj:Phaser.Types.Physics.Arcade.GameObjectWithBody,puckObj:Phaser.Types.Physics.Arcade.GameObjectWithBody)
 	{
 		let player = this.getPlayerById(playerObj.name);
@@ -587,18 +590,56 @@ export default class GameScene extends AbstractScene
 		/* Ensure players can not hit themselves with a puck. */
 		if(player === null || player.id === puck.lastPlayerId) return;
 		
-		var particles = this.add.particles('trail_3');
-		var emitter = particles.createEmitter({
-			speed: 100,
-			scale: { start: 0, end: 1 },
-			lifespan:500,
-			blendMode:Phaser.BlendModes.ADD
-			
+				
+		var particles = this.add.particles('spritesheet');
+		var candyEmitter = particles.createEmitter({
+			frame: [18,19,20,21,22,23],
+			lifespan: 2000,
+			speed: 200,
+			quantity: 32,
+			maxParticles:10,
+			scale: { start: 0.3, end: 1 },
+			on: true,
+			x:player.sprite.x,
+			y:player.sprite.y,
+			deathCallback:true
 		});
-		//emitter.startFollow(puckObj,0,0);
-		emitter.explode(50,puck.sprite.x,puck.sprite.y);
+
+		candyEmitter.acceleration = true;	
+		candyEmitter.deathCallback = (particle:Phaser.GameObjects.Particles.Particle):void =>
+		{
+			let texture = '';
+			switch(particle.frame.name)
+			{
+				case '18':
+					texture = 'donut';
+					break;
+				case '19':
+					texture = 'swirl';
+					break;
+				case '20':
+					texture = 'lolly';
+					break;
+				case '21':
+					texture = 'muffin';
+					break;
+				case '22':
+					texture = 'cookie';
+					break;
+				case '23':
+					texture = 'icecream';
+					break;
+				default:
+					texture = 'lolly';
+
+			}
+			
+			this.candyGroup.create(particle.x, particle.y,texture).setOrigin(0,0);
+		}	
+		
+		
 		if(this.fatPrincess){
-			this.dropCandies(player);
+		//	this.dropCandies(player);
 		}
 
 		if(puck.lastPlayerId !== ''){

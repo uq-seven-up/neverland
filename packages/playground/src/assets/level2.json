@@ -3,7 +3,8 @@
     {
      "export":
         {
-         "target":"..\/..\/..\/..\/..\/..\/..\/Desktop\/Design Computing Studio 3 Build\/Game 4"
+         "format":"json",
+         "target":"level2.json"
         }
     },
  "height":11,

@@ -158,6 +158,7 @@ export default class GameScene extends AbstractScene
 			mapName = 'level_' + (Math.floor(Math.random() * 3) + 2);
 		}
 
+		mapName = 'level_' + (Math.floor(Math.random() * 3) + 2);
 		return mapName;
 	}
 
@@ -586,12 +587,22 @@ export default class GameScene extends AbstractScene
 		/* Ensure players can not hit themselves with a puck. */
 		if(player === null || player.id === puck.lastPlayerId) return;
 		
+		var particles = this.add.particles('trail_3');
+		var emitter = particles.createEmitter({
+			speed: 100,
+			scale: { start: 0, end: 1 },
+			lifespan:500,
+			blendMode:Phaser.BlendModes.ADD
+			
+		});
+		//emitter.startFollow(puckObj,0,0);
+		emitter.explode(50,puck.sprite.x,puck.sprite.y);
 		if(this.fatPrincess){
 			this.dropCandies(player);
 		}
 
 		if(puck.lastPlayerId !== ''){
-			console.log('Player', player?.id, 'was hit by',puck.lastPlayerId);
+			// console.log('Player', player?.id, 'was hit by',puck.lastPlayerId);
 		}
 		
 		puck.lastPlayerId = player?.id;
@@ -785,7 +796,11 @@ export default class GameScene extends AbstractScene
 			let y = this.randRange(1,this.map.height) - 1;
 			let tile = this.map.getTileAt(x,y);
 			let candyType = this.treats[this.treats.length * Math.random() | 0]
-			this.candyGroup.create(tile.getCenterX(), tile.getCenterY(),candyType).setOrigin(0,0);
+			let candy = this.candyGroup.create(tile.getCenterX(), tile.getCenterY(),candyType) as Phaser.Physics.Arcade.Sprite;
+			candy.setOrigin(0,0);
+			
+			console.log(candy);
+
 		}
 
 		

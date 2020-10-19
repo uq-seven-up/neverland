@@ -94,6 +94,9 @@ export default class Player{
 			angle:{ min: 180, max: 360 },
 			lifespan:300
 		});
+		this._trail.visible = false;
+		this._trail.pause();
+		
 
 		/* Place the player into the scene.*/
 		this._sprite = scene.physics.add.sprite(50,200,playersprite);		
@@ -262,5 +265,7 @@ export default class Player{
 		/* Move the player inside of the game world.*/
 		this._sprite.body.velocity.x = this._speed_x * this._speed * speedScale;
 		this._sprite.body.velocity.y = this._speed_y * this._speed * speedScale;
+
+		this._trail.visible = true;
 	}
 }

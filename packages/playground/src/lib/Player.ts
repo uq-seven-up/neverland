@@ -214,11 +214,7 @@ export default class Player{
 				this._speed_x = -1;
 				this._speed_y = -1;
 				this._sprite.flipX = true;
-				
 				break;
-			default:
-				this._speed_x = 0;
-				this._speed_y = 0;
 		}
 
 		//this._trail.startFollow(this._sprite,this._speed_x * -20,this._speed_y * -20,true);
@@ -235,7 +231,65 @@ export default class Player{
 		this._speed_y = 0;
 		this._trail.visible = false;
 		this._trail.pause();
+	}
 
+	/**
+	 * Drops collected candy onto the gameboard.
+	 * @param candyGroup The candy group to which dropped candy will be added.
+	 */
+	public dropCandy(candyGroup:Phaser.Physics.Arcade.Group) {
+		if(this.calories === 0) return;
+		if(candyGroup.getLength() > 15) return;
+		
+		var particles = candyGroup.scene.add.particles('spritesheet');
+		var candyEmitter = particles.createEmitter({
+			frame: [18,19,20,21,22,23],
+			lifespan: 1000,
+			speed: 300,
+			quantity: 3,
+			maxParticles:10,
+			scale: { start: 0.3, end: 1 },
+			on: true,
+			rotate:{min:0,max:20},
+			x:this._sprite.x,
+			y:this._sprite.y,
+			deathCallback:true
+		});
+
+		candyEmitter.acceleration = true;	
+		candyEmitter.deathCallback = (particle:Phaser.GameObjects.Particles.Particle):void =>
+		{
+			let texture = '';
+			let index = parseInt(particle.frame.name,10);
+			switch(index)
+			{
+				case 18:
+					texture = 'donut';
+					break;
+				case 19:
+					texture = 'swirl';
+					break;
+				case 20:
+					texture = 'lolly';
+					break;
+				case 21:
+					texture = 'muffin';
+					break;
+				case 22:
+					texture = 'cookie';
+					break;
+				case 23:
+					texture = 'icecream';
+					break;
+				default:
+					texture = 'lolly';
+
+			}
+			
+			candyGroup.create(particle.x - 32, particle.y - 32,texture).setOrigin(0,0);
+		}
+
+		this._calories = 0;
 	}
 
 	/** Called when the player is taken out of the game. */

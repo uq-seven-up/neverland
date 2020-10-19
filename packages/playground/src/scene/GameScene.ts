@@ -589,103 +589,15 @@ export default class GameScene extends AbstractScene
 		
 		/* Ensure players can not hit themselves with a puck. */
 		if(player === null || player.id === puck.lastPlayerId) return;
-		
-				
-		var particles = this.add.particles('spritesheet');
-		var candyEmitter = particles.createEmitter({
-			frame: [18,19,20,21,22,23],
-			lifespan: 2000,
-			speed: 200,
-			quantity: 32,
-			maxParticles:10,
-			scale: { start: 0.3, end: 1 },
-			on: true,
-			x:player.sprite.x,
-			y:player.sprite.y,
-			deathCallback:true
-		});
-
-		candyEmitter.acceleration = true;	
-		candyEmitter.deathCallback = (particle:Phaser.GameObjects.Particles.Particle):void =>
-		{
-			let texture = '';
-			switch(particle.frame.name)
-			{
-				case '18':
-					texture = 'donut';
-					break;
-				case '19':
-					texture = 'swirl';
-					break;
-				case '20':
-					texture = 'lolly';
-					break;
-				case '21':
-					texture = 'muffin';
-					break;
-				case '22':
-					texture = 'cookie';
-					break;
-				case '23':
-					texture = 'icecream';
-					break;
-				default:
-					texture = 'lolly';
-
-			}
-			
-			this.candyGroup.create(particle.x, particle.y,texture).setOrigin(0,0);
-		}	
-		
-		
-		if(this.fatPrincess){
-		//	this.dropCandies(player);
-		}
 
 		if(puck.lastPlayerId !== ''){
 			// console.log('Player', player?.id, 'was hit by',puck.lastPlayerId);
+			if(this.fatPrincess){
+				player.dropCandy(this.candyGroup);
+			}
 		}
 		
 		puck.lastPlayerId = player?.id;
-	}
-
-	/**
-	 * In fat princess mode, serves to drop candies around the player and reset calories
-	 * @param player 
-	 */
-	private dropCandies(player: Player) {
-		let candyCount = Math.floor(player.calories / 5);
-		var center = player.sprite.getCenter();
-
-		for(var i = 0; i < candyCount; i++) {
-			var direction = this.randRange((2 * Math.PI) / candyCount * i, (2 * Math.PI) / candyCount * (i + 1));
-			var power = this.randRange(100, 400);
-
-			var deltaX = power * Math.cos(direction);
-			var deltaY = power * Math.sin(direction);
-
-			let x = center.x + deltaX;
-			let y = center.y + deltaY;
-
-			if( x < 1){
-				x = 1
-			}
-			else if(x >= (this.map.width - 1) * 64) {
-				x = (this.map.width - 1) * 64;
-			}
-
-			if(y < 1) {
-				y = 1;
-			}
-			else if(y >= (this.map.height - 1) * 64) {
-				y = (this.map.height - 1) * 64;
-			}
-
-			let candyType = this.treats[this.treats.length * Math.random() | 0]
-			this.candyGroup.create(x, y,candyType).setOrigin(0,0);
-		}
-
-		player.calories = 0;
 	}
 
 	/**

@@ -336,8 +336,8 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 			<>
 			{/* <div>{this.state.comment}</div> */}
 			<div className='gamebuttons'>			
-				<figure onClick={this.toggleSound} className={this.state.enableSound ? 'play' : 'mute'}>SOUND</figure>
-				<figure onClick={this.toggleMusic} className={this.state.enableMusic ? 'play' : 'mute'}>MUSIC</figure>
+				<figure onClick={this.toggleSound} className={this.state.enableSound ? 'sound' : 'nosound'}></figure>
+				<figure onClick={this.toggleMusic} className={this.state.enableMusic ? 'music' : 'nomusic'}></figure>
 			</div>
 
 			<div className="gamePad">

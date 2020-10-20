@@ -220,18 +220,27 @@ section button{
 .gamebuttons figure {
 	flex-direction: row;
 	width: 10vw;
-	height: 10vh;
+	height: 7vh;
 	background-position: center;
+	filter: invert(100%);
 }
 
-/* icon ref https://www.flaticon.com/search?search-type=icons&word=speaker&license=&color=&stroke=&current_section=&author_id=&pack_id=&family_id=&style_id=4&category_id= */
-.gamebuttons .play {
-	background-image: url('../gfx/audio.svg');
+.gamebuttons .music {
+	background-image: url('../gfx/music.png');
 }
 
-.gamebuttons .mute {
-	background-image: url('../gfx/mute.svg');
+.gamebuttons .nomusic {
+	background-image: url('../gfx/nomusic.png');
 }
+
+.gamebuttons .sound {
+	background-image: url('../gfx/sound.png');
+}
+
+.gamebuttons .nosound {
+	background-image: url('../gfx/nosound.png');
+}
+
 
 @keyframes disappear{
 	0% {opacity: 100;}

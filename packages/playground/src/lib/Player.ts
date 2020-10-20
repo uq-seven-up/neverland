@@ -49,7 +49,7 @@ export default class Player{
 		let walkinganimal = team === 1? "walk_cat": "walk_dog"
 		scene.anims.create({
 			key: walkinganimal,
-			frameRate: 7,
+			frameRate: 24,
 			frames: scene.anims.generateFrameNames(playersprite, {
 				prefix: "Walk_",
 				suffix: ".png",
@@ -114,6 +114,7 @@ export default class Player{
 		
 		/* Start the walk animation. */
 		this._sprite.play(walkinganimal);
+		this._sprite.anims.pause(this._sprite.anims.currentAnim.frames[1]);
 	}
 
 	public get id():string {
@@ -222,6 +223,7 @@ export default class Player{
 		this._trail.startFollow(this._sprite,0,28,true);
 		this._trail.resume();
 		this._trail.visible = true;
+		this._sprite.anims.resume();
 	}
 
 	/**
@@ -232,6 +234,7 @@ export default class Player{
 		this._speed_y = 0;
 		this._trail.visible = false;
 		this._trail.pause();
+		this._sprite.anims.pause(this._sprite.anims.currentAnim.frames[1]);
 	}
 
 	/**
@@ -266,16 +269,18 @@ export default class Player{
 		var particles = candyGroup.scene.add.particles('spritesheet');
 		var candyEmitter = particles.createEmitter({
 			frame: [18,19,20,21,22,23],
-			lifespan: 1000,
+			lifespan: 800,
 			speed: 300,
 			quantity: 3,
 			maxParticles:10,
-			scale: { start: 0.3, end: 1 },
+			scale: { start: 0.2, end: 0.6},
 			on: true,
-			rotate:{min:0,max:20},
 			x:this._sprite.x,
 			y:this._sprite.y,
-			deathCallback:true
+			deathCallback:true,
+			radial:true,
+			angle:{min:0,max:360},
+			blendMode:Phaser.BlendModes.ADD
 		});
 
 		candyEmitter.acceleration = true;	
@@ -308,7 +313,9 @@ export default class Player{
 
 			}
 			
-			candyGroup.create(particle.x - 32, particle.y - 32,texture).setOrigin(0,0);
+			let candy = candyGroup.create(particle.x - 32, particle.y - 32,texture).setOrigin(0,0);
+			candy.scaleX = 0.6;
+			candy.scaleY = 0.6;
 		}
 
 		this._calories = 0;

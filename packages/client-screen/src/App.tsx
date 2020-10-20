@@ -4,7 +4,6 @@ import BusWidget from './component/BusWidget';
 import ClockWidget from './component/ClockWidget';
 import PollWidget from './component/PollWidget';
 import QRCodeWidget from './component/QRCodeWidget';
-import ScoreWidget from './component/ScoreWidget';
 import StudyWidget from './component/StudyWidget';
 import LeaderboardWidget from './component/LeaderboardWidget'
 import WeatherWidget from './component/WeatherWidget';
@@ -39,14 +38,10 @@ function App() {
 						<StudyWidget id="widget_study" />
 					</div>
 				</div>
-			</div>
-
-			{/* <div id="g_cellbox_3" className="g_cell">
-				<StudyWidget id="widget_study" />
-			</div> */}
+			</div>			
 
 			<div id="g_cellbox_4" className="g_cell">
-				<ScoreWidget id="widget_score"/>
+				
 				<PollWidget id="widget_poll" />
 				<QRCodeWidget id="widget_qr" qrCodeUrl={mobileSiteURL} />
 			</div>

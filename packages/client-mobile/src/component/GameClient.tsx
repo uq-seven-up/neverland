@@ -1,5 +1,6 @@
 import React from "react"
 import {CFKitUtil} from '@7up/common-utils';
+import { classicNameResolver } from "typescript";
 
 enum GameState {
 	WAITING,
@@ -335,15 +336,16 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		return(
 			<>
 			{/* <div>{this.state.comment}</div> */}
-				<div className="gamePad">
-					<div className="trackpad" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onTouchMove={this.handleTouchMove} onMouseDown={this.handleMouseDown} onMouseMove={((e)=>this.handleMouseMove(e))} onMouseUp={this.handleMouseUp} onMouseLeave={this.handleMouseUp}>
-						<div></div>
-					</div>
+			<div className='gamebuttons'>			
+				<figure onClick={this.toggleSound} className={this.state.enableSound ? 'play' : 'mute'}>SOUND</figure>
+				<figure onClick={this.toggleMusic} className={this.state.enableMusic ? 'play' : 'mute'}>MUSIC</figure>
+			</div>
+
+			<div className="gamePad">
+				<div className="trackpad" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onTouchMove={this.handleTouchMove} onMouseDown={this.handleMouseDown} onMouseMove={((e)=>this.handleMouseMove(e))} onMouseUp={this.handleMouseUp} onMouseLeave={this.handleMouseUp}>
+					<div></div>
 				</div>
-				<div className='gamebuttons'>
-				<button onClick={this.toggleSound}>{this.state.enableSound ? 'Disable Sound' : 'Enable Sound'}</button>
-				<button onClick={this.toggleMusic}>{this.state.enableMusic ? 'Disable Music' : 'Enable Music'}</button>
-				</div>
+			</div>
 			</>
 		)
 	}

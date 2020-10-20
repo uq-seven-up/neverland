@@ -37,6 +37,7 @@ ASSET.set('explosion',{type:'atlas',src:require('../assets/explosion.json'),ref:
 ASSET.set('level_2',{type:'map',src:require('../assets/level2.json')}); //field
 ASSET.set('level_3',{type:'map',src:require('../assets/level3.json')}); //ice
 ASSET.set('level_4',{type:'map',src:require('../assets/level4.json')}); //beach
+ASSET.set('level_5',{type:'map',src:require('../assets/level5.json')}); //field
 
 declare type coordinate = {
 	x:number,
@@ -158,10 +159,10 @@ export default class GameScene extends AbstractScene
 		} else if(weatherTemp > 25) {
 			mapName = 'level_4';
 		} else {
-			mapName = 'level_' + (Math.floor(Math.random() * 3) + 2);
+			mapName = 'level_' + (Math.floor(Math.random() * 4) + 2);
 		}
 
-		mapName = 'level_' + (Math.floor(Math.random() * 3) + 2);
+		mapName = 'level_' + (Math.floor(Math.random() * 4) + 2);
 		return mapName;
 	}
 
@@ -205,7 +206,9 @@ export default class GameScene extends AbstractScene
 		let candyTypes:string[] = [];
 		candyObjects.forEach(candyObject => {
 			candyTypes.push(candyObject.type);
-			this.candyGroup.create(candyObject.x!, candyObject.y! - candyObject.height!,candyObject.type).setOrigin(0,0);
+			let candy = this.candyGroup.create(candyObject.x!, candyObject.y!,candyObject.type).setOrigin(0,0);
+			candy.scaleX = 0.6;
+			candy.scaleY = 0.6;
 		});
 
 		/* Remove duplicate candy types. */
@@ -219,7 +222,7 @@ export default class GameScene extends AbstractScene
 
 		const obstacleObjects = this.map.getObjectLayer('obstacle')['objects'];
 		obstacleObjects.forEach(obstacleObject => {
-			this.obstacleGroup.create(obstacleObject.x!, obstacleObject.y! - obstacleObject.height!,obstacleObject.type).setOrigin(0,0);
+			this.obstacleGroup.create(obstacleObject.x!, obstacleObject.y!,obstacleObject.type).setOrigin(0,0);			
 		});
 	}
 
@@ -355,7 +358,7 @@ export default class GameScene extends AbstractScene
 
 		for(var i=0;i<this.puck.length;i++)
 		{
-			this.checkPuckInGoal(this.puck[i]);
+			// this.checkPuckInGoal(this.puck[i]);
 			this.puck[i].update();
 		}
 		
@@ -486,32 +489,32 @@ export default class GameScene extends AbstractScene
 		switch(tile.index)
 		{
 			case 1:
-				player.speed = 350;
+				player.speed = 300;
 				break;
 			case 2:
-				player.speed = 450;
+				player.speed = 350;
 				break;	
 			case 3:
 			case 4:
 			case 5:
 			case 6:
 			case 13:
-				player.speed = 200;
+				player.speed = 150;
 				break;
 			case 7:
-				player.speed = 450;
+				player.speed = 400;
 				break;
 			case 8:
-				player.speed = 300;
+				player.speed = 250;
 				break;
 			case 9:
-				player.speed = 500;
+				player.speed = 450;
 				break;
 			case 14:
-				player.speed = 300;
+				player.speed = 250;
 				break;
 			default:
-				player.speed = 350;
+				player.speed = 300;
 		}
 	}
 
@@ -670,6 +673,7 @@ export default class GameScene extends AbstractScene
 	private addPuck(x:number,y:number)
 	{
 		let puck = new Puck(this.puck.length,this,x,y)
+		puck.sprite.setVelocity(220);
 		this.puck.push(puck);
 		this.puckSprite.push(puck.sprite);
 	}
@@ -753,9 +757,7 @@ export default class GameScene extends AbstractScene
 			let candyType = this.treats[this.treats.length * Math.random() | 0]
 			let candy = this.candyGroup.create(tile.getCenterX(), tile.getCenterY(),candyType) as Phaser.Physics.Arcade.Sprite;
 			candy.setOrigin(0,0);
-			
-			console.log(candy);
-
+			candy.setScale(0.6);
 		}
 
 		

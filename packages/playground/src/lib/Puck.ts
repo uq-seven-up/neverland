@@ -23,8 +23,6 @@ export default class Puck{
 		this._sprite.setFriction(20);
 		this._sprite.body.isCircle = true;
 		this._sprite.setAngularVelocity(50);
-
-		
 	}
 
 	public get idx():number {

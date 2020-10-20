@@ -1,6 +1,5 @@
 import React from "react"
 import {CFKitUtil} from '@7up/common-utils';
-import { classicNameResolver } from "typescript";
 
 enum GameState {
 	WAITING,

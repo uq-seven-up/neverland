@@ -19,10 +19,12 @@ export default class Puck{
 		this._sprite = scene.physics.add.sprite(x,y,'puck');
 		this._sprite.setName(this._idx.toString());
 		this._sprite.setCollideWorldBounds(true);
-		this._sprite.setBounce(0.9,0.9);
+		this._sprite.setBounce(0.99,0.99);
 		this._sprite.setFriction(20);
 		this._sprite.body.isCircle = true;
 		this._sprite.setAngularVelocity(50);
+		this._sprite.setMaxVelocity(400);
+		this._sprite.setDamping(true)
 	}
 
 	public get idx():number {

@@ -101,7 +101,7 @@ export default class Player{
 		/* Place the player into the scene.*/
 		this._sprite = scene.physics.add.sprite(50,200,playersprite);		
 		
-		this._sprite.setMass(2);
+		this._sprite.setMass(1);
 		this._sprite.setFriction(1);
 		this._sprite.setBounce(0);
 		this._sprite.body.isCircle = true;

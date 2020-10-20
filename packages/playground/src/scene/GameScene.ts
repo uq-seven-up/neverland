@@ -681,7 +681,6 @@ export default class GameScene extends AbstractScene
 	private addPuck(x:number,y:number)
 	{
 		let puck = new Puck(this.puck.length,this,x,y)
-		puck.sprite.setVelocity(220);
 		this.puck.push(puck);
 		this.puckSprite.push(puck.sprite);
 	}

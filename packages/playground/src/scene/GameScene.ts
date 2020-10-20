@@ -488,29 +488,37 @@ export default class GameScene extends AbstractScene
 		/* Adjust speed based on the tile index. (index position is determined by arrangement of tiles on the sprite sheet.) */
 		switch(tile.index)
 		{
+			/* Grass */
 			case 1:
-				player.speed = 300;
+				player.speed = 200;
 				break;
+			/* Cobbles */
 			case 2:
-				player.speed = 350;
+			case 7:
+				player.speed = 300;
 				break;	
+			/* Water*/
 			case 3:
 			case 4:
 			case 5:
 			case 6:
 			case 13:
+				player.speed = 100;
+				break;
+			/* Snow */
+			case 8:
+				player.speed = 200;
+				break;
+			/* Ice */
+			case 9:
+				player.speed = 300;
+				break;
+			/* Sand */
+			case 14:
 				player.speed = 150;
 				break;
-			case 7:
-				player.speed = 400;
-				break;
-			case 8:
-				player.speed = 250;
-				break;
-			case 9:
-				player.speed = 450;
-				break;
-			case 14:
+			/* Dark Sand */
+			case 15:
 				player.speed = 250;
 				break;
 			default:

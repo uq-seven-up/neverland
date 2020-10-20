@@ -328,14 +328,14 @@ export default class Player{
 
 	/** Called as part of the game loop. */
 	public update() {
-		let speedScale = 0;
+		let speedScale = 1;
 		if(this._calories > 40)
 		{
-			speedScale = 0.4;
-			this._sprite.scale = 2;
+			speedScale = 0.6;
+			this._sprite.scale = 1.9;
 		}else if (this.calories > 20)
 		{
-			speedScale = 0.6;
+			speedScale = 0.7;
 			this._sprite.scale = 1.5;
 		}else if (this.calories > 10)
 		{
@@ -345,6 +345,7 @@ export default class Player{
 			speedScale = 1;
 			this._sprite.scale = 1;
 		}
+		
 		/* Move the player inside of the game world.*/
 		this._sprite.body.velocity.x = this._speed_x * this._speed * speedScale;
 		this._sprite.body.velocity.y = this._speed_y * this._speed * speedScale;

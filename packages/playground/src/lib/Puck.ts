@@ -10,8 +10,6 @@ export default class Puck{
 	/** The id of the last player to make contact with this puck. */
 	public lastPlayerId:string;
 
-	
-
 	constructor(idx:number,scene:Phaser.Scene,x:number,y:number)
 	{
 		this._idx = idx;

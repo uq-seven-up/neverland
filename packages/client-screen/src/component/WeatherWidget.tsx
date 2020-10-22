@@ -44,7 +44,22 @@ class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetStat
   
     return `${day}, ${date} ${month} ${year}`
   }
-    
+	
+
+	/*Setting the icon name depending on the state of weather setting on Clouds by defaulty*/
+	private iconName = () => {
+		let iconName = 'Clouds'				
+		if (this.state.weather.status === "Clouds") {
+			iconName = 'cloudy-icon';	
+    } else if (this.state.weather.status === 'Clear') {
+			iconName = 'sunny-icon';
+    } else if (this.state.weather.status === 'Thunderstorm') {
+			iconName = 'thunder-icon';
+		} else if (this.state.weather.status === 'Rain') {
+			iconName = 'rainy-icon';
+		}
+		return iconName;
+	}
     
   /* ########################################################*/
   /* React life-cycle event.*/
@@ -128,26 +143,19 @@ class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetStat
    * 
    * @returns JSX element
    */
+
+	
+	 
    
 	public render() {
 
-		let iconName = ''				
-		if (this.state.weather.status === "Clouds") {
-			iconName = 'cloudy-icon';	
-    } else if (this.state.weather.status === 'Clear') {
-			iconName = 'sunny-icon';
-    } else if (this.state.weather.status === 'Thunderstorm') {
-			iconName = 'thunder-icon';
-		} else if (this.state.weather.status === 'Rain') {
-			iconName = 'rainy-icon';
-		}
 		window.localStorage.setItem("temp", (this.state.weather.temp as any) as string);
 		window.localStorage.setItem("status", (this.state.weather.status as any) as string);
     return (
       <section id={this.props.id} className="widget weather">						
 		<div className="date">{this.dateBuilder(new Date())}</div>				
         <div className="weather-box">
-    		<div className={iconName}></div>  
+    		<div className={this.iconName()}></div>  
             <div className="temp">        
               {Math.round(this.state.weather.temp)}°c 
             </div>

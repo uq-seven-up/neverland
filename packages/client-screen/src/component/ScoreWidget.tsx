@@ -6,7 +6,10 @@ interface ScoreWidgetProp {
 
 interface ScoreWidgetState {
   team1:number,
-  team2:number
+  team2:number,
+  clock:number,
+  teamName1:string,
+  teamName2:string
 }
 
 /**
@@ -21,7 +24,10 @@ class ScoreWidget extends React.Component<ScoreWidgetProp, ScoreWidgetState> {
 
         this.state = {
 			team1:0,
-			team2:0
+			team2:0,
+			clock:0,
+			teamName1:'',
+			teamName2:''
         }       
     }
 
@@ -39,6 +45,25 @@ class ScoreWidget extends React.Component<ScoreWidgetProp, ScoreWidgetState> {
 			{
 				this.setState({team2:parseInt(game_team_2,10)});
 			}
+
+			let game_clock = window.localStorage.getItem('game_clock');
+			if(game_clock)
+			{
+				this.setState({clock:parseInt(game_clock,10)});
+			}
+
+			let teamName1 = window.localStorage.getItem('game_team_name1');
+			if(teamName1)
+			{
+				this.setState({teamName1:teamName1});
+			}
+			
+			let teamName2 = window.localStorage.getItem('game_team_name2');
+			if(teamName2)
+			{
+				this.setState({teamName2:teamName2});
+			}
+			
 		}, 500);
     }
     /* ########################################################*/
@@ -54,10 +79,17 @@ class ScoreWidget extends React.Component<ScoreWidgetProp, ScoreWidgetState> {
      * 
      * @returns JSX element
      */
+	
     public render() {
         return (
 		<section id={this.props.id} className="widget score">        	
-            	Game Score {this.state.team1}:{this.state.team2}
+            	<figure></figure>
+				<h2>{`${this.state.teamName1} : ${this.state.team1}`}</h2>
+				<div className="clock">
+					<span>{this.state.clock}</span>
+				</div>
+				<h2>{`${this.state.teamName2} : ${this.state.team2}`}</h2>
+				<figure></figure>			
         </section>
         )
     }

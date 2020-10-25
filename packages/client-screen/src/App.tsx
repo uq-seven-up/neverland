@@ -4,6 +4,7 @@ import BusWidget from './component/BusWidget';
 import ClockWidget from './component/ClockWidget';
 import PollWidget from './component/PollWidget';
 import QRCodeWidget from './component/QRCodeWidget';
+import ScoreWidget from './component/ScoreWidget';
 import StudyWidget from './component/StudyWidget';
 import LeaderboardWidget from './component/LeaderboardWidget'
 import WeatherWidget from './component/WeatherWidget';
@@ -47,6 +48,7 @@ function App() {
 			</div>
 
 			<div id="g_cellbox_5" className="g_cell">
+				<ScoreWidget></ScoreWidget>
 				<div id="phaser-game"></div>
 			</div>
 		</>

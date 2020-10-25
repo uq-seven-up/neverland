@@ -140,7 +140,9 @@ export default class GameScene extends AbstractScene
 		this.teamOneName = teamNames[Math.floor(Math.random() * teamNames.length)];
 		this.teamTwoName = teamNames[Math.floor(Math.random() * teamNames.length)];
 		window.localStorage.setItem('game_team1',this.teamScore[0].toString());
-		window.localStorage.setItem('game_team2',this.teamScore[1].toString());
+		window.localStorage.setItem('game_team2',this.teamScore[1].toString());	
+		window.localStorage.setItem('game_team_name1',this.teamOneName);
+		window.localStorage.setItem('game_team_name2',this.teamTwoName);		
 		this.treats = [];
 	}
 
@@ -297,9 +299,12 @@ export default class GameScene extends AbstractScene
 
 		/* Position the text for displaying the team score and remaining game time.*/
 		this.scoreText[0] = this.add.text(10, 10, `Team ${this.teamOneName}: 0`, {fontSize: '20px', fill: '#000'});
+		this.scoreText[0].setVisible(false);
 		this.scoreText[1] = this.add.text(10, 40, `Team ${this.teamTwoName}: 0`, {fontSize: '20px', fill: '#000'});
+		this.scoreText[1].setVisible(false);
 		this.clockText = this.add.text(1280, 10, GameScene.ROUND_TIME.toString(), {fontSize: '60px', fill: '#000'});
-		
+		this.clockText.setVisible(false);
+
 		/* Switch to the end game scene after this scene has faded out. */
 		let that = this;
 		this.cameras.main.on('camerafadeoutcomplete', function () {
@@ -371,7 +376,8 @@ export default class GameScene extends AbstractScene
 		this.updateLocalPlayer()
 
 		/* Update the current remaining game time.*/
-		this.clockText.setText(this.timeEvent.repeatCount.toString())
+		this.clockText.setText(this.timeEvent.repeatCount.toString());
+		window.localStorage.setItem('game_clock',this.timeEvent.repeatCount.toString());	
 	}
 
 		/**

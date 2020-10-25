@@ -84,11 +84,11 @@ class ScoreWidget extends React.Component<ScoreWidgetProp, ScoreWidgetState> {
         return (
 		<section id={this.props.id} className="widget score">        	
             	<figure></figure>
-				<h2>{`${this.state.teamName1} : ${this.state.team1}`}</h2>
+				<h2>{`Team ${this.state.teamName1} : ${this.state.team1}`}</h2>
 				<div className="clock">
 					<span>{this.state.clock}</span>
 				</div>
-				<h2>{`${this.state.teamName2} : ${this.state.team2}`}</h2>
+				<h2>{`Team ${this.state.teamName2} : ${this.state.team2}`}</h2>
 				<figure></figure>			
         </section>
         )

@@ -374,6 +374,33 @@ export default class GameScene extends AbstractScene
 		this.clockText.setText(this.timeEvent.repeatCount.toString())
 	}
 
+		/**
+	 * Gets the trail colour based on number provided
+	 * @param index index position of player in the player array
+	 */
+	private getTrailColour(index: number): string {
+		let trail = "NA";
+
+		switch (index) {
+			case 0:
+				trail = "purple";
+				break;
+			case 1:
+				trail = "red";
+				break;
+			case 2:
+				trail = "green";
+				break;
+			case 3:
+				trail = "orange";
+				break;		
+			default:
+				break;
+		}
+
+		return trail;
+	}
+
 	/**
 	 * Add a new player into the scene. (places a player on the map)
 	 * @param id The id used to track this player. (This is usually the UUID that is sent by the mobile
@@ -386,11 +413,18 @@ export default class GameScene extends AbstractScene
 		/* Assign player to a team*/
 		let team = (this.player.length) % 2;
 		let player = new Player(id,this.player.length, team, this);
-		
+		let playerTrail = this.getTrailColour((this.player.length) % 4);
+		let teamName = team === 0 ? this.teamOneName : this.teamTwoName;
+		let teamNumber = team === 0 ? '1' : '2';
+		let playerInfo = [teamName, teamNumber, playerTrail];
+
 		/* Spawn player on their designated spawn point. */
 		player.sprite.x = this.spawnPoint[this.player.length].x;
 		player.sprite.y = this.spawnPoint[this.player.length].y;
 		
+		/* Send player information to mobile client */
+		(this.game as CandyGame).sendEventToPlayer(player.id, 300, playerInfo);
+
 		/* Start tracking this player in the game. */
 		this.player.push(player);	
 	}

@@ -9,6 +9,8 @@ return (
 
 <nav className='menu'>
 
+    <div className="menu-header"></div>
+
     <div className='poll'>
     <NavLink to='/PollView' className='inactive' activeClassName="active"><figure></figure>
     <h1>poll</h1>

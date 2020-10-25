@@ -62,7 +62,7 @@ export default class CandyGame extends Phaser.Game{
 		
 		/* Action to take when the connection to the game server has been established. */
 		this.ws.onopen = () => {
-			console.log('Game connected to socket server.')
+			console.log('Game connected to socket server.')			
 		}
 
 		/* Action to take when a message is received from the game server. */
@@ -104,10 +104,13 @@ export default class CandyGame extends Phaser.Game{
 	 * @param playerId The player id which should receive the message.
 	 * @param eventId The event id which is send to the players client.
 	 */
-	public sendEventToPlayer(playerId:string,eventId:number)
+	public sendEventToPlayer(playerId:string,eventId:number,playerInfo :string[] = [])
 	{
+		let teamName = playerInfo[0];
+		let teamNumber = playerInfo[1];
+		let playerFlair = playerInfo[2];
 		if (this.ws.readyState === WebSocket.OPEN) {
-			this.ws.send(`c|v|${playerId}|${eventId}|`);
+			this.ws.send(`c|v|${playerId}|${eventId}|${teamName}|${teamNumber}|${playerFlair}|`);
 		}
 	}
 

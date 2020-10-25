@@ -14,7 +14,10 @@ interface GameClientState {
 	enableMusic:boolean,
 	enableSound:boolean,
 	tracking: boolean,
-	comment: string
+	comment: string,
+	teamName: string,
+	teamNumber: string,
+	playerTrail: string
 }
 
 interface CartesianCoordinates{
@@ -58,8 +61,11 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 			enableSound:false,
 			playerId:playerId,
 			tracking: false,
-			comment: "No comment"
-        }
+			comment: "No comment",
+			teamName: "Default",
+			teamNumber: '1',
+			playerTrail: "purple"
+			}
     }
 
     /* ########################################################*/
@@ -82,7 +88,6 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 			// listen to data sent from the websocket server
 			let message = evt.data as string;
 			
-			console.log(message)
 			if(message.startsWith('c|') || message.startsWith('b|'))
 			{
 				let data = message.split('|');
@@ -114,6 +119,10 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 								this.chimeSound!.play()
 							}																					
 							break;
+						/* Team and Player Info */
+						case '300':
+							this.setState({teamName:data[4], teamNumber:data[5], playerTrail:data[6]})
+							break;							
 						default:
 					}
 					
@@ -289,6 +298,18 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 	private createParticleAtPoint(x: number, y:number) {
 		var particleContainer = document.querySelector(".gamePad");
 		var scaling = 20;
+		let dotColor = this.state.playerTrail;
+
+		if (this.state.playerTrail === 'purple') {
+			dotColor = "#7E71A7";
+		} else if (this.state.playerTrail === 'red') {
+			dotColor = "#ED8362";
+		} else if (this.state.playerTrail === 'green') {
+			dotColor = "#83C777";
+		} else {
+			dotColor = "#F9A34E";
+		}
+
 		for(var i = 0; i < 5; i++) {
 			var dot = document.createElement("div");
 			dot.classList.add("dot");
@@ -318,7 +339,9 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 			dot.style.height = size + "px";
 			dot.style.top = yvalue + "px";
 			dot.style.left = xvalue + "px";
-			dot.style.backgroundColor = "rgb(" + Math.floor(Math.random() * 255) + ",0," + Math.floor(Math.random() * 255) + ")";
+			dot.style.backgroundColor = dotColor;
+			dot.style.border = "0.5px solid black";
+			// dot.style.backgroundColor = "rgb(" + Math.floor(Math.random() * 255) + ",0," + Math.floor(Math.random() * 255) + ")";
 			particleContainer?.appendChild(dot);
 		}
 	}
@@ -341,7 +364,7 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 			</div>
 
 			<div className="gamePad">
-				<div className="trackpad" onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onTouchMove={this.handleTouchMove} onMouseDown={this.handleMouseDown} onMouseMove={((e)=>this.handleMouseMove(e))} onMouseUp={this.handleMouseUp} onMouseLeave={this.handleMouseUp}>
+				<div className= {`trackpad`} onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd} onTouchMove={this.handleTouchMove} onMouseDown={this.handleMouseDown} onMouseMove={((e)=>this.handleMouseMove(e))} onMouseUp={this.handleMouseUp} onMouseLeave={this.handleMouseUp}>
 					<div></div>
 				</div>
 			</div>
@@ -359,11 +382,14 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 			content = this.renderGameActive();
 		}
 		
+		let playerTrailCapitalized = this.state.playerTrail[0].toUpperCase() + this.state.playerTrail.substring(1);
+
 		return(
 		<section>
 			<div className='header'>
-                <figure></figure>
-            
+                <figure className={this.state.teamNumber === '1' ? 'dog' : 'cat'}></figure>
+    	<div className="team-name"><h1>{`Team ${this.state.teamName}`}</h1></div>
+			<div className="player-trail"><h1 className={this.state.playerTrail}>{`${playerTrailCapitalized} Trail`}</h1></div>
 			{content}
 			</div>
 		</section>

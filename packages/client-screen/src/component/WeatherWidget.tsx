@@ -32,7 +32,10 @@ class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetStat
 				status: " "
 		 },
     }
-  }
+	}
+	
+	
+	/*Building a date object with the required format*/
   private dateBuilder = (d: Date) => {
     let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -143,10 +146,6 @@ class WeatherWidget extends React.Component<WeatherWidgetProp, WeatherWidgetStat
    * 
    * @returns JSX element
    */
-
-	
-	 
-   
 	public render() {
 
 		window.localStorage.setItem("temp", (this.state.weather.temp as any) as string);

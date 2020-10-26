@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import {DB} from '../controller/db'
 import { IWeather, Weather } from '../models/weather';
 import fetch from "node-fetch";
-//const fetch = require('node-fetch');
+
 
 
 /**
@@ -17,18 +17,18 @@ dotenv.config();
 const API_KEY = (process.env.OPEN_WEATHER_MAP_API_KEY as any) as string;
 const API_URL = `https://api.openweathermap.org/data/2.5/weather?q=Brisbane&units=metric&APPID=${API_KEY}`
 /**
- * Proof of concept for grabbing a parameter from the URL and assigning 
+ * Grabbing a parameter from the URL and assigning 
  * it to a variable.
  */
 router.get('/weather', async (req: Request, res: Response) => {
-	const WEATHER_ID = "UQ_WEATHER_CACHE"; /* PK for the UQ RSS feed. */
-	const CACHE_FOR = 60;/* cache the RSS feed this number of minutes. */
+	const WEATHER_ID = "UQ_WEATHER_CACHE"; /* PK for the weather data. */
+	const CACHE_FOR = 60;/* cache the weather data 60 minutes. */
 	let weatherData: IWeather | null;
 	try{
 		weatherData =  await DB.Models.Weather.findById(WEATHER_ID);
 		if(weatherData)
 		{
-			
+			//if timestamp is lower than cached time retrieve cached data, otherwise retrieve data from weather API and save it to DB
 			let cacheTime = new Date().getTime() - weatherData.fetch_date.getTime();
 			let cacheMinutes = cacheTime === 0 ? 0 : Math.trunc(cacheTime / 60000); /* 1000ms * 60 = minutes */
 			if(cacheMinutes <= CACHE_FOR)
@@ -71,7 +71,9 @@ router.get('/weather', async (req: Request, res: Response) => {
 	});
 });
 
-
+/**
+ * Patch route to assist the change of weather for the presentation using postman or similar.
+ */
 router.patch('/weather', async (req: Request, res: Response) => {
 	let weatherData: IWeather | null;
 	let date = new Date();
@@ -80,7 +82,7 @@ router.patch('/weather', async (req: Request, res: Response) => {
 		weatherData!.temp = req.body.temp;
 		weatherData!.fetch_date = date;
 		weatherData!.status = req.body.status;
-		// weatherData!.updateOne({ _id: "UQ_WEATHER_CACHE" }, {temp: req.body.temp});
+
 		
 	} catch(error)
 	{

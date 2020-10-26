@@ -87,11 +87,13 @@ class ScoreWidget extends React.Component<ScoreWidgetProp, ScoreWidgetState> {
      * 
      * @returns JSX element
      */
-	private showScore()
+	private renderGameScore()
 	{
+		if(!this.state.showScore) return;
+
 		return(
 			<>
-				<figure></figure>
+				<figure key="fig_1"></figure>
 				<h2>{`Team ${this.state.teamName1} : ${this.state.team1}`}</h2>
 				<div className="clock">
 					<span>{this.state.clock}</span>
@@ -102,26 +104,10 @@ class ScoreWidget extends React.Component<ScoreWidgetProp, ScoreWidgetState> {
 		)
 	}
 
-	private hideScore()
-	{
-		return(
-			<>
-				
-			</>
-		)
-	}
-
     public render() {
-		let content = [];
-		if(this.state.showScore){
-			content.push(this.showScore());
-		}else{
-			content.push(this.hideScore());
-		}
-		
 		return (
 		<section id={this.props.id} className="widget score">        	
-            {content}			
+            {this.renderGameScore()}			
         </section>
         )
     }

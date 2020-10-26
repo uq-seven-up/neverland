@@ -52,7 +52,7 @@ declare type TeamGoal = coordinate[];
 export default class GameScene extends AbstractScene  
 {	
 	/** The duration of a single game in seconds. */
-	private static ROUND_TIME = 120;
+	private static ROUND_TIME = 90;
 	
 	/** The id used by the player using the keyboard connected to the game screen. (debug player) */
 	private static LOCAL_PLAYER_ID = 'local_player';
@@ -157,15 +157,16 @@ export default class GameScene extends AbstractScene
 		let weatherTemp = (window.localStorage.getItem("temp") as any) as number;
 		if (weatherTemp <= 18) {
 			mapName = 'level_3';
-		} else if (weatherTemp > 18 && weatherTemp <= 25) {
+		} else if (weatherTemp > 18 && weatherTemp <= 21) {
 			mapName = 'level_2';
+		} else if (weatherTemp > 21 && weatherTemp <= 25) {
+			mapName = 'level_5';
 		} else if(weatherTemp > 25) {
 			mapName = 'level_4';
 		} else {
 			mapName = 'level_' + (Math.floor(Math.random() * 4) + 2);
 		}
 
-		mapName = 'level_' + (Math.floor(Math.random() * 4) + 2);
 		return mapName;
 	}
 
@@ -647,7 +648,7 @@ export default class GameScene extends AbstractScene
 		if(player === null || player.id === puck.lastPlayerId) return;
 
 		if(puck.lastPlayerId !== ''){
-			// console.log('Player', player?.id, 'was hit by',puck.lastPlayerId);
+			console.log('Player', player?.id, 'was hit by',puck.lastPlayerId);
 			if(this.fatPrincess){
 				player.dropCandy(this.candyGroup);
 			}

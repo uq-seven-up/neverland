@@ -12,9 +12,9 @@ class App extends Component {
 				<div>
 					<Menu />
 					<Switch>
-						<Route path="/" component={PollView} exact/>
-						<Route path="/PollView" component={PollView} />
-						<Route path="/GameClient" component={GameClient} />
+						<Route path="/client-mobile" component={PollView} exact/>
+						<Route path="/client-mobile/PollView" component={PollView} />
+						<Route path="/client-mobile/GameClient" component={GameClient} />
 					</Switch>
 				</div>
 			</BrowserRouter>

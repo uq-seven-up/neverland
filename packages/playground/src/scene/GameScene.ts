@@ -52,7 +52,7 @@ declare type TeamGoal = coordinate[];
 export default class GameScene extends AbstractScene  
 {	
 	/** The duration of a single game in seconds. */
-	private static ROUND_TIME = 120;
+	private static ROUND_TIME = 90;
 	
 	/** The id used by the player using the keyboard connected to the game screen. (debug player) */
 	private static LOCAL_PLAYER_ID = 'local_player';

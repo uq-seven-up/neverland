@@ -51,14 +51,12 @@ body {
 }
 
 .header figure {
-	width: auto;
-	height: 20vh;
+	height: 10vh;
 	background-size: contain;
 	background-repeat: no-repeat;
 	display: block;
-	margin-left: auto;
-	margin-right: auto;
-	width: 50%;
+	margin: 5% auto;
+	width: 25%;
 }
 
 .header .dog {
@@ -72,14 +70,13 @@ body {
 /* Player Trail text style */
 
 .header .player-trail {
-	font-size: 2rem;
 	text-align: center;
 }
 
 .header .player-trail h1 {
 	width: 70vw;
 	border-radius: 16px;
-	font-size: 2rem;
+	font-size: 1.5rem;
 	color: white;
 	font-weight: bolder;
 	margin: 0 auto;
@@ -115,7 +112,7 @@ body {
 }
 
 .header .team-name {
-	font-size: 3rem;
+	font-size: 2rem;
 }
 
 /* Change logo when screen wider than 400px */

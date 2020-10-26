@@ -2,6 +2,12 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 
 
+/**
+ * Reference:
+ * Start using React Hooks retrieved from
+ * https://productoptimist.com/start-using-react-hooks-a-clock-timer-example/
+ */
+
 interface ClockWidgetProp {
   name: string,
   id?:string
@@ -10,11 +16,13 @@ interface ClockWidgetProp {
 /**
  * Clock widget for the big screen
  */
+
+ //Create timehook
 function ClockWidget(props:any) {    
     const [date, setDate] = useState(new Date());
 
 
-   //Replaces componentDidMount and componentWillUnmount
+   //Update time
    useEffect(() => {
     var timerID = setInterval( () => tick(), 1000 );
   
@@ -38,5 +46,6 @@ function ClockWidget(props:any) {
         </section>
         )
 }
-        
+     
+//Export component
 export default ClockWidget

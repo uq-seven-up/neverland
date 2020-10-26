@@ -242,7 +242,7 @@ export default class Player{
 	 * @param candyGroup The candy group to which dropped candy will be added.
 	 */
 	public dropCandy(candyGroup:Phaser.Physics.Arcade.Group) {
-		if(this.calories === 0) return;
+		if(this._calories === 0) return;
 		if(candyGroup.getLength() > 15) return;
 		
 		var explosion = candyGroup.scene.add.particles('explosion');
@@ -333,11 +333,11 @@ export default class Player{
 		{
 			speedScale = 0.6;
 			this._sprite.scale = 1.9;
-		}else if (this.calories > 20)
+		}else if (this._calories > 20)
 		{
 			speedScale = 0.7;
 			this._sprite.scale = 1.5;
-		}else if (this.calories > 10)
+		}else if (this._calories > 10)
 		{
 			speedScale = 0.8;
 			this._sprite.scale = 1.2;

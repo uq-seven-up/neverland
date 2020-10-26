@@ -647,7 +647,7 @@ export default class GameScene extends AbstractScene
 		if(player === null || player.id === puck.lastPlayerId) return;
 
 		if(puck.lastPlayerId !== ''){
-			// console.log('Player', player?.id, 'was hit by',puck.lastPlayerId);
+			console.log('Player', player?.id, 'was hit by',puck.lastPlayerId);
 			if(this.fatPrincess){
 				player.dropCandy(this.candyGroup);
 			}

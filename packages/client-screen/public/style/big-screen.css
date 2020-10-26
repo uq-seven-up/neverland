@@ -301,7 +301,7 @@ main {
 	background-color: #7a44ee;
 	border: 1px solid #7a44ee;
 	border-radius: 10px;
-	padding:4px;
+	padding:0px 4px 4px 4px;
 	width:90px;
 	text-align: center;
 }

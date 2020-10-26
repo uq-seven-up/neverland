@@ -9,7 +9,8 @@ interface ScoreWidgetState {
   team2:number,
   clock:number,
   teamName1:string,
-  teamName2:string
+  teamName2:string,
+  showScore:boolean
 }
 
 /**
@@ -27,7 +28,8 @@ class ScoreWidget extends React.Component<ScoreWidgetProp, ScoreWidgetState> {
 			team2:0,
 			clock:0,
 			teamName1:'',
-			teamName2:''
+			teamName2:'',
+			showScore:false
         }       
     }
 
@@ -63,7 +65,13 @@ class ScoreWidget extends React.Component<ScoreWidgetProp, ScoreWidgetState> {
 			{
 				this.setState({teamName2:teamName2});
 			}
-			
+
+			let game_started = window.localStorage.getItem('game_started');
+			if(game_started)
+			{
+				let showScore = game_started === 'true' ? true : false;
+				this.setState({showScore:showScore});
+			}
 		}, 500);
     }
     /* ########################################################*/
@@ -79,17 +87,41 @@ class ScoreWidget extends React.Component<ScoreWidgetProp, ScoreWidgetState> {
      * 
      * @returns JSX element
      */
-	
-    public render() {
-        return (
-		<section id={this.props.id} className="widget score">        	
-            	<figure></figure>
+	private showScore()
+	{
+		return(
+			<>
+				<figure></figure>
 				<h2>{`Team ${this.state.teamName1} : ${this.state.team1}`}</h2>
 				<div className="clock">
 					<span>{this.state.clock}</span>
 				</div>
 				<h2>{`Team ${this.state.teamName2} : ${this.state.team2}`}</h2>
-				<figure></figure>			
+				<figure></figure>
+			</>
+		)
+	}
+
+	private hideScore()
+	{
+		return(
+			<>
+				
+			</>
+		)
+	}
+
+    public render() {
+		let content = [];
+		if(this.state.showScore){
+			content.push(this.showScore());
+		}else{
+			content.push(this.hideScore());
+		}
+		
+		return (
+		<section id={this.props.id} className="widget score">        	
+            {content}			
         </section>
         )
     }

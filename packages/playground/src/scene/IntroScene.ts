@@ -35,6 +35,8 @@ export default class IntroScene extends AbstractScene
 	 * https://photonstorm.github.io/phaser3-docs/Phaser.Types.Scenes.html#.SceneCreateCallback
 	 */
 	public create():void {
+		window.localStorage.setItem('game_started','false');	
+		
 		this.add.image(704,352,'background');
 		
 		

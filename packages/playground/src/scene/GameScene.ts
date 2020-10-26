@@ -142,7 +142,8 @@ export default class GameScene extends AbstractScene
 		window.localStorage.setItem('game_team1',this.teamScore[0].toString());
 		window.localStorage.setItem('game_team2',this.teamScore[1].toString());	
 		window.localStorage.setItem('game_team_name1',this.teamOneName);
-		window.localStorage.setItem('game_team_name2',this.teamTwoName);		
+		window.localStorage.setItem('game_team_name2',this.teamTwoName);
+		window.localStorage.setItem('game_started','true');		
 		this.treats = [];
 	}
 
@@ -308,6 +309,8 @@ export default class GameScene extends AbstractScene
 		/* Switch to the end game scene after this scene has faded out. */
 		let that = this;
 		this.cameras.main.on('camerafadeoutcomplete', function () {
+			window.localStorage.setItem('game_started','false');
+			
 			/* Pass the team score to the end game scene. */
 			let config:EndSceneConfig = {
 				teamScore:that.teamScore,

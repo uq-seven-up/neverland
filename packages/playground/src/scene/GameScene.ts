@@ -157,15 +157,16 @@ export default class GameScene extends AbstractScene
 		let weatherTemp = (window.localStorage.getItem("temp") as any) as number;
 		if (weatherTemp <= 18) {
 			mapName = 'level_3';
-		} else if (weatherTemp > 18 && weatherTemp <= 25) {
+		} else if (weatherTemp > 18 && weatherTemp <= 21) {
 			mapName = 'level_2';
+		} else if (weatherTemp > 21 && weatherTemp <= 25) {
+			mapName = 'level_5';
 		} else if(weatherTemp > 25) {
 			mapName = 'level_4';
 		} else {
 			mapName = 'level_' + (Math.floor(Math.random() * 4) + 2);
 		}
 
-		mapName = 'level_' + (Math.floor(Math.random() * 4) + 2);
 		return mapName;
 	}
 

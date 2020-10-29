@@ -1,7 +1,7 @@
 {
   "name": "neverland-game",
   "version": "0.0.1",
-  "description": "Interactive hungry ghost chaser co-op game designed for an interactive display.",
+  "description": "Interactive co-op game designed for an interactive display.",
   "homepage": "/client-screen/",
   "main": "app.ts",
   "scripts": {

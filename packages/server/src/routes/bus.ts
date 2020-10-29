@@ -29,7 +29,7 @@ router.get('/get-bus-times/', async (req: Request, res: Response) => {
 		timeZone: 'Australia/Brisbane',
 	});
 	let today = new Date(brisbane_date_string);
-
+console.log(today);
 	var redirectValue: string = '';
 	switch (today.getDay()) {
 		case 1:

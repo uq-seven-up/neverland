@@ -2,6 +2,7 @@ import React from "react";
 
 import {API} from "@7up/common-utils"
 import {AxiosResponse } from 'axios';
+import dateFormat from 'dateformat';
 
 interface BusTime{
     id: number;
@@ -109,11 +110,13 @@ class BusWidget extends React.Component<BusWidgetProp, BusWidgetState> {
             const items = []
             
             for(var i = 0; i < 6; i++) {
-                items.push( 
+				let fakeDate = new Date();				
+				fakeDate.setMinutes(fakeDate.getMinutes() + 10 + i);
+				items.push( 
                     <li key={i}>
                         <div>{i%2*100 + 66}</div>
                         <div></div>
-                        <div>08:0{i} AM</div>
+						<div>{dateFormat(fakeDate,'hh:MM TT')}</div>
                     </li>
                 );
             }

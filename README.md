@@ -153,9 +153,9 @@ Typescript Type definitions which can be shared accross all packages.
 Utilities and libraries which can be shared accross all packages.
 
 ## Deployment to AWS
-The project includes sample buildspec and appspec these files allow using the AWS Code Build and AWS Code Deploy services respectively for building and deploying the project to production.
+The project includes sample buildspec and appspec files these files allow using the AWS Code Build and AWS Code Deploy services respectively for building and deploying the project to production.
 
-The team uses both services in CI pipeline to automatically build and deploy to AWS EC2 whenc code is pushed to the master branch.
+The team uses both services in a CI pipeline to automatically build and deploy to AWS EC2 when code is pushed to the master branch.
 
 See:  
 * https://aws.amazon.com/codedeploy/

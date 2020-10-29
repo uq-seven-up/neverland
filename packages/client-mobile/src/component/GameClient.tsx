@@ -388,9 +388,9 @@ class GameClient extends React.Component<GameClientProp, GameClientState> {
 		<section>
 			<div className='header'>
                 <figure className={this.state.teamNumber === '1' ? 'dog' : 'cat'}></figure>
-    	<div className="team-name"><h1>{`Team ${this.state.teamName}`}</h1></div>
-			<div className="player-trail"><h1 className={this.state.playerTrail}>{`${playerTrailCapitalized} Trail`}</h1></div>
-			{content}
+    			<div className="team-name"><h1>{`Team ${this.state.teamName}`}</h1></div>
+				<div className="player-trail"><h1 className={this.state.playerTrail}>{`${playerTrailCapitalized} Trail`}</h1></div>
+				{content}
 			</div>
 		</section>
         )

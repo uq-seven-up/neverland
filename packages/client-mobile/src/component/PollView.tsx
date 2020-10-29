@@ -151,19 +151,18 @@ class PollView extends React.Component<PollViewProp, PollViewState> {
 		{
 			return(<>
                 <div className='header'>
-                <figure></figure>
-                
-                <div className='thanks'></div>
+                	<figure></figure>                
+                	<div className='thanks'></div>
                 </div>
 			</>)
 		}
 
 		return (
-            <div className='header'>
+        <div className='header'>
             <figure></figure>
-		<section>
-        	{this.renderAnswers()}			
-        </section>
+			<section>
+				{this.renderAnswers()}			
+			</section>
         </div>
         )
     }

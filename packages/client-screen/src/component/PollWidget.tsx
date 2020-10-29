@@ -57,7 +57,8 @@ class PollWidget extends React.Component<PollWidgetProp, PollWidgetState> {
     /* ########################################################*/
     /* React life-cycle methods.*/
     public componentDidMount(): void {
-		this.ws = new WebSocket(process.env.REACT_APP_SOCKET_SERVER as string + '?uuid=POLL_WIDGET');
+		let socketServerHost = 'ws://' + window.location.hostname + ':3080'
+		this.ws = new WebSocket(socketServerHost + '?uuid=POLL_WIDGET');		
 		this.ws.onopen = () => {
 			// on connecting, do nothing but log it to the console
             console.log('Poll connected to socket server.')

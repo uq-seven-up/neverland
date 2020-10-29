@@ -32,7 +32,14 @@ The file needs to define the following environment variables:
 `OPEN_WEATHER_MAP_API_KEY = A VALID API KEY FROM https://openweathermap.org/api`  
   
 The above credentials will work with the mongo db launched by the provided script. (start_mongo)
-`
+
+Create a file named `.env.local` in `%project_root%/packages/client-screen/`
+
+The file needs to define the following environment variables:
+
+`REACT_APP_NEVERMIND_API_BASE=http://localhost:3080/api`
+`REACT_APP_SOCKET_SERVER=ws://localhost:3080`
+`HOST=0.0.0.0`
 
 ### Building the project
 
@@ -55,13 +62,13 @@ All the usual commands that you can find on the web for working with a react / t
 * Get the lastest changes from the team: `git pull`
 * Build any changes to common packages: `./build.sh`
 * Start the local mongo db docker container: `./start_mongo.sh`
-* Start the server:  
+* In a new terminal start the server:  
   `cd ./packages/server`  
   `yarn dev`
-* Start the mobile client:  
+* In a new terminal start the mobile client:  
   `cd ./packages/client-mobile`  
   `yarn start`  
-* Start the screen application:  
+* In a new terminal start the screen application:  
   `cd ./packages/client-screen`  
   `yarn start`
 * The application should now be running.
@@ -93,6 +100,16 @@ For code changes to the phase3 game you must run the integrate script. See the r
 For local development the project includes a mongo db stack. To start the stack run the start_mongo shell script.
 
 The shell script launches a development version of mongo db as well as a web interface for managing the mongo database. The web interface is available on http://localhost:8081
+
+## Local development on a mobile device.
+To test the mobile application on a physical device launch the client-screen and then change the url from localhost to the public IP address
+of the development machine and refresh the page.
+
+The generated QR code can now be scanned to connect to the development machine. 
+
+On most mobile devices code changes will automatically refresh on the mobile device.
+
+A laptop trackpad will also function to test touch events if the mobile client is loaded in a web browser on the development machine.
 
 ## Starting the REST API server
 As all the client applications rely on the REST API server, it is recommended to have the REST API running during all development.

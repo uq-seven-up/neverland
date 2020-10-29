@@ -47,7 +47,7 @@ The following command will build all packages.
 `./build.sh`
 
 ## Day to Day development.
-All the usual commands that you can find on the web for working with react / typescript application created with the create-react tool should work. Just remember that the project is configured to use YARN and not NPM and we are using the YARN workspaces feature to afford us the ability to easily share private packages.
+All the usual commands that you can find on the web for working with a react / typescript application created with the create-react tool should work. Just remember that the project is configured to use YARN and not NPM and we are using the YARN workspaces feature to afford us the ability to easily share private packages.
 
 ### A typical workflow for a coding session is:
 (Windows user should use scripts that end in .bat instead of .sh)
@@ -151,3 +151,13 @@ Typescript Type definitions which can be shared accross all packages.
 
 **./packages/common-utils**  
 Utilities and libraries which can be shared accross all packages.
+
+## Deployment to AWS
+The project includes sample buildspec and appspec these files allow using the AWS Code Build and AWS Code Deploy services respectively for building and deploying the project to production.
+
+The team uses both services in CI pipeline to automatically build and deploy to AWS EC2 whenc code is pushed to the master branch.
+
+See:  
+* https://aws.amazon.com/codedeploy/
+* https://aws.amazon.com/codebuild/
+* https://aws.amazon.com/ec2

@@ -8,10 +8,7 @@
 - Install nodejs 14.7.0 https://nodejs.org/en/
 - Install yarn v1.22.4 https://classic.yarnpkg.com/en/docs/install/#windows-stable
 
-Note: You could also use the provided docker container as a build environment, in which case there is no need to install nodejs or yarn. However, on Windows and MacOS compiling local source code mounted to a docker container is painfully slow.
-
 --- 
-
 ### Grab the source-code from Git Hub
 All shell commands should be run in the terminal appropriate for your operating system. i.e. Powershell (Windows) or Terminal/Console (Linux/Mac OS).
 
@@ -24,23 +21,24 @@ Then switch to the "develop" branch.
 `git checkout develop`
 
 ### Configure local environment files.
-In development mode 
+Create a file named `.env` in `%project_root%/packages/server/`
+
+The file needs to define the following environment variables:
+
+`mongoserver = localhost`  
+`mongousername = root`  
+`mongopassword = secret`  
+`mongodbname = neverland-dev`  
+`OPEN_WEATHER_MAP_API_KEY = A VALID API KEY FROM https://openweathermap.org/api`  
+  
+The above credentials will work with the mongo db launched by the provided script. (start_mongo)
+`
 
 ### Building the project
 
 The following command will build all packages.  
 
 ### YOU MUST DO THIS AT LEAST ONCE THE VERY FIRST TIME YOU CHECKOUT THE SOURCE CODE.
-
-For development you MUST create the following file:
-
-`./packages/client-screen/.env.local`  
-
-File contents:  
-`REACT_APP_NEVERMIND_API_BASE=http://localhost:3080/api`
-
-If you do NOT generate this file then client applications will contact the production REST API.
-
 
 #### Windows
 `./build.bat`
@@ -49,7 +47,35 @@ If you do NOT generate this file then client applications will contact the produ
 `./build.sh`
 
 ## Day to Day development.
-All the usual commands that you can find on the web for working with react / typescript application created with the create-react tool should work. Just remeber the project is configured to use YARN and not NPM and we are using the YARN workspaces feature to afford us the ability to easily share private packages.
+All the usual commands that you can find on the web for working with react / typescript application created with the create-react tool should work. Just remember that the project is configured to use YARN and not NPM and we are using the YARN workspaces feature to afford us the ability to easily share private packages.
+
+### A typical workflow for a coding session is:
+(Windows user should use scripts that end in .bat instead of .sh)
+
+* Get the lastest changes from the team: `git pull`
+* Build any changes to common packages: `./build.sh`
+* Start the local mongo db docker container: `./start_mongo.sh`
+* Start the server:  
+  `cd ./packages/server`  
+  `yarn dev`
+* Start the mobile client:  
+  `cd ./packages/client-mobile`  
+  `yarn start`  
+* Start the screen application:  
+  `cd ./packages/client-screen`  
+  `yarn start`
+* The application should now be running.
+
+### Note:  
+When working on the game component there is no need to run the client-screen.  
+Also, code changes to the playground application will not show in the client-screen until
+the code has been integrated. See the readme file in the playground project.
+
+For quick testing of the game a local player can be launched directly in the client-screen without
+requiring the mobile client.
+
+To add the debug player click on the game to start the game. Then press 1 to add a debug player. The debug player can be controlled with the cursor keys. (note diagonals do not work with the debug player.)
+
 
 ## Changing code inside of the common-* packages
 For code changes to common packages to be available the changes packages must be rebuilt.
@@ -59,6 +85,9 @@ In the console change to the ./packages/common-* folder.
 The following commands are available:  
 `yarn build`  
 Builds the server source code and runs all unit-tests. 
+
+## Changing code inside of the playground packages
+For code changes to the phase3 game you must run the integrate script. See the readme file for the playground package.
 
 ## Local mongo database.
 For local development the project includes a mongo db stack. To start the stack run the start_mongo shell script.
@@ -80,7 +109,7 @@ Starts up the node express server.
 `yarn dev`  
 Starts up the node express server and watches the source code for any changes. If source code changes are detected the code is automatically re-compiled and the node server is restarted with the new source code changes.  
 
-## Starting the Client Applications
+## Starting the Client Applications (playground/client-mobile/client-screen)
 As all the client applications rely on the REST API server, it is recommended to have the REST API running during all development.
 
 In the console change to the ./packages/client-* folder.
@@ -94,6 +123,7 @@ Starts up the client application and launches a web-browser windows.
 
 `yarn test`  
 Launches a tool for running unit-tests.
+
 
 ---
 ## Project folder structure.

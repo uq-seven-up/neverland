@@ -328,3 +328,25 @@ section button {
 	grid-column-start: 1;
 	grid-row-start: 1;
 }
+
+@supports (-webkit-overflow-scrolling: touch) {
+	/* CSS specific to iOS devices only */ 
+	/* http://stephen.io/mediaqueries/#iPhone */
+	
+	/* iPhone SE sized devices. */
+	@media only screen 
+	and (min-device-width : 320px) 
+	and (max-device-width : 568px) { 
+		#root{
+			display:flex;
+			flex-direction: column-reverse;
+			justify-content: space-between;
+			align-items: center;
+			height:100%;
+		}
+		
+		.menu {
+			position: relative;
+		}
+	}
+}

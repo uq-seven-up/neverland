@@ -80,10 +80,10 @@ When working on the game component there is no need to run the client-screen.
 Also, code changes to the playground application will not show in the client-screen until
 the code has been integrated. See the readme file in the playground project.
 
-For quick testing of the game a local player can be launched directly in the client-screen without
+For quick testing of the game, a local player can be launched directly in the client-screen without
 requiring the mobile client.
 
-To add the debug player click on the game to start the game. Then press 1 to add a debug player. The debug player can be controlled with the cursor keys. (note diagonals do not work with the debug player.)
+To add the debug player click on the game to start the game. Then press 1 to add a debug player. The debug player can be controlled with the cursor keys. (Note: diagonals do not work with the debug player.)
 
 
 ## Changing code inside of the common-* packages
@@ -96,10 +96,10 @@ The following commands are available:
 Builds the server source code and runs all unit-tests. 
 
 ## Changing code inside of the playground packages
-For code changes to the phase3 game you must run the integrate script. See the readme file for the playground package.
+For code changes to the phaser3 game you must run the integrate script. See the readme file for the playground package.
 
 ## Local mongo database.
-For local development the project includes a mongo db stack. To start the stack run the start_mongo shell script.
+For local development, the project includes a mongo db stack. To start the stack run the start_mongo shell script.
 
 The shell script launches a development version of mongo db as well as a web interface for managing the mongo database. The web interface is available on http://localhost:8081
 
@@ -107,9 +107,9 @@ The shell script launches a development version of mongo db as well as a web int
 To test the mobile application on a physical device launch the client-screen and then change the url from localhost to the public IP address
 of the development machine and refresh the page.
 
-The generated QR code can now be scanned to connect to the development machine. 
+The generated QR code can now be scanned to connect to the development machine (make sure both phone and computer are on the same WI-FI network). 
 
-On most mobile devices code changes will automatically refresh on the mobile device.
+On most mobile devices, code changes will automatically refresh on the mobile device.
 
 A laptop trackpad will also function to test touch events if the mobile client is loaded in a web browser on the development machine.
 
@@ -138,7 +138,7 @@ The following commands are available:
 Builds the client source code for production.  
 
 `yarn start`  
-Starts up the client application and launches a web-browser windows.  
+Starts up the client application and launches a web-browser window.  
 
 `yarn test`  
 Launches a tool for running unit-tests.
@@ -148,7 +148,7 @@ Launches a tool for running unit-tests.
 ## Project folder structure.
 
 **./docker**  
-Contains docker files for containerising the application and constructing a build environement.
+Contains Docker files for containerising the application and constructing a build environement.
 
 **./packages**  
 Contains all the packages which are used to construct the project.
@@ -157,7 +157,7 @@ Contains all the packages which are used to construct the project.
 React Application used by end users to interact with the Public Display (screen).
 
 **./packages/client-screen**  
-React Application which is shown on the Public Display (screen)
+React Application that is shown on the Public Display (screen)
 
 **./packages/playground**  
 The interactive game that is integrated into the client screen.
@@ -166,10 +166,10 @@ The interactive game that is integrated into the client screen.
 Node.js server which mediates between the mobile and screen application.
 
 **./packages/common-types**  
-Typescript Type definitions which can be shared accross all packages.
+Typescript Type definitions which can be shared across all packages.
 
 **./packages/common-utils**  
-Utilities and libraries which can be shared accross all packages.
+Utilities and libraries that can be shared across all packages.
 
 ## Deployment to AWS
 The project includes sample buildspec and appspec files these files allow using the AWS Code Build and AWS Code Deploy services respectively for building and deploying the project to production.

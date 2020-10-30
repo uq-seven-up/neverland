@@ -10,6 +10,8 @@
 
 --- 
 ### Grab the source-code from Git Hub
+https://github.com/uq-seven-up/neverland
+
 All shell commands should be run in the terminal appropriate for your operating system. i.e. Powershell (Windows) or Terminal/Console (Linux/Mac OS).
 
 Navigate to a place in the file system where you would like to store the project source code. Then

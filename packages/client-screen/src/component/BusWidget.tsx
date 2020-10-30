@@ -19,8 +19,7 @@ interface BusWidgetProp {
 
 interface BusWidgetState {
   status: "on" | "off",
-  busTimes: BusTime[],
-  timeout: number
+  busTimes: BusTime[]
 }
 
 /**
@@ -28,22 +27,32 @@ interface BusWidgetState {
  * react component using a class.
  */
 class BusWidget extends React.Component<BusWidgetProp, BusWidgetState> {  
+    private timer:any;
+  
     constructor(props: any) {
         super(props)
 
         this.state = {
             status: "off",
-            busTimes: [],
-            timeout: -1
+            busTimes: []
         }       
+    }
+
+    public fetchBusTime(): void {
+        var stop_value = this.props.name === "UQ Lakes"? "uqlakes": "chancellor";
+        this.callAPI('', 'GET', '/bus/get-bus-times?stop=' + stop_value);
     }
 
     /* ########################################################*/
     /* React life-cycle event.*/
     public componentDidMount(): void {
-        var stop_value = this.props.name === "UQ Lakes"? "uqlakes": "chancellor";
-        this.callAPI('', 'GET', '/bus/get-bus-times?stop=' + stop_value);
+        this.timer = setInterval( () => this.fetchBusTime(), 60000 );
+        this.fetchBusTime();
     }
+
+    componentWillUnmount() {
+        clearInterval(this.timer);
+      }
     /* ########################################################*/
 
   /* ########################################################*/
@@ -91,7 +100,7 @@ class BusWidget extends React.Component<BusWidgetProp, BusWidgetState> {
      */
     private handleApiCallSuccess = (name:string,method:string,endpoint:string,result:any):void =>
     {
-        this.setState({status: 'on', busTimes:result.data, timeout:result.next});
+        this.setState({status: 'on', busTimes:result.data});
     }
     /* ########################################################*/
 
@@ -128,19 +137,6 @@ class BusWidget extends React.Component<BusWidgetProp, BusWidgetState> {
             );
         } 
         else {
-            // Get the next bus time and remount component at time
-            if(this.state.timeout !== -1) {
-                setTimeout(function(comp: BusWidget){
-                    comp.componentDidMount();
-                }, this.state.timeout, this);
-            }
-            else {
-                // Try again in an hour
-                setTimeout(function(comp: BusWidget){
-                    comp.componentDidMount();
-                }, 3600000, this);
-            }
-
             if(this.state.busTimes.length !== 0) {
                 return (
                     <ul>
@@ -163,7 +159,6 @@ class BusWidget extends React.Component<BusWidgetProp, BusWidgetState> {
                     <p>No more buses...</p>
                 );
             }
-            
         }
     }
 

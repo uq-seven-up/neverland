@@ -534,7 +534,7 @@ export default class GameScene extends AbstractScene
 		{
 			/* Grass */
 			case 1:
-				player.speed = 230;
+				player.speed = 250;
 				break;
 			/* Cobbles */
 			case 2:
@@ -559,11 +559,11 @@ export default class GameScene extends AbstractScene
 				break;
 			/* Sand */
 			case 14:
-				player.speed = 180;
+				player.speed = 230;
 				break;
 			/* Dark Sand */
 			case 15:
-				player.speed = 280;
+				player.speed = 300;
 				break;
 			default:
 				player.speed = 330;

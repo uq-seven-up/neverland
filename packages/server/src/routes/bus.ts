@@ -79,21 +79,22 @@ router.get('/translink-times/', async (req: Request, res: Response) => {
 			{ trip_id: get_filter(day)},
 			{ stop_id: { $in: get_stop_ids(stop) }},
 			{ $or: [ 
-				{departure_time: {$regex: new RegExp(`^${("00" + today.getHours()).slice(-2)}`)}}, 
-				{departure_time: {$regex: new RegExp(`^${("00" + (today.getHours() + 1)).slice(-2)}`)}}
+				{departure_time: {$regex: getTimeFilter(today.getHours())}}, 
+				{departure_time: {$regex: getTimeFilter(today.getHours() + 1)}}
 			]}
 		]
 	};
 
 	var timeout = -1;
 	var gotTimeout = false;
-
+	
 	try {
 		await DB.Models.BusTime.find(FILTER, (err, results) => {
 			if (err) throw err;
 			var counter = 0;
 			
 			for (var i = 0; i < results.length; i++) {
+				//console.log(results[i]);
 				var row: any = results[i];
 				var splitTime: string[] = row.departure_time.split(':');
 				var parsedDate: Date = new Date(
@@ -103,7 +104,7 @@ router.get('/translink-times/', async (req: Request, res: Response) => {
 					getTimeInt(row.departure_time, true),
 					getTimeInt(row.departure_time, false)
 				);
-
+				
 				if (parsedDate >= today) {
 					if(!gotTimeout) {
 						timeout = Math.abs(parsedDate.getTime() - today.getTime());
@@ -175,8 +176,15 @@ function get_filter(day: any) {
 	}
 }
 
-function getTimeFilter(today: Date) {
-	//return [/today.getHours(), today.getHours() + 1];
+function getTimeFilter(hours: number) {
+	var value = hours;
+	
+	if(hours > 12) {
+		value = hours - 12;
+	}
+	var result = new RegExp(`^${("00" + value).slice(-2)}`)
+	console.log(result);
+	return result;
 }
 
 function getTimeInt(departure_time: string, isHours: boolean) {
